@@ -24,8 +24,8 @@ PyYAML==6.0.2
 
 # --- LangChain & Google GenAI ---
 langchain==0.3.7
-langchain-google-genai==0.1.4
-google-genai==0.7.2
+langchain-google-genai>=0.1.0,<0.2.0
+google-genai>=0.7.0,<1.0.0
 
 # --- Excel utilities ---
 openpyxl==3.1.5
@@ -36,6 +36,6 @@ charset-normalizer==3.4.2
 idna==3.10
 urllib3==2.5.0
 
-# --- Torch stack ---
+# --- Torch stack (در صورت نیاز) ---
 torch==2.7.1
 torchvision==0.22.1
