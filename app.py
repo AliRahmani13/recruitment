@@ -33,7 +33,10 @@ API_KEYS = [
     "AIzaSyB3mit4E08rikvudNxuLE_M5pN9JI66YVI",
     "AIzaSyDDg7exsqEjYlEYPOHYYbKigBevzvEu1QA",
     "AIzaSyCT77EaK-jyNRruWfQha1buopo896o7r5Q",
-    "AIzaSyAFhHDSc_ACVrLmJUkjAk3jvBMh1yw_qNg"
+    "AIzaSyAFhHDSc_ACVrLmJUkjAk3jvBMh1yw_qNg",
+    "AIzaSyCKw2OwxeAbfEQJtV9cszbjtBcjqei9KUg",
+    "AIzaSyDho2wA-JDQeZ4MPnZ9uGnZW8S8vZyry00",
+    "AIzaSyDeUMG0LXVbcYRCNjgi09U3xjQifIRiGa0"
 ]
 def local_font_css(font_path, font_name):
     with open(font_path, "rb") as f:
@@ -1205,6 +1208,7 @@ if RESULT_FILE_PATH.exists():
     # دکمه دانلود فایل نهایی
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
 
 
 
