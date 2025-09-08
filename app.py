@@ -85,7 +85,7 @@ def local_font_css(font_path, font_name):
     """
 
 #font_css = local_font_css("D:/AliRahmani/fonts/0 Nazanin.TTF", "BNazanin")
-st.markdown(font_css, unsafe_allow_html=True)
+#st.markdown(font_css, unsafe_allow_html=True)
 
 def style_excel(path): 
     wb = openpyxl.load_workbook(path) 
@@ -1200,5 +1200,6 @@ if RESULT_FILE_PATH.exists():
     # دکمه دانلود فایل نهایی
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
 
 
