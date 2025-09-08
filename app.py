@@ -97,8 +97,8 @@ def style_excel(path):
     row_fill_even = PatternFill(start_color="EAF3FA", end_color="EAF3FA", fill_type="solid")  # ردیف‌های زوج
 
     # --- فونت و تراز ---
-    header_font = Font(bold=True, name='B Nazanin', size=14)
-    row_font = Font(name='B Nazanin', size=12)
+    #header_font = Font(bold=True, name='B Nazanin', size=14)
+    #row_font = Font(name='B Nazanin', size=12)
     center_align = Alignment(horizontal="center", vertical="center", wrap_text=True)
 
     # --- حاشیه دور سلول‌ها ---
@@ -1200,3 +1200,4 @@ if RESULT_FILE_PATH.exists():
     # دکمه دانلود فایل نهایی
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
