@@ -1,0 +1,41 @@
+# --- Core scientific stack ---
+numpy<2.0.0
+scipy==1.15.3
+pandas==2.2.2
+scikit-learn==1.7.0
+joblib==1.5.1
+threadpoolctl==3.6.0
+sympy==1.14.0
+
+# --- NLP & Transformers ---
+transformers==4.30.2
+tokenizers==0.13.3
+sentence-transformers==2.2.2
+regex==2024.11.6
+nltk==3.9.1
+tqdm==4.67.1
+safetensors==0.5.3
+
+# --- App / UI ---
+streamlit==1.41.1
+requests==2.32.4
+pillow==11.3.0
+PyYAML==6.0.2
+
+# --- LangChain & Google GenAI ---
+langchain==0.3.7
+langchain-google-genai==0.1.4
+google-genai==0.7.2
+
+# --- Excel utilities ---
+openpyxl==3.1.5
+
+# --- Networking & parsing ---
+certifi==2025.7.9
+charset-normalizer==3.4.2
+idna==3.10
+urllib3==2.5.0
+
+# --- Torch stack ---
+torch==2.7.1
+torchvision==0.22.1
