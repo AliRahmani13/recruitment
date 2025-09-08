@@ -36,7 +36,15 @@ API_KEYS = [
     "AIzaSyAFhHDSc_ACVrLmJUkjAk3jvBMh1yw_qNg",
     "AIzaSyCKw2OwxeAbfEQJtV9cszbjtBcjqei9KUg",
     "AIzaSyDho2wA-JDQeZ4MPnZ9uGnZW8S8vZyry00",
-    "AIzaSyDeUMG0LXVbcYRCNjgi09U3xjQifIRiGa0"
+    "AIzaSyDeUMG0LXVbcYRCNjgi09U3xjQifIRiGa0",
+    "AIzaSyAG0uv1n58KLBauI_-DSKin_TvxSIdxds4",
+    "AIzaSyBBtW7faPj5Pi075QL-NrX136aCzD2tz8w",
+    "AIzaSyAwke3NQ4JdwU08q0gmBCPMN3Dgvout9AI",
+    "AIzaSyBvfHuCYGaTvm0NR-u4R4KrfjxyXk1KoBA",
+    "AIzaSyBvfHuCYGaTvm0NR-u4R4KrfjxyXk1KoBA",
+    "AIzaSyBVssyUgbtTuPktirbp7aKrc5yu3QMhO9Y",
+    "AIzaSyD_8nd1TqWv-8jQFxcBOJACk2uzmtVsIyk",
+    "AIzaSyBYa4NPYE9x2qNOxXz2h-ahXWoGKSUGha8"
 ]
 def local_font_css(font_path, font_name):
     with open(font_path, "rb") as f:
@@ -1208,6 +1216,7 @@ if RESULT_FILE_PATH.exists():
     # دکمه دانلود فایل نهایی
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
 
 
 
