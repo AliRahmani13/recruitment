@@ -44,7 +44,23 @@ API_KEYS = [
     "AIzaSyBvfHuCYGaTvm0NR-u4R4KrfjxyXk1KoBA",
     "AIzaSyBVssyUgbtTuPktirbp7aKrc5yu3QMhO9Y",
     "AIzaSyD_8nd1TqWv-8jQFxcBOJACk2uzmtVsIyk",
-    "AIzaSyBYa4NPYE9x2qNOxXz2h-ahXWoGKSUGha8"
+    "AIzaSyBYa4NPYE9x2qNOxXz2h-ahXWoGKSUGha8",
+    "AIzaSyD4OendhKHI1pZm5gLBW_iQz1mB8kr8ML0",
+    "AIzaSyB6cc9EqjUt5nd9aaf7F7maWL_oeMHhDYY",
+    "AIzaSyAF2WP7ZfEGvCypqr8EyvTzrlKC9_Pok28",
+    "AIzaSyC_thrfbNBKYSdLhYzQCT4823vLgSp0xlA",
+    "AIzaSyAYkIki0-7MCk84BKciqyeCQkNBVlD8M1I",
+    "AIzaSyDyQ1S9-gRxWuTm0-Udce941D4eA4ENA0c",
+    "AIzaSyBHPnIKzy2BdlsoDL3ykINEjzCBOspCclM",
+    "AIzaSyCaX_qM88QmZj4Gg-3RPsi8rgoOoGOucZg",
+    "AIzaSyAtt1SiWMr85mLvsknTTn2T8APrplDH7QE",
+    "AIzaSyDyWOJ4Qgvu5hLR4nB3CmkiaLY74tDIkAQ",
+    "AIzaSyDJbLUS9qnehqtKrjsn9WO0_B-8Uh6dWWY",
+    "AIzaSyAYoHSS9QL9seNHEhioJeDSwNWjL3PJxak",
+    "AIzaSyCV50Bx9EIOMbszY0HpHzt3h1yrUlyPtnA",
+    "AIzaSyBrzjnAQjKz4bWd1q2QY7Ae0t9dO-LxvXQ",
+    "AIzaSyDc-whfkEype7-Pm1aDrrQVMwWB4fsTUyE",
+    "AIzaSyCdW0eA4Bqu31avejZR-SFxvCmVRJfBEKA"
 ]
 def local_font_css(font_path, font_name):
     with open(font_path, "rb") as f:
@@ -1216,6 +1232,7 @@ if RESULT_FILE_PATH.exists():
     # دکمه دانلود فایل نهایی
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
 
 
 
