@@ -44,23 +44,23 @@ API_KEYS = [
     "AIzaSyBNAb6TSR4mhq82WtW2wHSCOUDK73IDbfs",  #GptKaran14
     "AIzaSyB51i5YnENFBE8aYncinPtwLk1dThl2CuA"  #GptKaran14
 ]
-# استفاده از فونت وزیر از CDN
+
 font_css = """
-<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v3.4.0/dist/font-face.css" rel="stylesheet" type="text/css" />
 <style>
     html, body, [class^="st-"], [class*=" st-"], .block-container {
-        font-family: Vazir !important;
+        font-family: Sahel !important;
         direction: rtl !important;
         text-align: right !important;
     }
 
     h1, h2, h3, h4, h5, h6, label, p {
-        font-family: Vazir !important;
+        font-family: Sahel !important;
     }
 </style>
 """
-
 st.markdown(font_css, unsafe_allow_html=True)
+
 
 
 def style_excel(path): 
@@ -1176,4 +1176,5 @@ if RESULT_FILE_PATH.exists():
     # دکمه دانلود فایل نهایی
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
 
