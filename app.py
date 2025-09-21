@@ -44,62 +44,24 @@ API_KEYS = [
     "AIzaSyBNAb6TSR4mhq82WtW2wHSCOUDK73IDbfs",  #GptKaran14
     "AIzaSyB51i5YnENFBE8aYncinPtwLk1dThl2CuA"  #GptKaran14
 ]
-def local_font_css(font_path, font_name):
-    with open(font_path, "rb") as f:
-        encoded_font = base64.b64encode(f.read()).decode('utf-8')
-    return f"""
-    <style>
-    @font-face {{
-        font-family: '{font_name}';
-        src: url(data:font/ttf;base64,{encoded_font}) format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }}
-
-    html, body, [class^="st-"], [class*=" st-"], .block-container, .element-container {{
-        font-family: '{font_name}' !important;
-        font-size: 16px !important;
+# استفاده از فونت وزیر از CDN
+font_css = """
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" type="text/css" />
+<style>
+    html, body, [class^="st-"], [class*=" st-"], .block-container {
+        font-family: Vazir !important;
         direction: rtl !important;
         text-align: right !important;
-    }}
+    }
 
-    h1, h2, h3, h4, h5, h6, label, p, .stMarkdown, .css-10trblm, .css-1v0mbdj {{
-        font-family: '{font_name}' !important;
-        font-size: 20px !important;
-        line-height: 2.2 !important;
-    }}
+    h1, h2, h3, h4, h5, h6, label, p {
+        font-family: Vazir !important;
+    }
+</style>
+"""
 
-    /* استایل خاص برای عنوان اصلی */
-    h1.main-title {{
-        font-family: '{font_name}' !important;
-        font-size: 72px !important;
-        color: #1a73e8 !important;
-        text-align: center !important;
-        font-weight: bold !important;
-        margin-top: 40px !important;
-        margin-bottom: 30px !important;
-    }}
-
-    /* استایل اجزای فرم */
-    .stButton > button,
-    .stDownloadButton > button,
-    .stTextInput input,
-    .stSelectbox div,
-    .stFileUploader,
-    .stFileUploader label,
-    input, select, textarea, button {{
-        font-family: '{font_name}' !important;
-        font-size: 16px !important;
-    }}
-
-    footer {{
-        visibility: hidden;
-    }}
-    </style>
-    """
-
-font_css = local_font_css("D:/AliRahmani/fonts/0 Nazanin.TTF", "BNazanin")
 st.markdown(font_css, unsafe_allow_html=True)
+
 
 def style_excel(path): 
     wb = openpyxl.load_workbook(path) 
@@ -1214,3 +1176,4 @@ if RESULT_FILE_PATH.exists():
     # دکمه دانلود فایل نهایی
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
