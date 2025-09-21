@@ -19,48 +19,30 @@ from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
 import base64
 
 API_KEYS = [
-    "AIzaSyAHuh1NvFx0arcKMm6RbP1EF94TsRvjHh4",
-    "AIzaSyDTUCWsjAj1t9D3Tnix6hHWJ3rxjzfleMs",
-    "AIzaSyB0cYSO6BEXFY4EGz9A7lzdPMWw84peOXU",
-    "AIzaSyAjpckNYaZkifXUdvTL0QpyAVL8k6fsSzw",
-    "AIzaSyBrNZg8x4UZfFo3yVmCXJa2YeHG1iFiVhk",
-    "AIzaSyATYtdvAxyBetlg00zrX8CKiVZRxfeuHtM",
-    "AIzaSyB5iV3q2APEh27EJ7Jm6qqBeIfGnauqdiw",
-    "AIzaSyC8tN4kY2QU5ACRacPazzRQeJPtAC08Vm8",
-    "AIzaSyCh78GHgYJ9DZUo-TekO6MDxpMWTHD_zjk",
-    "AIzaSyBww4mPXQz2dStjJcQJ-T6DAvXXUpgkBBo",
-    "AIzaSyAnTJ8iiVIeXLI3JcD8Km3uz7NvmLwIOK8",
-    "AIzaSyB3mit4E08rikvudNxuLE_M5pN9JI66YVI",
-    "AIzaSyDDg7exsqEjYlEYPOHYYbKigBevzvEu1QA",
-    "AIzaSyCT77EaK-jyNRruWfQha1buopo896o7r5Q",
-    "AIzaSyAFhHDSc_ACVrLmJUkjAk3jvBMh1yw_qNg",
-    "AIzaSyCKw2OwxeAbfEQJtV9cszbjtBcjqei9KUg",
-    "AIzaSyDho2wA-JDQeZ4MPnZ9uGnZW8S8vZyry00",
-    "AIzaSyDeUMG0LXVbcYRCNjgi09U3xjQifIRiGa0",
-    "AIzaSyAG0uv1n58KLBauI_-DSKin_TvxSIdxds4",
-    "AIzaSyBBtW7faPj5Pi075QL-NrX136aCzD2tz8w",
-    "AIzaSyAwke3NQ4JdwU08q0gmBCPMN3Dgvout9AI",
-    "AIzaSyBvfHuCYGaTvm0NR-u4R4KrfjxyXk1KoBA",
-    "AIzaSyBvfHuCYGaTvm0NR-u4R4KrfjxyXk1KoBA",
-    "AIzaSyBVssyUgbtTuPktirbp7aKrc5yu3QMhO9Y",
-    "AIzaSyD_8nd1TqWv-8jQFxcBOJACk2uzmtVsIyk",
-    "AIzaSyBYa4NPYE9x2qNOxXz2h-ahXWoGKSUGha8",
-    "AIzaSyD4OendhKHI1pZm5gLBW_iQz1mB8kr8ML0",
-    "AIzaSyB6cc9EqjUt5nd9aaf7F7maWL_oeMHhDYY",
-    "AIzaSyAF2WP7ZfEGvCypqr8EyvTzrlKC9_Pok28",
-    "AIzaSyC_thrfbNBKYSdLhYzQCT4823vLgSp0xlA",
-    "AIzaSyAYkIki0-7MCk84BKciqyeCQkNBVlD8M1I",
-    "AIzaSyDyQ1S9-gRxWuTm0-Udce941D4eA4ENA0c",
-    "AIzaSyBHPnIKzy2BdlsoDL3ykINEjzCBOspCclM",
-    "AIzaSyCaX_qM88QmZj4Gg-3RPsi8rgoOoGOucZg",
-    "AIzaSyAtt1SiWMr85mLvsknTTn2T8APrplDH7QE",
-    "AIzaSyDyWOJ4Qgvu5hLR4nB3CmkiaLY74tDIkAQ",
-    "AIzaSyDJbLUS9qnehqtKrjsn9WO0_B-8Uh6dWWY",
-    "AIzaSyAYoHSS9QL9seNHEhioJeDSwNWjL3PJxak",
-    "AIzaSyCV50Bx9EIOMbszY0HpHzt3h1yrUlyPtnA",
-    "AIzaSyBrzjnAQjKz4bWd1q2QY7Ae0t9dO-LxvXQ",
-    "AIzaSyDc-whfkEype7-Pm1aDrrQVMwWB4fsTUyE",
-    "AIzaSyCdW0eA4Bqu31avejZR-SFxvCmVRJfBEKA"
+    "AIzaSyAQ1Z8HmIZm-eNvohxoM4ZNFM8JsZsxDII",  #GptSavaran14
+    "AIzaSyAQhK01WbSxiXUdXqe5xEvJA3feUiQCL0E",  #GptSavaran14
+    "AIzaSyAhMXCXIfat3NQqsyWk-S8gdOzTRZLc_bA",  #GptSavaran14
+    "AIzaSyCBH-nSuALuLBerOBn2JS-z3yBYuvPXTPw",  #GptSavaran14
+    "AIzaSyClzhUwWrUyI_dEjaYO4d4mijfBFGw1his",  #GptSavaran14
+    "AIzaSyCWZVz-ciOp91vKr2u7J87IktK2skygOro",  #GptSavaran14
+    "AIzaSyB11u1-TTuvIRNhSAp44PgWWpoK9kq1mAo",  #GptSavaran14
+    "AIzaSyBxusefsMEbKv6HAoYxECpOIqbKO-pCs2g",  #GptSavaran14
+    "AIzaSyDIAYd4QdTBQO4MVOnAvoA5tNEozVYdflE",  #GptSavaran14
+    "AIzaSyBw6zUcIsp5t4QZxI_BRiPphYJzf7mq8p4",  #GptSavaran14
+    "AIzaSyC3EpZaqKLQwxCGUxKLzuwzvtKT2EjYTEA",  #GptSavaran14
+    "AIzaSyAkXdS9nAA35pdOX4kZQaFOgOznjU9MlDs",  #GptSavaran14
+    "AIzaSyBZqnpTMHL8Zap2CIrqifqXVA5YB30Apuw",  #GptKaran14
+    "AIzaSyBqTtltNANsAhbodnxfFJOFq8vaGszJPqQ",  #GptKaran14
+    "AIzaSyCC2RTsg8ArBgXj8t82-w-agFE82s0CUHw",  #GptKaran14
+    "AIzaSyDvtLtNuVVlgNBvzwPRl42RyWZJqRsCI4Q",  #GptKaran14
+    "AIzaSyATYlQN6L7SJz7mY7wScnyB8G_DqRsJQT4",  #GptKaran14
+    "AIzaSyBW8Q1amjzs0_XLHaKaecyZuQJe0U5qhZU",  #GptKaran14
+    "AIzaSyA7YtWUSsljlQuWOuy3fSBajot2rI5D3e8",  #GptKaran14
+    "AIzaSyAsFagF5Z-A_o2pvUiAwpzqXpDpRNjhwfM",  #GptKaran14
+    "AIzaSyDG8LTKH4NGqQcaGAz76z4hKAQ95jVjz4c",  #GptKaran14
+    "AIzaSyDwB9W3SJjG5qkTd58L8ToX0xmi57Kh8d4",  #GptKaran14
+    "AIzaSyBNAb6TSR4mhq82WtW2wHSCOUDK73IDbfs",  #GptKaran14
+    "AIzaSyB51i5YnENFBE8aYncinPtwLk1dThl2CuA"  #GptKaran14
 ]
 def local_font_css(font_path, font_name):
     with open(font_path, "rb") as f:
@@ -116,8 +98,8 @@ def local_font_css(font_path, font_name):
     </style>
     """
 
-#font_css = local_font_css("D:/AliRahmani/fonts/0 Nazanin.TTF", "BNazanin")
-#st.markdown(font_css, unsafe_allow_html=True)
+font_css = local_font_css("D:/AliRahmani/fonts/0 Nazanin.TTF", "BNazanin")
+st.markdown(font_css, unsafe_allow_html=True)
 
 def style_excel(path): 
     wb = openpyxl.load_workbook(path) 
@@ -129,8 +111,8 @@ def style_excel(path):
     row_fill_even = PatternFill(start_color="EAF3FA", end_color="EAF3FA", fill_type="solid")  # ردیف‌های زوج
 
     # --- فونت و تراز ---
-    #header_font = Font(bold=True, name='B Nazanin', size=14)
-    #row_font = Font(name='B Nazanin', size=12)
+    header_font = Font(bold=True, name='B Nazanin', size=14)
+    row_font = Font(name='B Nazanin', size=12)
     center_align = Alignment(horizontal="center", vertical="center", wrap_text=True)
 
     # --- حاشیه دور سلول‌ها ---
@@ -183,7 +165,7 @@ def style_excel(path):
 
 
 class RotatingGeminiLLM:
-    def __init__(self, api_keys, model="gemini-2.0-flash"):
+    def __init__(self, api_keys, model="gemini-2.5-flash"):
         self.api_keys = api_keys
         self.model = model
         self.idx = 0  # شروع از اولین کلید
@@ -224,7 +206,7 @@ def safe_generate_content(*, model, contents, config):
             continue
     raise RuntimeError("❌ تمام API Keyها با خطا مواجه شدند.")
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", google_api_key="AIzaSyC8tN4kY2QU5ACRacPazzRQeJPtAC08Vm8")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key="AIzaSyC8tN4kY2QU5ACRacPazzRQeJPtAC08Vm8")
 
 
 # --- حذف فایل خروجی قبلی ---
@@ -422,7 +404,7 @@ def process_batch(batch_df, prompt_text):
     }
     try:
         response = safe_generate_content(
-            model='gemini-2.0-flash',
+            model='gemini-2.5-flash',
             contents=json.dumps(payload, ensure_ascii=False),
             config={
                 'response_mime_type': 'application/json',
@@ -492,7 +474,7 @@ def match_resume_to_job_parallel(resume_text, job_profiles, threshold=7):
         try:
             response = safe_generate_content_for_key(
                 api_key=api_key,
-                model="gemini-2.0-flash",
+                model="gemini-2.5-flash",
                 contents=prompt,
                 config={"temperature": 0}
             )
@@ -858,7 +840,7 @@ def evaluate_resume_against_all_jobs(resume_text, job_profiles):
 
     try:
         response = safe_generate_content(
-            model="gemini-2.0-flash",
+            model="gemini-2.5-flash",
             contents=prompt,
             config={
                 "response_mime_type": "application/json",
@@ -1232,10 +1214,3 @@ if RESULT_FILE_PATH.exists():
     # دکمه دانلود فایل نهایی
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
-
-
-
-
-
-
-
