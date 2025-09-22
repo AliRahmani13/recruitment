@@ -52,9 +52,6 @@ st.markdown("""
         text-align: right;
     }
     
-    .stDataFrame {
-        direction: rtl;
-    }
     
     .stTabs [data-baseweb="tab-list"] {
         direction: rtl;
@@ -1051,3 +1048,4 @@ if __name__ == "__main__":
         st.session_state.processing_results = None
     
     main()
+
