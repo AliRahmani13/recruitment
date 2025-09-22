@@ -28,47 +28,173 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# استایل CSS سفارشی
+# استایل CSS سفارشی با پشتیبانی RTL
 st.markdown("""
 <style>
+    /* RTL Support */
+    .main .block-container {
+        direction: rtl;
+        text-align: right;
+    }
+    
+    .stSelectbox > div > div > div {
+        direction: rtl;
+        text-align: right;
+    }
+    
+    .stTextInput > div > div > input {
+        direction: rtl;
+        text-align: right;
+    }
+    
+    .stTextArea > div > div > textarea {
+        direction: rtl;
+        text-align: right;
+    }
+    
+    .stDataFrame {
+        direction: rtl;
+    }
+    
+    .stTabs [data-baseweb="tab-list"] {
+        direction: rtl;
+    }
+    
+    .stSidebar .stSelectbox > div > div > div {
+        direction: rtl;
+        text-align: right;
+    }
+    
+    .stSidebar .stTextInput > div > div > input {
+        direction: rtl;
+        text-align: right;
+    }
+    
+    .stSidebar .stTextArea > div > div > textarea {
+        direction: rtl;
+        text-align: right;
+    }
+    
+    /* Headers and Text */
+    h1, h2, h3, h4, h5, h6 {
+        direction: rtl;
+        text-align: right;
+        font-family: 'Vazir', 'Tahoma', sans-serif;
+    }
+    
+    p, div, span {
+        direction: rtl;
+        text-align: right;
+        font-family: 'Vazir', 'Tahoma', sans-serif;
+    }
+    
+    /* Custom Classes */
     .main-header {
         text-align: center;
         color: #1f77b4;
         font-size: 2.5rem;
         margin-bottom: 1rem;
+        font-family: 'Vazir', 'Tahoma', sans-serif;
     }
+    
     .success-box {
         background-color: #d4edda;
         border: 1px solid #c3e6cb;
         border-radius: 5px;
         padding: 10px;
         margin: 10px 0;
+        direction: rtl;
+        text-align: right;
     }
+    
     .error-box {
         background-color: #f8d7da;
         border: 1px solid #f5c6cb;
         border-radius: 5px;
         padding: 10px;
         margin: 10px 0;
+        direction: rtl;
+        text-align: right;
     }
+    
     .info-box {
         background-color: #d1ecf1;
         border: 1px solid #bee5eb;
         border-radius: 5px;
         padding: 10px;
         margin: 10px 0;
+        direction: rtl;
+        text-align: right;
     }
+    
     .metric-card {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         padding: 1rem;
         border-radius: 10px;
         color: white;
         text-align: center;
+        direction: rtl;
+        font-family: 'Vazir', 'Tahoma', sans-serif;
     }
+    
     .stButton > button {
         width: 100%;
         height: 3rem;
         font-size: 1.2rem;
+        font-family: 'Vazir', 'Tahoma', sans-serif;
+    }
+    
+    /* File Uploader RTL */
+    .stFileUploader > div {
+        direction: rtl;
+    }
+    
+    /* Progress Bar */
+    .stProgress {
+        direction: rtl;
+    }
+    
+    /* Expander RTL */
+    .streamlit-expanderHeader {
+        direction: rtl;
+        text-align: right;
+    }
+    
+    /* Columns RTL adjustment */
+    .stColumns > div {
+        direction: rtl;
+    }
+    
+    /* Metrics RTL */
+    .metric-container {
+        direction: rtl;
+        text-align: right;
+    }
+    
+    /* Radio buttons RTL */
+    .stRadio > div {
+        direction: rtl;
+    }
+    
+    /* Checkbox RTL */
+    .stCheckbox > div {
+        direction: rtl;
+    }
+    
+    /* Slider RTL */
+    .stSlider > div {
+        direction: rtl;
+    }
+    
+    /* Success/Error/Info messages RTL */
+    .stAlert {
+        direction: rtl;
+        text-align: right;
+    }
+    
+    /* Download button RTL */
+    .stDownloadButton {
+        direction: rtl;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -506,7 +632,7 @@ def create_excel_file(all_data):
 
 def main():
     # هدر اصلی
-    st.markdown('<h1 class="main-header">🔍 پردازشگر رزومه</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">📋 پردازشگر رزومه</h1>', unsafe_allow_html=True)
     
     # Sidebar برای تنظیمات
     st.sidebar.header("⚙️ تنظیمات")
@@ -594,7 +720,7 @@ def main():
         if "processing_results" in st.session_state and st.session_state.processing_results:
             display_results()
         else:
-            st.info("📝 هنوز فایلی پردازش نشده است. لطفاً ابتدا فایل‌هایتان را آپلود و پردازش کنید.")
+            st.info("🔍 هنوز فایلی پردازش نشده است. لطفاً ابتدا فایل‌هایتان را آپلود و پردازش کنید.")
     
     with tab3:
         display_help()
@@ -651,7 +777,7 @@ def process_files(uploaded_files, api_keys, max_retries, delay_between_requests)
         metric_rejected = col4.empty()
     
     with details_container:
-        details_expander = st.expander("📝 جزئیات پردازش", expanded=True)
+        details_expander = st.expander("🔍 جزئیات پردازش", expanded=True)
         details_text = details_expander.empty()
     
     processing_details = []
@@ -699,7 +825,7 @@ def process_files(uploaded_files, api_keys, max_retries, delay_between_requests)
             processing_details.append(f"❌ رد شد: {processed_row.get('نام', '')} {processed_row.get('نام خانوادگی', '')} - {processed_row.get('علت رد', '')}")
         
         # به‌روزرسانی متریک‌ها
-        metric_total.metric("🔄 کل فایل‌ها", processing_stats["total"])
+        metric_total.metric("📄 کل فایل‌ها", processing_stats["total"])
         metric_processed.metric("✅ پردازش شده", processing_stats["processed"])
         metric_approved.metric("🟢 تایید شده", processing_stats["approved"])
         metric_rejected.metric("🔴 رد شده", processing_stats["rejected"])
