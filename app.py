@@ -50,21 +50,50 @@ font_css = """
 <style>
   @font-face {
     font-family: 'BNazanin';
-    src: url('fonts/BNazanin.woff2') format('woff2'),
-         url('fonts/BNazanin.woff') format('woff');
+    src: url('fonts/0 Nazanin.TTF') format('truetype');
     font-weight: normal;
     font-style: normal;
-    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'BNazanin';
+    src: url('fonts/0 Nazanin Bold.TTF') format('truetype');
+    font-weight: bold;
+    font-style: normal;
   }
 
   html, body, [class^="st-"], [class*=" st-"], .block-container {
-    font-family: 'BNazanin', 'Shabnam', 'Vazirmatn', sans-serif !important;
+    font-family: 'BNazanin', sans-serif !important;
     direction: rtl !important;
     text-align: right !important;
   }
 </style>
 """
 st.markdown(font_css, unsafe_allow_html=True)
+📌 نکات مهم:
+مسیر fonts/0 Nazanin.TTF به صورت نسبی هست → یعنی از ریشه پروژه به پوشه fonts نگاه می‌کنه.
+
+لازم نیست توی کد بنویسی D:/AliRahmani/... چون روی سرور (پوزیترون) همچین درایوی وجود نداره.
+
+وقتی پروژه رو روی گیت‌هاب یا پوزیترون میذاری، پوشه‌ی fonts هم همراه کد بالا میره.
+
+می‌خوای من همین تغییر رو روی فایل app.pyت نشون بدم (کد اصلی رو ویرایش کنم) تا مستقیم بتونی جایگزین کنی؟
+
+
+
+
+
+You said:
+
+تو گیت هاب هم همینجوری گذاشتم
+أاخل فولدری نیست
+
+ChatGPT said:
+
+Thinking longer for a better answer
+
+Skip
+
 
 def style_excel(path): 
     wb = openpyxl.load_workbook(path) 
@@ -1179,6 +1208,7 @@ if RESULT_FILE_PATH.exists():
     # دکمه دانلود فایل نهایی
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
 
 
 
