@@ -31,7 +31,7 @@ st.set_page_config(
 st.markdown("""
 <style>
 /* ================================
-   پشتیبانی کامل RTL برای Streamlit
+   RTL برای صفحه + استثناءهای ضروری
    ================================ */
 
 /* چیدمان کلی صفحه */
@@ -40,7 +40,7 @@ st.markdown("""
     text-align: right;
 }
 
-/* ویجت‌های ورودی */
+/* ویجت‌های ورودی (متنی/انتخابی) */
 .stSelectbox > div > div > div,
 .stTextInput > div > div > input,
 .stTextArea > div > div > textarea,
@@ -54,16 +54,17 @@ st.markdown("""
 /* تب‌ها و اجزای جانبی */
 .stTabs [data-baseweb="tab-list"],
 .streamlit-expanderHeader,
-.stColumns > div,
 .metric-container,
-.stRadio > div,
-.stCheckbox > div,
-.stSlider > div,
 .stFileUploader > div,
 .stProgress,
 .stAlert,
 .stDownloadButton {
     direction: rtl;
+    text-align: right;
+}
+
+/* ستون‌ها: راست‌چین ولی بدون تغییر direction */
+.stColumns > div {
     text-align: right;
 }
 
@@ -74,7 +75,7 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Vazir', 'Tahoma', sans-serif;
 }
 
-/* کلاس‌های سفارشی */
+/* کارت‌ها و باکس‌های سفارشی */
 .main-header {
     text-align: center;
     color: #1f77b4;
@@ -82,7 +83,6 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 1rem;
     font-family: 'Vazir', 'Tahoma', sans-serif;
 }
-
 .success-box {
     background-color: #d4edda;
     border: 1px solid #c3e6cb;
@@ -92,7 +92,6 @@ h1, h2, h3, h4, h5, h6 {
     direction: rtl;
     text-align: right;
 }
-
 .error-box {
     background-color: #f8d7da;
     border: 1px solid #f5c6cb;
@@ -102,7 +101,6 @@ h1, h2, h3, h4, h5, h6 {
     direction: rtl;
     text-align: right;
 }
-
 .info-box {
     background-color: #d1ecf1;
     border: 1px solid #bee5eb;
@@ -112,7 +110,6 @@ h1, h2, h3, h4, h5, h6 {
     direction: rtl;
     text-align: right;
 }
-
 .metric-card {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 1rem;
@@ -131,14 +128,22 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Vazir', 'Tahoma', sans-serif;
 }
 
-/* ======== استثناء مهم ======== */
-/* دیتافریم و محتوای داخلی آن LTR بماند */
+/* ======== استثناءهای مهم برای باگ‌های UI ======== */
+
+/* 1) دیتافریم باید LTR باشد تا کامل رندر شود */
 .stDataFrame, .stDataFrame * {
+    direction: ltr !important;
+    text-align: left !important;
+}
+
+/* 2) اسلایدر باید LTR باشد تا کشویی و لیبل‌ها به‌هم نریزند */
+.stSlider, .stSlider * {
     direction: ltr !important;
     text-align: left !important;
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 
 # تنظیمات اولیه
@@ -993,5 +998,6 @@ if __name__ == "__main__":
         st.session_state.processing_results = None
     
     main()
+
 
 
