@@ -45,22 +45,26 @@ API_KEYS = [
     "AIzaSyB51i5YnENFBE8aYncinPtwLk1dThl2CuA"  #GptKaran14
 ]
 
-font_css = """
-<link href="https://cdn.jsdelivr.net/gh/rastikerdar/shabnam-font@v5.0.1/dist/font-face.css" rel="stylesheet" type="text/css" />
-<style>
-    html, body, [class^="st-"], [class*=" st-"], .block-container {
-        font-family: Shabnam !important;
-        direction: rtl !important;
-        text-align: right !important;
-    }
 
-    h1, h2, h3, h4, h5, h6, label, p {
-        font-family: Shabnam !important;
-    }
+font_css = """
+<style>
+  @font-face {
+    font-family: 'BNazanin';
+    src: url('fonts/BNazanin.woff2') format('woff2'),
+         url('fonts/BNazanin.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  html, body, [class^="st-"], [class*=" st-"], .block-container {
+    font-family: 'BNazanin', 'Shabnam', 'Vazirmatn', sans-serif !important;
+    direction: rtl !important;
+    text-align: right !important;
+  }
 </style>
 """
 st.markdown(font_css, unsafe_allow_html=True)
-
 
 def style_excel(path): 
     wb = openpyxl.load_workbook(path) 
@@ -1175,6 +1179,7 @@ if RESULT_FILE_PATH.exists():
     # دکمه دانلود فایل نهایی
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
 
 
 
