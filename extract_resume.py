@@ -28,173 +28,118 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# استایل CSS سفارشی با پشتیبانی RTL
 st.markdown("""
 <style>
-    /* RTL Support */
-    .main .block-container {
-        direction: rtl;
-        text-align: right;
-    }
-    
-    .stSelectbox > div > div > div {
-        direction: rtl;
-        text-align: right;
-    }
-    
-    .stTextInput > div > div > input {
-        direction: rtl;
-        text-align: right;
-    }
-    
-    .stTextArea > div > div > textarea {
-        direction: rtl;
-        text-align: right;
-    }
-    
-    
-    .stTabs [data-baseweb="tab-list"] {
-        direction: rtl;
-    }
-    
-    .stSidebar .stSelectbox > div > div > div {
-        direction: rtl;
-        text-align: right;
-    }
-    
-    .stSidebar .stTextInput > div > div > input {
-        direction: rtl;
-        text-align: right;
-    }
-    
-    .stSidebar .stTextArea > div > div > textarea {
-        direction: rtl;
-        text-align: right;
-    }
-    
-    /* Headers and Text */
-    h1, h2, h3, h4, h5, h6 {
-        direction: rtl;
-        text-align: right;
-        font-family: 'Vazir', 'Tahoma', sans-serif;
-    }
-    
-    p, div, span {
-        direction: rtl;
-        text-align: right;
-        font-family: 'Vazir', 'Tahoma', sans-serif;
-    }
-    
-    /* Custom Classes */
-    .main-header {
-        text-align: center;
-        color: #1f77b4;
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        font-family: 'Vazir', 'Tahoma', sans-serif;
-    }
-    
-    .success-box {
-        background-color: #d4edda;
-        border: 1px solid #c3e6cb;
-        border-radius: 5px;
-        padding: 10px;
-        margin: 10px 0;
-        direction: rtl;
-        text-align: right;
-    }
-    
-    .error-box {
-        background-color: #f8d7da;
-        border: 1px solid #f5c6cb;
-        border-radius: 5px;
-        padding: 10px;
-        margin: 10px 0;
-        direction: rtl;
-        text-align: right;
-    }
-    
-    .info-box {
-        background-color: #d1ecf1;
-        border: 1px solid #bee5eb;
-        border-radius: 5px;
-        padding: 10px;
-        margin: 10px 0;
-        direction: rtl;
-        text-align: right;
-    }
-    
-    .metric-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 1rem;
-        border-radius: 10px;
-        color: white;
-        text-align: center;
-        direction: rtl;
-        font-family: 'Vazir', 'Tahoma', sans-serif;
-    }
-    
-    .stButton > button {
-        width: 100%;
-        height: 3rem;
-        font-size: 1.2rem;
-        font-family: 'Vazir', 'Tahoma', sans-serif;
-    }
-    
-    /* File Uploader RTL */
-    .stFileUploader > div {
-        direction: rtl;
-    }
-    
-    /* Progress Bar */
-    .stProgress {
-        direction: rtl;
-    }
-    
-    /* Expander RTL */
-    .streamlit-expanderHeader {
-        direction: rtl;
-        text-align: right;
-    }
-    
-    /* Columns RTL adjustment */
-    .stColumns > div {
-        direction: rtl;
-    }
-    
-    /* Metrics RTL */
-    .metric-container {
-        direction: rtl;
-        text-align: right;
-    }
-    
-    /* Radio buttons RTL */
-    .stRadio > div {
-        direction: rtl;
-    }
-    
-    /* Checkbox RTL */
-    .stCheckbox > div {
-        direction: rtl;
-    }
-    
-    /* Slider RTL */
-    .stSlider > div {
-        direction: rtl;
-    }
-    
-    /* Success/Error/Info messages RTL */
-    .stAlert {
-        direction: rtl;
-        text-align: right;
-    }
-    
-    /* Download button RTL */
-    .stDownloadButton {
-        direction: rtl;
-    }
+/* ================================
+   پشتیبانی کامل RTL برای Streamlit
+   ================================ */
+
+/* چیدمان کلی صفحه */
+.main .block-container {
+    direction: rtl;
+    text-align: right;
+}
+
+/* ویجت‌های ورودی */
+.stSelectbox > div > div > div,
+.stTextInput > div > div > input,
+.stTextArea > div > div > textarea,
+.stSidebar .stSelectbox > div > div > div,
+.stSidebar .stTextInput > div > div > input,
+.stSidebar .stTextArea > div > div > textarea {
+    direction: rtl;
+    text-align: right;
+}
+
+/* تب‌ها و اجزای جانبی */
+.stTabs [data-baseweb="tab-list"],
+.streamlit-expanderHeader,
+.stColumns > div,
+.metric-container,
+.stRadio > div,
+.stCheckbox > div,
+.stSlider > div,
+.stFileUploader > div,
+.stProgress,
+.stAlert,
+.stDownloadButton {
+    direction: rtl;
+    text-align: right;
+}
+
+/* تیترها */
+h1, h2, h3, h4, h5, h6 {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Vazir', 'Tahoma', sans-serif;
+}
+
+/* کلاس‌های سفارشی */
+.main-header {
+    text-align: center;
+    color: #1f77b4;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-family: 'Vazir', 'Tahoma', sans-serif;
+}
+
+.success-box {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    direction: rtl;
+    text-align: right;
+}
+
+.error-box {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    direction: rtl;
+    text-align: right;
+}
+
+.info-box {
+    background-color: #d1ecf1;
+    border: 1px solid #bee5eb;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    direction: rtl;
+    text-align: right;
+}
+
+.metric-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 1rem;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    direction: rtl;
+    font-family: 'Vazir', 'Tahoma', sans-serif;
+}
+
+/* دکمه‌ها */
+.stButton > button {
+    width: 100%;
+    height: 3rem;
+    font-size: 1.2rem;
+    font-family: 'Vazir', 'Tahoma', sans-serif;
+}
+
+/* ======== استثناء مهم ======== */
+/* دیتافریم و محتوای داخلی آن LTR بماند */
+.stDataFrame, .stDataFrame * {
+    direction: ltr !important;
+    text-align: left !important;
+}
 </style>
 """, unsafe_allow_html=True)
+
 
 # تنظیمات اولیه
 os.environ["SSL_CERT_FILE"] = certifi.where()
@@ -1048,4 +993,5 @@ if __name__ == "__main__":
         st.session_state.processing_results = None
     
     main()
+
 
