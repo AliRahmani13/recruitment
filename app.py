@@ -31,8 +31,8 @@ RESULT_FILE_PATH = Path("resume_results.xlsx")
 
 # بقیه کد همان کدهای قبلی...
 API_KEYS = [
-    "AIzaSyAQ1Z8HmIZm-eNvohxoM4ZNFM8JsZsxDII",
-    "AIzaSyAQhK01WbSxiXUdXqe5xEvJA3feUiQCL0E",
+    "AIzaSyBJ2N1RHTTTQMXUod7jPymZwbgnPsdgLsY",
+    "AIzaSyD09_gws5tBYZmD0YHF1etSZ7K-7wePIh0",
     # ... سایر کلیدها
 ]
 
@@ -335,3 +335,4 @@ if RESULT_FILE_PATH.exists():
     
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
