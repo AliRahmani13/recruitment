@@ -570,7 +570,7 @@ def create_excel_file(all_data):
 
 def main():
     # هدر اصلی
-    st.markdown('<h1 class="main-header">📋 پردازشگر رزومه موازی</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">📋 پردازشگر رزومه</h1>', unsafe_allow_html=True)
     
     # Sidebar برای تنظیمات
     st.sidebar.header("⚙️ تنظیمات")
@@ -620,8 +620,8 @@ def main():
         os.environ.pop('HTTPS_PROXY', None)
 
     # تنظیمات پردازش موازی
-    st.sidebar.subheader("⚡ تنظیمات پردازش موازی")
-    max_workers = st.sidebar.slider("حداکثر Thread های موازی:", 1, min(len(api_keys), 10), min(len(api_keys), 5))
+    st.sidebar.subheader("⚡ تنظیمات پردازش ")
+    max_workers = st.sidebar.slider("حداکثر Thread :", 1, min(len(api_keys), 10), min(len(api_keys), 5))
     max_retries = st.sidebar.slider("حداکثر تلاش مجدد:", 1, 5, 3)
 
     # بخش اصلی
@@ -647,12 +647,12 @@ def main():
                     st.write(f"{i}. {file.name} ({file.size:,} بایت)")
             
             # اطلاعات پردازش موازی
-            st.info(f"🚀 پردازش موازی با {max_workers} Thread و {len(api_keys)} کلید API")
+            st.info(f"🚀 پردازش با {max_workers} Thread و {len(api_keys)} کلید API")
             
             # دکمه پردازش
             col1, col2, col3 = st.columns([1, 2, 1])
             with col2:
-                if st.button("🚀 شروع پردازش موازی", type="primary"):
+                if st.button("🚀 شروع پردازش", type="primary"):
                     process_files_parallel(uploaded_files, api_keys, max_workers, max_retries)
     
     with tab2:
@@ -675,10 +675,10 @@ def main():
         display_help()
 
 def process_files_parallel(uploaded_files, api_keys, max_workers, max_retries):
-    """پردازش موازی فایل‌های آپلود شده"""
+    """پردازش فایل‌های آپلود شده"""
     
     # شروع پردازش
-    st.info("🔄 در حال شروع پردازش موازی...")
+    st.info("🔄 در حال شروع پردازش...")
     
     # ایجاد API Manager
     api_manager = APIKeyManager(api_keys)
@@ -809,7 +809,7 @@ def process_files_parallel(uploaded_files, api_keys, max_workers, max_retries):
     
     # تکمیل پردازش
     progress_bar.progress(1.0)
-    status_text.text("✅ پردازش موازی کامل شد!")
+    status_text.text("✅ پردازش کامل شد!")
     
     # محاسبه زمان کل
     total_time = time.time() - processing_stats["start_time"]
@@ -827,7 +827,7 @@ def process_files_parallel(uploaded_files, api_keys, max_workers, max_retries):
     st.session_state.api_stats = api_manager.get_stats()
     
     # نمایش خلاصه نهایی
-    st.success(f"🎉 پردازش موازی با موفقیت در {total_time:.1f} ثانیه تکمیل شد!")
+    st.success(f"🎉 پردازش با موفقیت در {total_time:.1f} ثانیه تکمیل شد!")
     
     col1, col2, col3 = st.columns(3)
     
@@ -1101,3 +1101,4 @@ if __name__ == "__main__":
         st.session_state.api_stats = None
     
     main()
+
