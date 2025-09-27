@@ -426,8 +426,9 @@ def process_resume_data(row, text):
     if phone.startswith("0"):
         row["شماره تماس"] = phone[1:]
 
-    # اضافه کردن شناسه (ID) بر اساس شماره تماس
-    row["شناسه"] = row.get("شماره تماس", "")
+    # اضافه کردن شناسه (ID) بر اساس شماره تماس - مطمئن شوید که همیشه وجود دارد
+    processed_phone = row.get("شماره تماس", "")
+    row["شناسه"] = processed_phone if processed_phone else f"ID_{hash(str(row))}"
 
     # پردازش سال تولد
     row["year_of_birth"] = clean_year_of_birth(row.get("year_of_birth", ""))
@@ -767,6 +768,10 @@ def process_files_parallel(uploaded_files, api_keys, max_workers, max_retries):
                     model_output = result["data"]
                     row = {field: model_output.get(field, "") for field in ORDERED_FIELDS}
                     
+                    # اطمینان از وجود شناسه قبل از پردازش
+                    if "شناسه" not in row or not row["شناسه"]:
+                        row["شناسه"] = model_output.get("شماره تماس", f"ID_{len(all_data)+1}")
+                    
                     # استخراج متن برای پردازش بیشتر
                     file_text = ""
                     for file_info in file_data:
@@ -927,6 +932,10 @@ def display_results():
         
         df = pd.DataFrame(results['data'])
         
+        # اطمینان از وجود ستون شناسه
+        if 'شناسه' not in df.columns:
+            df['شناسه'] = df['شماره تماس'] if 'شماره تماس' in df.columns else [f"ID_{i+1}" for i in range(len(df))]
+        
         # فیلتر بر اساس وضعیت
         filter_status = st.selectbox(
             "فیلتر بر اساس وضعیت:",
@@ -949,7 +958,14 @@ def display_results():
         
         # دکمه دانلود Excel
         if st.button("📥 دانلود فایل Excel", type="secondary"):
-            excel_file = create_excel_file(results['data'])
+            # اطمینان از وجود ستون شناسه قبل از ایجاد فایل Excel
+            excel_data = results['data'].copy() if isinstance(results['data'], list) else results['data']
+            if isinstance(excel_data, list):
+                for item in excel_data:
+                    if 'شناسه' not in item or not item['شناسه']:
+                        item['شناسه'] = item.get('شماره تماس', f"ID_{excel_data.index(item)+1}")
+            
+            excel_file = create_excel_file(excel_data)
             
             st.download_button(
                 label="💾 دانلود Excel",
