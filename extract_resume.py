@@ -171,7 +171,7 @@ _rate_limit_patterns = [
 
 # ترتیب فیلدها
 ORDERED_FIELDS = [
-    "نام", "نام خانوادگی", "شماره تماس", "جنسیت", "ایمیل", "کانال دریافت رزومه",
+    "شناسه", "نام", "نام خانوادگی", "شماره تماس", "جنسیت", "ایمیل", "کانال دریافت رزومه",
     "معرف", "کارشناسی", "کارشناسی ارشد", "دکتری", "رشته تحصیلی", "گرایش تحصیلی", "مقطع تحصیلی",
     "دانشگاه محل تحصیلی", "نوع دانشگاه آخرین مدرک تحصیلی", "وضعیت تحصیلی",
     "دوره های آموزشی", "نرم افزارها", "سوابق شغلی",
@@ -426,6 +426,9 @@ def process_resume_data(row, text):
     if phone.startswith("0"):
         row["شماره تماس"] = phone[1:]
 
+    # اضافه کردن شناسه (ID) بر اساس شماره تماس
+    row["شناسه"] = row.get("شماره تماس", "")
+
     # پردازش سال تولد
     row["year_of_birth"] = clean_year_of_birth(row.get("year_of_birth", ""))
     if not row["year_of_birth"]:
@@ -484,14 +487,14 @@ def create_excel_file(all_data):
     output = BytesIO()
     
     # دسته‌بندی ستون‌ها
-    base_fields = ["نام", "نام خانوادگی", "شماره تماس", "جنسیت", "ایمیل", "کانال دریافت رزومه", "معرف"]
+    base_fields = ["شناسه", "نام", "نام خانوادگی", "شماره تماس", "جنسیت", "ایمیل", "کانال دریافت رزومه", "معرف"]
     base_indexes = [df.columns.get_loc(f) for f in base_fields if f in df.columns]
     if base_indexes:
         base_start = min(base_indexes) + 1
         base_end = max(base_indexes) + 1
     else:
         base_start = 1
-        base_end = 7
+        base_end = 8
 
     check_start = base_end + 1
     check_end = df.shape[1]
