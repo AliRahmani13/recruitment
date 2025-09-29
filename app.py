@@ -44,7 +44,6 @@ API_KEYS = [
     "AIzaSyBNAb6TSR4mhq82WtW2wHSCOUDK73IDbfs",
     "AIzaSyB51i5YnENFBE8aYncinPtwLk1dThl2CuA"
 ]
-]
 
 font_css = """
 <style>
@@ -1158,3 +1157,4 @@ if RESULT_FILE_PATH.exists():
     style_excel(RESULT_FILE_PATH)
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
