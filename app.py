@@ -19,11 +19,11 @@ from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
 import base64
 
 API_KEYS = [
-    "AIzaSyAQ1Z8HmIZm-eNvohxoM4ZNFM8JsZsxDII",
-    "AIzaSyAQhK01WbSxiXUdXqe5xEvJA3feUiQCL0E",
-    "AIzaSyAhMXCXIfat3NQqsyWk-S8gdOzTRZLc_bA",
-    "AIzaSyCBH-nSuALuLBerOBn2JS-z3yBYuvPXTPw",
-    "AIzaSyClzhUwWrUyI_dEjaYO4d4mijfBFGw1his",
+    "AIzaSyD09_gws5tBYZmD0YHF1etSZ7K-7wePIh0",
+    "AIzaSyBJ2N1RHTTTQMXUod7jPymZwbgnPsdgLsY",
+    "AIzaSyBwvI4kSZWOnWG3Km6kpUbqD87wIUVcoHs",
+    "AIzaSyDKvI5lwfrihbcXXaXxaQWhGULE77afyrg",
+    "AIzaSyCxpTPYFq91HfeUVqe8JD3RjiU4nV63WH8",
     "AIzaSyCWZVz-ciOp91vKr2u7J87IktK2skygOro",
     "AIzaSyB11u1-TTuvIRNhSAp44PgWWpoK9kq1mAo",
     "AIzaSyBxusefsMEbKv6HAoYxECpOIqbKO-pCs2g",
@@ -1150,3 +1150,4 @@ if RESULT_FILE_PATH.exists():
     style_excel(RESULT_FILE_PATH)
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
