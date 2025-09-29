@@ -873,6 +873,48 @@ all_skills = edited_skills.copy()
 if custom_skill.strip() and custom_skill.strip() not in all_skills:
     all_skills.append(custom_skill.strip())
 
+def process_single_resume(args):
+    """Process a single resume with a specific API key"""
+    idx, row, api_key, all_skills = args
+    
+    try:
+        # Create a dedicated LLM instance for this API key
+        llm_instance = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=api_key)
+        
+        resume = " ".join([str(row[col]) for col in row.index]) 
+        required_experience_desc = "سابقه مرتبط با عنوان شغلی" 
+        universities = universities_info 
+        major_list = []
+        job_profile_title = ""
+        volunteering_field = row.get("فعالیت داوطلبانه", "") 
+        about_me_field = row.get("درباره من", "")
+
+        # Process with the dedicated API key
+        results = scoring_chain(
+            resume, 
+            all_skills, 
+            required_experience_desc, 
+            universities, 
+            major_list, 
+            job_profile_title, 
+            volunteering_field, 
+            about_me_field
+        )
+
+        row_data = row.to_dict()
+        row_data['ردیف'] = idx + 1
+        for agent, detail in results.items():
+            if agent != "FinalScore":
+                row_data[f"{agent}_score"] = detail['score']
+                row_data[f"{agent}_reason"] = detail['reason']
+        row_data['final_score'] = results['FinalScore']
+        row_data['تایید و رد اولیه'] = "تایید" if row_data['final_score'] >= 70 else "رد"
+        
+        return (idx, row_data, None)
+    
+    except Exception as e:
+        return (idx, None, str(e))
+
 if uploaded_file:
     df = pd.read_excel(uploaded_file)
     
@@ -880,62 +922,73 @@ if uploaded_file:
 
     if stage == "امتیازدهی": 
         st.markdown("### 🚀 مرحله امتیازدهی رزومه‌ها") 
+        
+        # Show max parallel workers based on API keys
+        max_workers = min(len(API_KEYS), len(df))
+        st.info(f"پردازش موازی با {max_workers} API Key برای {len(df)} رزومه")
+        
         if st.button("شروع امتیازدهی"): 
             results_placeholder = st.empty() 
             progress_bar = st.progress(0) 
-            rows = [] 
-            for idx, (_, row) in enumerate(df.iterrows()):
-                resume = " ".join([str(row[col]) for col in row.index]) 
-                skills = all_skills
-                required_experience_desc = "سابقه مرتبط با عنوان شغلی" 
-                universities = universities_info 
-                major_list = []
-                job_profile_title = ""
-                volunteering_field = row.get("فعالیت داوطلبانه", "") 
-                about_me_field = row.get("درباره من", "")
-
-                results = scoring_chain(
-                    resume, 
-                    skills, 
-                    required_experience_desc, 
-                    universities, 
-                    major_list, 
-                    job_profile_title, 
-                    volunteering_field, 
-                    about_me_field
-                )
-
-                row_data = row.to_dict()
-                row_data['ردیف'] = idx + 1
-                for agent, detail in results.items():
-                    if agent != "FinalScore":
-                        row_data[f"{agent}_score"] = detail['score']
-                        row_data[f"{agent}_reason"] = detail['reason']
-                row_data['final_score'] = results['FinalScore']
-
-                row_data['تایید و رد اولیه'] = "تایید" if row_data['final_score'] >= 70 else "رد"
-                rows.append(row_data)
-
-                progress_bar.progress((idx + 1) / len(df))
-
+            rows = [None] * len(df)  # Pre-allocate list to maintain order
+            completed = 0
+            
+            # Prepare arguments for parallel processing
+            # Assign each row to an API key (cycling through if more rows than keys)
+            processing_args = [
+                (idx, row, API_KEYS[idx % len(API_KEYS)], all_skills)
+                for idx, (_, row) in enumerate(df.iterrows())
+            ]
+            
+            # Process in parallel using ThreadPoolExecutor
+            with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+                # Submit all tasks
+                future_to_idx = {
+                    executor.submit(process_single_resume, args): args[0] 
+                    for args in processing_args
+                }
+                
+                # Collect results as they complete
+                for future in concurrent.futures.as_completed(future_to_idx):
+                    idx, row_data, error = future.result()
+                    
+                    if error:
+                        st.warning(f"⚠️ خطا در پردازش رزومه ردیف {idx + 1}: {error}")
+                        # Create minimal row data for failed processing
+                        row_data = df.iloc[idx].to_dict()
+                        row_data['ردیف'] = idx + 1
+                        row_data['تایید و رد اولیه'] = "خطا"
+                        row_data['final_score'] = 0
+                    
+                    rows[idx] = row_data
+                    completed += 1
+                    
+                    # Update progress
+                    progress_bar.progress(completed / len(df))
+                    
+                    # Update live display
+                    current_results = [r for r in rows if r is not None]
+                    if current_results:
+                        temp_df = pd.DataFrame(current_results)
+                        results_placeholder.dataframe(temp_df)
+                    
+                    # Update sidebar stats
+                    live_df = pd.DataFrame(current_results)
+                    total = len(df)
+                    checked = len(live_df)
+                    accepted = (live_df['تایید و رد اولیه'] == 'تایید').sum() if 'تایید و رد اولیه' in live_df.columns else 0
+                    failed = (live_df['تایید و رد اولیه'] != 'تایید').sum() if 'تایید و رد اولیه' in live_df.columns else 0
+                    
+                    status_placeholder.success(f"بررسی شده: {checked} / {total}")
+                    status_placeholder.markdown(f"🟢 قبول‌شده: {accepted}")
+                    status_placeholder.markdown(f"🔴 رد‌شده: {failed}")
+                    progress_placeholder.progress(checked / total)
+            
+            # Final results
             results_df = pd.DataFrame(rows)
             results_placeholder.dataframe(results_df)
             results_df.to_excel("resume_scoring.xlsx", index=False)
             style_excel("resume_scoring.xlsx")
-
-            live_df = results_df
-            total = len(df)
-            checked = len(live_df)
-            accepted = (live_df['تایید و رد اولیه'] == 'تایید').sum() if 'تایید و رد اولیه' in live_df.columns else 0
-            failed = (live_df['تایید و رد اولیه'] != 'تایید').sum() if 'تایید و رد اولیه' in live_df.columns else 0
-
-            status_placeholder.success(f"بررسی شده: {checked} / {total}")
-            status_placeholder.markdown(f"🟢 قبول‌شده: {accepted}")
-            status_placeholder.markdown(f"🔴 رد‌شده: {failed}")
-            progress_placeholder.progress(checked / total)
-
-            progress_bar.progress((idx + 1) / len(df))
-            time.sleep(1.5)
 
             st.success("✅ امتیازدهی به پایان رسید.")
 
@@ -951,11 +1004,95 @@ if uploaded_file:
         st.markdown("### 🔍 مرحله تطبیق با شناسنامه‌های شغلی")
         results_placeholder = st.empty()
         progress_bar = st.progress(0)
+        
+        # Show max parallel workers
+        max_workers = min(len(API_KEYS), len(df))
+        st.info(f"پردازش موازی با {max_workers} API Key برای {len(df)} رزومه")
 
         if st.button("🚀 شروع تطبیق با شناسنامه‌های شغلی"):
             try:
-                match_results = apply_matching_to_batch(df.copy())
+                def process_single_matching(args):
+                    """Process job matching for a single resume"""
+                    idx, row, api_key = args
+                    try:
+                        resume_text = " ".join([str(row[col]) for col in row.index])
+                        
+                        # Use the specific API key for this resume
+                        prompt = f"""شما یک ارزیاب منابع انسانی هستید. با توجه به رزومه زیر، لطفاً برای هر یک از موقعیت‌های شغلی تعریف‌شده، یک درصد تطابق بین ۰ تا ۱۰۰ بدهید و یک دلیل منطقی برای آن ذکر کنید.
 
+رزومه:
+{resume_text}
+
+ساختار پاسخ دقیقا به صورت JSON زیر باشد:
+[
+  {{
+    "title": "عنوان شغل اول",
+    "match_percent": 85,
+    "reason": "توضیح دلیل تطابق یا عدم تطابق"
+  }},
+  {{
+    "title": "عنوان شغل دوم",
+    "match_percent": 45,
+    "reason": "..."
+  }}
+  ...
+]
+موقعیت‌های شغلی:
+{json.dumps(JOB_PROFILES, ensure_ascii=False)}
+"""
+                        
+                        client = genai.Client(api_key=api_key)
+                        response = client.models.generate_content(
+                            model="gemini-2.5-flash",
+                            contents=prompt,
+                            config={
+                                "response_mime_type": "application/json",
+                                "temperature": 0
+                            }
+                        )
+                        
+                        json_text = response.candidates[0].content.parts[0].text.strip()
+                        parsed = json.loads(json_text)
+                        match_df = pd.DataFrame(parsed)
+                        
+                        match_df["ردیف رزومه"] = idx + 1
+                        match_df["نام"] = row.get("نام", "")
+                        match_df["نام خانوادگی"] = row.get("نام خانوادگی", "")
+                        
+                        return (idx, match_df, None)
+                    except Exception as e:
+                        return (idx, None, str(e))
+                
+                # Prepare arguments for parallel processing
+                processing_args = [
+                    (idx, row, API_KEYS[idx % len(API_KEYS)])
+                    for idx, (_, row) in enumerate(df.iterrows())
+                ]
+                
+                all_results = [None] * len(df)
+                completed = 0
+                
+                # Process in parallel
+                with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+                    future_to_idx = {
+                        executor.submit(process_single_matching, args): args[0]
+                        for args in processing_args
+                    }
+                    
+                    for future in concurrent.futures.as_completed(future_to_idx):
+                        idx, match_df, error = future.result()
+                        
+                        if error:
+                            st.warning(f"⚠️ خطا در تطبیق رزومه ردیف {idx + 1}: {error}")
+                        else:
+                            all_results[idx] = match_df
+                        
+                        completed += 1
+                        progress_bar.progress(completed / len(df))
+                
+                # Combine all results
+                match_results = pd.concat([r for r in all_results if r is not None], ignore_index=True)
+                
                 def make_sentence(row):
                     return f"میزان انطباق با موقعیت شغلی {row['title']} {int(row['match_percent'])}٪ است، زیرا: {row['reason']}"
 
@@ -994,22 +1131,6 @@ if uploaded_file:
             
             except Exception as e:
                 st.error(f"❌ خطا در انجام تطبیق: {e}")
-
-            if 'live_results' in st.session_state:
-                results_df = pd.DataFrame(st.session_state['live_results'])
-                live_columns = [
-                    'ردیف', 'نام', 'نام خانوادگی', 'تایید و رد اولیه', 'علت رد',
-                    'score', 'دلیل', 'موقعیت شغلی پیشنهادی', 'دلیل انتخاب موقعیت شغلی',
-                    'گزارش بررسی شناسنامه‌ها'
-                ]
-                live_columns_available = [col for col in live_columns if col in results_df.columns]
-                display_live_df = results_df[live_columns_available].copy()
-                display_live_df.index = display_live_df.index + 1
-                display_live_df.index.name = "ردیف"
-                results_placeholder.dataframe(display_live_df)
-
-            progress_bar.progress(1.0)
-            time.sleep(2)
 
 if RESULT_FILE_PATH.exists():
     final_df = pd.read_excel(RESULT_FILE_PATH)
