@@ -44,6 +44,7 @@ API_KEYS = [
     "AIzaSyBNAb6TSR4mhq82WtW2wHSCOUDK73IDbfs",
     "AIzaSyB51i5YnENFBE8aYncinPtwLk1dThl2CuA"
 ]
+]
 
 font_css = """
 <style>
@@ -916,7 +917,14 @@ def process_single_resume(args):
         return (idx, None, str(e))
 
 if uploaded_file:
-    df = pd.read_excel(uploaded_file)
+    df = pd.read_excel(uploaded_file, header=0)  # Explicitly use first row as header
+    
+    # Display basic info about the loaded data
+    st.info(f"تعداد رزومه‌های بارگذاری شده: {len(df)} | تعداد ستون‌ها: {len(df.columns)}")
+    
+    # Show a preview of the data
+    with st.expander("نمایش پیش‌نمایش داده‌ها"):
+        st.dataframe(df.head())
     
     stage = st.radio("🧩 مرحله موردنظر را انتخاب کنید:", ["امتیازدهی", "تطبیق با شناسنامه‌های شغلی"])
 
@@ -1150,4 +1158,3 @@ if RESULT_FILE_PATH.exists():
     style_excel(RESULT_FILE_PATH)
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
-
