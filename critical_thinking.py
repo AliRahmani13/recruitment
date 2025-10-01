@@ -29,7 +29,7 @@ with col3:
             st.session_state.exam_start_time = time.time()
             st.session_state.timer_running = True
             st.session_state.time_left = 60 * 60
-            st.experimental_rerun()
+            st.rerun()
         st.info("برای شروع آزمون دکمه 'شروع آزمون' را بزنید.")
     else:
         # نمایش تایمر و ادامه آزمون در این بخش
@@ -1159,3 +1159,4 @@ if current_page == total_pages - 1:
         st.write("---")
         st.markdown("### تحلیل هوشمند آزمون (بر اساس پاسخ‌های شما):")
         st.info(ai_analysis)
+
