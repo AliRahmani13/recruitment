@@ -26,6 +26,7 @@ PyMuPDF==1.24.10
 # --- LangChain & Google GenAI ---
 langchain==0.3.7
 langchain-google-genai>=2.0.0
+google-generativeai==0.8.5
 google-genai>=0.7.0,<1.0.0
 
 # --- Excel utilities ---
@@ -43,3 +44,4 @@ torchvision==0.22.1
 
 plotly==5.22.0
 fpdf2==2.8.4
+
