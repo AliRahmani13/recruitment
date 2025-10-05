@@ -265,11 +265,16 @@ body {
     padding: 12px 24px !important;
     font-weight: 600 !important;
     transition: all 0.3s ease !important;
+    color: #dc2626 !important;
 }
 
 .stTabs [aria-selected="true"] {
     background: var(--primary-gradient) !important;
-    color: white !important;
+    color: #dc2626 !important;
+}
+
+.stTabs button div {
+    color: #dc2626 !important;
 }
 
 /* ================================
