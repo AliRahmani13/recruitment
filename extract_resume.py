@@ -1012,7 +1012,22 @@ def main():
     
     with tab1:
         st.markdown('<div class="modern-card">', unsafe_allow_html=True)
-        st.markdown("### 📤 آپلود فایل‌های رزومه")
+        st.markdown('''
+        <div style="text-align: center; padding: 1rem 0;">
+            <h3 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                       -webkit-background-clip: text;
+                       -webkit-text-fill-color: transparent;
+                       background-clip: text;
+                       font-size: 2rem;
+                       font-weight: 700;
+                       margin-bottom: 0.5rem;">
+                📤 آپلود فایل‌های رزومه
+            </h3>
+            <p style="color: #8b92d6; font-size: 1.1rem; margin: 0;">
+                فایل‌های PDF را بکشید و رها کنید یا کلیک کنید
+            </p>
+        </div>
+        ''', unsafe_allow_html=True)
         
         uploaded_files = st.file_uploader(
             "فایل‌های PDF را بکشید و رها کنید یا کلیک کنید",
