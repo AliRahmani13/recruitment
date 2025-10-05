@@ -24,8 +24,8 @@ import itertools
 
 # صفحه کانفیگ
 st.set_page_config(
-    page_title="پردازشگر رزومه ",
-    page_icon="📄",
+    page_title="پردازشگر هوشمند رزومه",
+    page_icon="✨",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -33,115 +33,420 @@ st.set_page_config(
 st.markdown("""
 <style>
 /* ================================
-   RTL برای صفحه + استثناءهای ضروری
+   فونت فارسی B Homa
    ================================ */
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css');
 
-/* چیدمان کلی صفحه */
+@font-face {
+    font-family: 'B Homa';
+    src: url('https://cdn.jsdelivr.net/gh/font-store/BHoma@master/BHoma.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    font-family: 'B Homa', 'Vazir', 'Tahoma', sans-serif !important;
+}
+
+/* ================================
+   متغیرهای رنگی مدرن
+   ================================ */
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --dark-bg: #1a1a2e;
+    --card-bg: #ffffff;
+    --text-primary: #2d3436;
+    --text-secondary: #636e72;
+    --border-color: #e1e8ed;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+}
+
+/* ================================
+   تنظیمات کلی RTL
+   ================================ */
 .main .block-container {
     direction: rtl;
     text-align: right;
+    padding: 2rem 3rem;
+    max-width: 1400px;
 }
 
-/* ویجت‌های ورودی (متنی/انتخابی) */
-.stSelectbox > div > div > div,
-.stTextInput > div > div > input,
-.stTextArea > div > div > textarea,
-.stSidebar .stSelectbox > div > div > div,
-.stSidebar .stTextInput > div > div > input,
-.stSidebar .stTextArea > div > div > textarea {
-    direction: rtl;
-    text-align: right;
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
-/* تب‌ها و اجزای جانبی */
-.stTabs [data-baseweb="tab-list"],
-.streamlit-expanderHeader,
-.metric-container,
-.stFileUploader > div,
-.stProgress,
-.stAlert,
-.stDownloadButton {
-    direction: rtl;
-    text-align: right;
-}
-
-/* ستون‌ها: راست‌چین ولی بدون تغییر direction */
-.stColumns > div {
-    text-align: right;
-}
-
-/* تیترها */
-h1, h2, h3, h4, h5, h6 {
-    direction: rtl;
-    text-align: right;
-    font-family: 'Vazir', 'Tahoma', sans-serif;
-}
-
-/* کارت‌ها و باکس‌های سفارشی */
-.main-header {
-    text-align: center;
-    color: #1f77b4;
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    font-family: 'Vazir', 'Tahoma', sans-serif;
-}
-.success-box {
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px 0;
-    direction: rtl;
-    text-align: right;
-}
-.error-box {
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px 0;
-    direction: rtl;
-    text-align: right;
-}
-.info-box {
-    background-color: #d1ecf1;
-    border: 1px solid #bee5eb;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px 0;
-    direction: rtl;
-    text-align: right;
-}
-.metric-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 1rem;
-    border-radius: 10px;
+/* ================================
+   هدر اصلی
+   ================================ */
+.modern-header {
+    background: var(--primary-gradient);
     color: white;
+    padding: 3rem 2rem;
+    border-radius: 24px;
     text-align: center;
-    direction: rtl;
-    font-family: 'Vazir', 'Tahoma', sans-serif;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
 }
 
-/* دکمه‌ها */
+.modern-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.modern-header h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.modern-header p {
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+}
+
+/* ================================
+   کارت‌های مدرن
+   ================================ */
+.modern-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+    margin-bottom: 1.5rem;
+}
+
+.modern-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ================================
+   متریک‌های زیبا
+   ================================ */
+.metric-modern {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.metric-modern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--primary-gradient);
+}
+
+.metric-modern:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.metric-modern h3 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.metric-modern p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* ================================
+   دکمه‌های مدرن
+   ================================ */
 .stButton > button {
     width: 100%;
-    height: 3rem;
-    font-size: 1.2rem;
-    font-family: 'Vazir', 'Tahoma', sans-serif;
+    background: var(--primary-gradient) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 0.8rem 2rem !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: var(--shadow-sm) !important;
 }
 
-/* ======== استثناءهای مهم برای باگ‌های UI ======== */
-
-/* 1) دیتافریم باید LTR باشد تا کامل رندر شود */
-.stDataFrame, .stDataFrame * {
-    direction: ltr !important;
-    text-align: left !important;
+.stButton > button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: var(--shadow-md) !important;
 }
 
-/* 2) اسلایدر باید LTR باشد تا کشویی و لیبل‌ها به‌هم نریزند */
-.stSlider, .stSlider * {
+.stDownloadButton > button {
+    background: var(--success-gradient) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 0.8rem 2rem !important;
+    font-weight: 600 !important;
+}
+
+/* ================================
+   ورودی‌های مدرن
+   ================================ */
+.stTextInput > div > div > input,
+.stTextArea > div > div > textarea,
+.stSelectbox > div > div > div {
+    direction: rtl !important;
+    text-align: right !important;
+    border-radius: 12px !important;
+    border: 2px solid var(--border-color) !important;
+    padding: 0.8rem 1rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.stTextInput > div > div > input:focus,
+.stTextArea > div > div > textarea:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+/* ================================
+   تب‌های مدرن
+   ================================ */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+    background: white;
+    border-radius: 16px;
+    padding: 8px;
+    box-shadow: var(--shadow-sm);
+    direction: rtl;
+}
+
+.stTabs [data-baseweb="tab"] {
+    border-radius: 12px !important;
+    padding: 12px 24px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+
+.stTabs [aria-selected="true"] {
+    background: var(--primary-gradient) !important;
+    color: white !important;
+}
+
+/* ================================
+   آپلود فایل مدرن
+   ================================ */
+.stFileUploader {
+    direction: rtl;
+}
+
+.stFileUploader > div {
+    background: white;
+    border: 3px dashed #667eea;
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stFileUploader > div:hover {
+    background: #f8f9ff;
+    border-color: #764ba2;
+}
+
+/* ================================
+   پروگرس بار مدرن
+   ================================ */
+.stProgress > div > div > div {
+    background: var(--primary-gradient) !important;
+    border-radius: 10px !important;
+    height: 12px !important;
+}
+
+/* ================================
+   جدول داده‌ها - LTR برای نمایش درست
+   ================================ */
+.stDataFrame {
     direction: ltr !important;
-    text-align: left !important;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.stDataFrame table {
+    border-radius: 16px;
+}
+
+/* ================================
+   اسلایدر - LTR برای عملکرد درست
+   ================================ */
+.stSlider {
+    direction: ltr !important;
+    padding: 1rem 0;
+}
+
+.stSlider > div > div > div > div {
+    background: var(--primary-gradient) !important;
+}
+
+/* ================================
+   باکس‌های اطلاعات
+   ================================ */
+.info-box-modern {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-right: 5px solid #2196f3;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    direction: rtl;
+}
+
+.success-box-modern {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    border-right: 5px solid #4caf50;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    direction: rtl;
+}
+
+.error-box-modern {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    border-right: 5px solid #f44336;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    direction: rtl;
+}
+
+.warning-box-modern {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    border-right: 5px solid #ff9800;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    direction: rtl;
+}
+
+/* ================================
+   ساید‌بار
+   ================================ */
+.css-1d391kg, [data-testid="stSidebar"] {
+    background: white !important;
+    border-left: 1px solid var(--border-color);
+}
+
+.css-1d391kg .stSelectbox > div > div > div,
+.css-1d391kg .stTextInput > div > div > input,
+.css-1d391kg .stTextArea > div > div > textarea,
+[data-testid="stSidebar"] .stSelectbox > div > div > div,
+[data-testid="stSidebar"] .stTextInput > div > div > input,
+[data-testid="stSidebar"] .stTextArea > div > div > textarea {
+    direction: rtl !important;
+    text-align: right !important;
+}
+
+/* ================================
+   Expander مدرن
+   ================================ */
+.streamlit-expanderHeader {
+    background: white;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    direction: rtl;
+    font-weight: 600;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.streamlit-expanderHeader:hover {
+    background: #f8f9ff;
+    border-color: #667eea;
+}
+
+/* ================================
+   راست‌چین کردن متن‌ها
+   ================================ */
+h1, h2, h3, h4, h5, h6, p, div, span, label {
+    direction: rtl !important;
+    text-align: right !important;
+}
+
+/* ================================
+   انیمیشن‌های ظریف
+   ================================ */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modern-card, .metric-modern {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* ================================
+   اسکرول‌بار سفارشی
+   ================================ */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-gradient);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #5568d3;
+}
+
+/* ================================
+   رادیو باتن و چک‌باکس
+   ================================ */
+.stRadio > div {
+    direction: rtl;
+}
+
+.stCheckbox > label {
+    direction: rtl;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -207,13 +512,11 @@ class APIKeyManager:
     def get_available_client(self):
         """دریافت یک کلاینت موجود"""
         with self.lock:
-            # پیدا کردن کلیدی که کمترین استفاده را داشته و فعال است
             available_keys = [key for key in self.api_keys if key not in self.failed_keys]
             
             if not available_keys:
                 raise QuotaExhaustedException("همه کلیدهای API غیرفعال شده‌اند")
             
-            # انتخاب کلید با کمترین استفاده
             selected_key = min(available_keys, key=lambda k: self.key_usage_count[k])
             self.key_usage_count[selected_key] += 1
             
@@ -223,10 +526,8 @@ class APIKeyManager:
         """علامت‌گذاری کلید به عنوان ناموفق"""
         with self.lock:
             if temporary:
-                # برای خطاهای موقتی، فقط کاهش اولویت
-                self.key_usage_count[key] += 1000  # penalty
+                self.key_usage_count[key] += 1000
             else:
-                # برای خطاهای دائمی، کلید را غیرفعال کن
                 self.failed_keys.add(key)
     
     def get_stats(self):
@@ -304,7 +605,6 @@ def process_single_file(file_info, api_manager, max_retries=3):
     
     for attempt in range(max_retries):
         try:
-            # دریافت کلاینت از API Manager
             client, current_key = api_manager.get_available_client()
             
             response = client.models.generate_content(
@@ -397,17 +697,15 @@ def process_single_file(file_info, api_manager, max_retries=3):
             error_msg = str(e)
             
             if _is_rate_limit_error(e):
-                # علامت‌گذاری کلید به عنوان موقتاً ناموفق
                 api_manager.mark_key_failed(current_key, temporary=True)
                 
                 if attempt < max_retries - 1:
                     retry_delay = extract_retry_delay(error_msg)
-                    time.sleep(min(retry_delay, 10))  # حداکثر 10 ثانیه انتظار
+                    time.sleep(min(retry_delay, 10))
                     continue
                 else:
                     return {"success": False, "error": f"Rate limit exceeded after {max_retries} attempts", "filename": filename}
             else:
-                # خطای دیگر - کلید را دائماً غیرفعال کن
                 api_manager.mark_key_failed(current_key, temporary=False)
                 
                 if attempt < max_retries - 1:
@@ -421,53 +719,42 @@ def process_single_file(file_info, api_manager, max_retries=3):
 def process_resume_data(row, text):
     """پردازش و تنظیم داده‌های رزومه"""
     
-    # پردازش شماره تماس
     phone = row.get("شماره تماس", "")
     if phone.startswith("0"):
         row["شماره تماس"] = phone[1:]
 
-    # اضافه کردن شناسه (ID) بر اساس شماره تماس - مطمئن شوید که همیشه وجود دارد
     processed_phone = row.get("شماره تماس", "")
     row["شناسه"] = processed_phone if processed_phone else f"ID_{hash(str(row))}"
 
-    # پردازش سال تولد
     row["year_of_birth"] = clean_year_of_birth(row.get("year_of_birth", ""))
     if not row["year_of_birth"]:
         row["year_of_birth"] = estimate_birth_year_from_text(text)
 
-    # فرمت‌دهی داده‌ها
     row["سوابق شغلی"] = format_job_experience(row.get("سوابق شغلی", ""))
     row["دوره های آموزشی"] = format_courses(row.get("دوره های آموزشی", ""))
 
-    # تایید و رد اولیه
     reasons = []
 
-    # استخراج و پاک‌سازی مقادیر
     gender = str(row.get("جنسیت", "")).strip()
     degree = str(row.get("مقطع تحصیلی", "")).strip()
     military_status = str(row.get("وضعیت خدمت سربازی", "")).strip()
     max_salary = row.get("حداکثر حقوق ماهیانه", "")
 
-    # بررسی جنسیت
     if "خانم" in gender:
         reasons.append("جنسیت خانم باعث رد شده است.")
 
-    # بررسی حقوق ماهیانه
     try:
         if max_salary and float(max_salary) > 60_000_000:
             reasons.append("درخواست حقوق بیش از 60 میلیون تومان باعث رد شده است.")
     except:
         pass
 
-    # بررسی مقطع تحصیلی
     if degree not in ["کارشناسی", "کارشناسی ارشد", "دکتری"]:
         reasons.append("مدرک تحصیلی کمتر از کارشناسی باعث رد شده است.")
 
-    # بررسی وضعیت خدمت سربازی
     if "مشمول" in military_status:
         reasons.append("مشمول بودن وضعیت سربازی باعث رد شده است.")
 
-    # وضعیت نهایی
     if reasons:
         row["تایید و رد اولیه"] = "رد"
         row["علت رد"] = "؛ ".join(reasons)
@@ -484,10 +771,8 @@ def create_excel_file(all_data):
         df[col] = df[col].apply(lambda x: ", ".join(x) if isinstance(x, list) else x)
     df = df[[col for col in ORDERED_FIELDS if col in df.columns]]
 
-    # ایجاد فایل Excel در حافظه
     output = BytesIO()
     
-    # دسته‌بندی ستون‌ها
     base_fields = ["شناسه", "نام", "نام خانوادگی", "شماره تماس", "جنسیت", "ایمیل", "کانال دریافت رزومه", "معرف"]
     base_indexes = [df.columns.get_loc(f) for f in base_fields if f in df.columns]
     if base_indexes:
@@ -505,14 +790,12 @@ def create_excel_file(all_data):
         workbook = writer.book
         worksheet = writer.sheets["رزومه‌ها"]
 
-        # اضافه کردن ردیف دسته‌بندی
         worksheet.insert_rows(1)
         worksheet.merge_cells(start_row=1, start_column=1, end_row=1, end_column=base_end)
         worksheet.merge_cells(start_row=1, start_column=base_end + 1, end_row=1, end_column=check_end)
         worksheet.cell(row=1, column=1).value = "مشخصات پایه و معرف"
         worksheet.cell(row=1, column=base_end + 1).value = "بررسی رزومه"
             
-        # رنگ و استایل برای گروه‌بندی
         base_fill = PatternFill(start_color="C2E0FF", end_color="C2E0FF", fill_type="solid")
         check_fill = PatternFill(start_color="FFE699", end_color="FFE699", fill_type="solid")
         group_font = Font(bold=True, size=13)
@@ -527,7 +810,6 @@ def create_excel_file(all_data):
             worksheet.cell(row=1, column=col).font = group_font
             worksheet.cell(row=1, column=col).alignment = group_alignment
 
-        # استایل هدر
         header_fill = PatternFill(start_color="1F497D", end_color="1F497D", fill_type="solid")
         header_font = Font(bold=True, color="FFFFFF", size=12)
         for cell in worksheet[2]:
@@ -535,7 +817,6 @@ def create_excel_file(all_data):
             cell.font = header_font
             cell.alignment = Alignment(horizontal="center", vertical="center")
 
-        # رنگ‌دهی ردیف تایید/رد
         approve_fill = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
         reject_fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
         
@@ -553,7 +834,6 @@ def create_excel_file(all_data):
         except (ValueError, IndexError):
             pass
 
-        # تنظیم عرض ستون‌ها
         for idx, col in enumerate(worksheet.columns, 1):
             max_length = 0
             for cell in col:
@@ -562,114 +842,135 @@ def create_excel_file(all_data):
                         max_length = max(max_length, len(str(cell.value)))
                 except:
                     pass
-            adjusted_width = min(max_length + 2, 50)  # حداکثر عرض 50
+            adjusted_width = min(max_length + 2, 50)
             worksheet.column_dimensions[get_column_letter(idx)].width = adjusted_width
 
     output.seek(0)
     return output
 
 def main():
-    # هدر اصلی
-    st.markdown('<h1 class="main-header">📋 پردازشگر رزومه</h1>', unsafe_allow_html=True)
+    # هدر مدرن
+    st.markdown('''
+    <div class="modern-header">
+        <h1>✨ پردازشگر هوشمند رزومه</h1>
+        <p>پردازش سریع و دقیق رزومه‌ها با هوش مصنوعی</p>
+    </div>
+    ''', unsafe_allow_html=True)
     
-    # Sidebar برای تنظیمات
-    st.sidebar.header("⚙️ تنظیمات")
-    
-    # مدیریت API Keys
-    st.sidebar.subheader("🔑 مدیریت کلیدهای API")
-    
-    # انتخاب نوع ورودی کلیدها
-    key_input_method = st.sidebar.radio(
-        "روش ورود کلیدها:",
-        ["استفاده از کلیدهای پیش‌فرض", "ورود کلیدهای سفارشی"]
-    )
-    
-    if key_input_method == "استفاده از کلیدهای پیش‌فرض":
-        api_keys = DEFAULT_GENAI_KEYS
-        st.sidebar.success(f"✅ {len(api_keys)} کلید پیش‌فرض لود شد")
-    else:
-        custom_keys_text = st.sidebar.text_area(
-            "کلیدهای API (هر کدام در یک خط):",
-            height=150,
-            placeholder="AIzaSy...\nAIzaSy...\n..."
+    # Sidebar
+    with st.sidebar:
+        st.markdown("### ⚙️ تنظیمات")
+        
+        st.markdown("---")
+        st.markdown("#### 🔑 کلیدهای API")
+        
+        key_input_method = st.radio(
+            "روش ورود کلیدها:",
+            ["کلیدهای پیش‌فرض", "کلیدهای سفارشی"],
+            help="می‌توانید از کلیدهای پیش‌فرض استفاده کنید یا کلیدهای خود را وارد کنید"
         )
         
-        if custom_keys_text:
-            api_keys = [key.strip() for key in custom_keys_text.split('\n') if key.strip()]
-            st.sidebar.success(f"✅ {len(api_keys)} کلید سفارشی لود شد")
-        else:
+        if key_input_method == "کلیدهای پیش‌فرض":
             api_keys = DEFAULT_GENAI_KEYS
-            st.sidebar.warning("⚠️ از کلیدهای پیش‌فرض استفاده می‌شود")
+            st.success(f"✅ {len(api_keys)} کلید لود شد")
+        else:
+            custom_keys_text = st.text_area(
+                "کلیدهای API (هر کدام در یک خط):",
+                height=120,
+                placeholder="AIzaSy...\nAIzaSy..."
+            )
+            
+            if custom_keys_text:
+                api_keys = [key.strip() for key in custom_keys_text.split('\n') if key.strip()]
+                st.success(f"✅ {len(api_keys)} کلید سفارشی")
+            else:
+                api_keys = DEFAULT_GENAI_KEYS
+                st.warning("⚠️ از کلیدهای پیش‌فرض استفاده می‌شود")
 
-    # تنظیمات پروکسی
-    st.sidebar.subheader("🌐 تنظیمات پروکسی")
-    use_proxy = st.sidebar.checkbox("استفاده از پروکسی")
-    
-    if use_proxy:
-        proxy_url = st.sidebar.text_input(
-            "آدرس پروکسی:",
-            value="http://172.16.217.234:33525"
+        st.markdown("---")
+        st.markdown("#### 🌐 پروکسی")
+        
+        use_proxy = st.checkbox("فعال‌سازی پروکسی")
+        
+        if use_proxy:
+            proxy_url = st.text_input(
+                "آدرس پروکسی:",
+                value="http://172.16.217.234:33525"
+            )
+            if proxy_url:
+                os.environ['HTTP_PROXY'] = proxy_url
+                os.environ['HTTPS_PROXY'] = proxy_url
+                st.success("✅ پروکسی فعال شد")
+        else:
+            os.environ.pop('HTTP_PROXY', None)
+            os.environ.pop('HTTPS_PROXY', None)
+
+        st.markdown("---")
+        st.markdown("#### ⚡ پردازش")
+        
+        max_workers = st.slider(
+            "Thread های همزمان:",
+            1, min(len(api_keys), 10), 
+            min(len(api_keys), 5),
+            help="تعداد فایل‌هایی که همزمان پردازش می‌شوند"
         )
-        if proxy_url:
-            os.environ['HTTP_PROXY'] = proxy_url
-            os.environ['HTTPS_PROXY'] = proxy_url
-            st.sidebar.success("✅ پروکسی تنظیم شد")
-    else:
-        # پاک کردن پروکسی
-        os.environ.pop('HTTP_PROXY', None)
-        os.environ.pop('HTTPS_PROXY', None)
+        
+        max_retries = st.slider(
+            "تلاش مجدد:",
+            1, 5, 3,
+            help="تعداد دفعات تلاش مجدد در صورت خطا"
+        )
 
-    # تنظیمات پردازش موازی
-    st.sidebar.subheader("⚡ تنظیمات پردازش ")
-    max_workers = st.sidebar.slider("حداکثر Thread :", 1, min(len(api_keys), 10), min(len(api_keys), 5))
-    max_retries = st.sidebar.slider("حداکثر تلاش مجدد:", 1, 5, 3)
-
-    # بخش اصلی
-    tab1, tab2, tab3, tab4 = st.tabs(["📤 آپلود و پردازش", "📊 نتایج", "📈 آمار API", "ℹ️ راهنما"])
+    # تب‌های اصلی
+    tab1, tab2, tab3, tab4 = st.tabs([
+        "📤 آپلود و پردازش",
+        "📊 نتایج", 
+        "📈 آمار API",
+        "📚 راهنما"
+    ])
     
     with tab1:
-        st.header("📤 آپلود فایل‌های PDF")
+        st.markdown('<div class="modern-card">', unsafe_allow_html=True)
+        st.markdown("### 📤 آپلود فایل‌های رزومه")
         
-        # آپلود فایل‌ها
         uploaded_files = st.file_uploader(
-            "فایل‌های PDF رزومه را انتخاب کنید:",
+            "فایل‌های PDF را بکشید و رها کنید یا کلیک کنید",
             type=['pdf'],
             accept_multiple_files=True,
-            help="می‌توانید چندین فایل PDF را به صورت همزمان آپلود کنید"
+            help="حداکثر تا 100 فایل به صورت همزمان"
         )
         
         if uploaded_files:
-            st.success(f"✅ {len(uploaded_files)} فایل آپلود شد")
+            st.markdown(f'<div class="success-box-modern">✅ {len(uploaded_files)} فایل آپلود شد</div>', unsafe_allow_html=True)
             
-            # نمایش لیست فایل‌ها
-            with st.expander("📋 لیست فایل‌های آپلود شده", expanded=False):
+            with st.expander("📋 فایل‌های آپلود شده", expanded=False):
                 for i, file in enumerate(uploaded_files, 1):
-                    st.write(f"{i}. {file.name} ({file.size:,} بایت)")
+                    st.write(f"**{i}.** {file.name} ({file.size:,} بایت)")
             
-            # اطلاعات پردازش موازی
-            st.info(f"🚀 پردازش با {max_workers} Thread و {len(api_keys)} کلید API")
+            st.markdown(f'<div class="info-box-modern">🚀 پردازش با {max_workers} Thread و {len(api_keys)} کلید API</div>', unsafe_allow_html=True)
             
-            # دکمه پردازش
             col1, col2, col3 = st.columns([1, 2, 1])
             with col2:
-                if st.button("🚀 شروع پردازش", type="primary"):
+                if st.button("🚀 شروع پردازش", type="primary", use_container_width=True):
                     process_files_parallel(uploaded_files, api_keys, max_workers, max_retries)
+        
+        st.markdown('</div>', unsafe_allow_html=True)
     
     with tab2:
-        st.header("📊 نتایج پردازش")
+        st.markdown("### 📊 نتایج پردازش")
         
         if "processing_results" in st.session_state and st.session_state.processing_results:
             display_results()
         else:
-            st.info("🔍 هنوز فایلی پردازش نشده است. لطفاً ابتدا فایل‌هایتان را آپلود و پردازش کنید.")
+            st.markdown('<div class="info-box-modern">🔍 هنوز فایلی پردازش نشده است</div>', unsafe_allow_html=True)
     
     with tab3:
-        st.header("📈 آمار استفاده از API")
+        st.markdown("### 📈 آمار استفاده از API")
         
         if "api_stats" in st.session_state and st.session_state.api_stats:
             display_api_stats()
         else:
-            st.info("🔍 آماری از استفاده API موجود نیست.")
+            st.markdown('<div class="info-box-modern">🔍 آماری موجود نیست</div>', unsafe_allow_html=True)
     
     with tab4:
         display_help()
@@ -677,13 +978,10 @@ def main():
 def process_files_parallel(uploaded_files, api_keys, max_workers, max_retries):
     """پردازش فایل‌های آپلود شده"""
     
-    # شروع پردازش
-    st.info("🔄 در حال شروع پردازش...")
+    st.markdown('<div class="info-box-modern">🔄 در حال شروع پردازش...</div>', unsafe_allow_html=True)
     
-    # ایجاد API Manager
     api_manager = APIKeyManager(api_keys)
     
-    # آماده‌سازی داده‌های ورودی
     file_data = []
     for uploaded_file in uploaded_files:
         pdf_bytes = uploaded_file.read()
@@ -692,17 +990,15 @@ def process_files_parallel(uploaded_files, api_keys, max_workers, max_retries):
         if extracted_text.strip():
             file_data.append((uploaded_file.name, pdf_bytes, extracted_text))
         else:
-            st.warning(f"⚠️ فایل {uploaded_file.name} قابل خواندن نیست")
+            st.markdown(f'<div class="warning-box-modern">⚠️ فایل {uploaded_file.name} قابل خواندن نیست</div>', unsafe_allow_html=True)
     
     if not file_data:
-        st.error("❌ هیچ فایل قابل پردازشی وجود ندارد")
+        st.markdown('<div class="error-box-modern">❌ هیچ فایل قابل پردازشی وجود ندارد</div>', unsafe_allow_html=True)
         return
     
-    # ایجاد progress bar و containers
     progress_bar = st.progress(0)
     status_text = st.empty()
     
-    # متغیرهای آماری
     processing_stats = {
         "total": len(file_data),
         "processed": 0,
@@ -712,7 +1008,6 @@ def process_files_parallel(uploaded_files, api_keys, max_workers, max_retries):
         "start_time": time.time()
     }
     
-    # کانتینرهای نمایش real-time
     metrics_container = st.container()
     details_container = st.container()
     
@@ -725,38 +1020,60 @@ def process_files_parallel(uploaded_files, api_keys, max_workers, max_retries):
         metric_speed = col5.empty()
     
     with details_container:
-        details_expander = st.expander("🔍 جزئیات پردازش", expanded=True)
+        details_expander = st.expander("🔍 جزئیات لحظه‌ای", expanded=True)
         details_text = details_expander.empty()
     
     processing_details = []
     all_data = []
     failed_files = []
     
-    # تابع به‌روزرسانی UI
     def update_ui():
-        # محاسبه سرعت
         elapsed_time = time.time() - processing_stats["start_time"]
-        speed = processing_stats["processed"] / max(elapsed_time, 1) * 60  # فایل در دقیقه
+        speed = processing_stats["processed"] / max(elapsed_time, 1) * 60
         
-        # به‌روزرسانی متریک‌ها
-        metric_total.metric("📄 کل فایل‌ها", processing_stats["total"])
-        metric_processed.metric("✅ پردازش شده", processing_stats["processed"])
-        metric_approved.metric("🟢 تایید شده", processing_stats["approved"])
-        metric_rejected.metric("🔴 رد شده", processing_stats["rejected"])
-        metric_speed.metric("⚡ سرعت", f"{speed:.1f}/min")
+        metric_total.markdown(f'''
+        <div class="metric-modern">
+            <p>کل فایل‌ها</p>
+            <h3>{processing_stats["total"]}</h3>
+        </div>
+        ''', unsafe_allow_html=True)
         
-        # به‌روزرسانی جزئیات
-        details_text.text("\n".join(processing_details[-15:]))  # آخرین 15 مورد
+        metric_processed.markdown(f'''
+        <div class="metric-modern">
+            <p>پردازش شده</p>
+            <h3>{processing_stats["processed"]}</h3>
+        </div>
+        ''', unsafe_allow_html=True)
+        
+        metric_approved.markdown(f'''
+        <div class="metric-modern">
+            <p>تایید شده</p>
+            <h3>{processing_stats["approved"]}</h3>
+        </div>
+        ''', unsafe_allow_html=True)
+        
+        metric_rejected.markdown(f'''
+        <div class="metric-modern">
+            <p>رد شده</p>
+            <h3>{processing_stats["rejected"]}</h3>
+        </div>
+        ''', unsafe_allow_html=True)
+        
+        metric_speed.markdown(f'''
+        <div class="metric-modern">
+            <p>سرعت (فایل/دقیقه)</p>
+            <h3>{speed:.1f}</h3>
+        </div>
+        ''', unsafe_allow_html=True)
+        
+        details_text.text("\n".join(processing_details[-15:]))
     
-    # پردازش موازی با ThreadPoolExecutor
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        # ارسال تمام تسک‌ها
         future_to_file = {
             executor.submit(process_single_file, file_info, api_manager, max_retries): file_info[0] 
             for file_info in file_data
         }
         
-        # پردازش نتایج به محض آماده شدن
         for future in as_completed(future_to_file):
             filename = future_to_file[future]
             
@@ -764,15 +1081,12 @@ def process_files_parallel(uploaded_files, api_keys, max_workers, max_retries):
                 result = future.result()
                 
                 if result["success"]:
-                    # پردازش داده‌های رزومه
                     model_output = result["data"]
                     row = {field: model_output.get(field, "") for field in ORDERED_FIELDS}
                     
-                    # اطمینان از وجود شناسه قبل از پردازش
                     if "شناسه" not in row or not row["شناسه"]:
                         row["شناسه"] = model_output.get("شماره تماس", f"ID_{len(all_data)+1}")
                     
-                    # استخراج متن برای پردازش بیشتر
                     file_text = ""
                     for file_info in file_data:
                         if file_info[0] == filename:
@@ -786,35 +1100,31 @@ def process_files_parallel(uploaded_files, api_keys, max_workers, max_retries):
                     
                     if status == "approved":
                         processing_stats["approved"] += 1
-                        processing_details.append(f"✅ تایید شد: {processed_row.get('نام', '')} {processed_row.get('نام خانوادگی', '')} (کلید: {result['key_used'][:10]}...)")
+                        processing_details.append(f"✅ تایید: {processed_row.get('نام', '')} {processed_row.get('نام خانوادگی', '')}")
                     else:
                         processing_stats["rejected"] += 1
-                        processing_details.append(f"❌ رد شد: {processed_row.get('نام', '')} {processed_row.get('نام خانوادگی', '')} - {processed_row.get('علت رد', '')}")
+                        processing_details.append(f"❌ رد: {processed_row.get('نام', '')} {processed_row.get('نام خانوادگی', '')}")
                 else:
                     failed_files.append(filename)
                     processing_stats["failed"] += 1
-                    processing_details.append(f"❌ پردازش ناموفق: {filename} - {result.get('error', 'خطای نامشخص')}")
+                    processing_details.append(f"❌ خطا: {filename}")
                 
             except Exception as e:
                 failed_files.append(filename)
                 processing_stats["failed"] += 1
-                processing_details.append(f"❌ خطای غیرمنتظره: {filename} - {str(e)}")
+                processing_details.append(f"❌ خطای غیرمنتظره: {filename}")
             
-            # به‌روزرسانی UI
             progress = (processing_stats["processed"] + processing_stats["failed"]) / processing_stats["total"]
             progress_bar.progress(progress)
-            status_text.text(f"🔄 پردازش شده: {processing_stats['processed'] + processing_stats['failed']}/{processing_stats['total']}")
+            status_text.text(f"🔄 پردازش: {processing_stats['processed'] + processing_stats['failed']}/{processing_stats['total']}")
             
             update_ui()
     
-    # تکمیل پردازش
     progress_bar.progress(1.0)
     status_text.text("✅ پردازش کامل شد!")
     
-    # محاسبه زمان کل
     total_time = time.time() - processing_stats["start_time"]
     
-    # ذخیره نتایج در session state
     st.session_state.processing_results = {
         "data": all_data,
         "stats": processing_stats,
@@ -823,96 +1133,62 @@ def process_files_parallel(uploaded_files, api_keys, max_workers, max_retries):
         "total_time": total_time
     }
     
-    # ذخیره آمار API
     st.session_state.api_stats = api_manager.get_stats()
     
-    # نمایش خلاصه نهایی
-    st.success(f"🎉 پردازش با موفقیت در {total_time:.1f} ثانیه تکمیل شد!")
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.info(f"""
-        📊 **آمار کلی:**
-        - کل فایل‌ها: {processing_stats['total']}
-        - پردازش موفق: {processing_stats['processed']}
-        - پردازش ناموفق: {processing_stats['failed']}
-        """)
-    
-    with col2:
-        st.info(f"""
-        🔍 **نتایج بررسی:**
-        - تایید شده: {processing_stats['approved']}
-        - رد شده: {processing_stats['rejected']}
-        - نرخ تایید: {(processing_stats['approved']/(processing_stats['processed'] or 1)*100):.1f}%
-        """)
-    
-    with col3:
-        avg_time = total_time / len(file_data) if file_data else 0
-        st.info(f"""
-        ⚡ **عملکرد:**
-        - زمان کل: {total_time:.1f} ثانیه
-        - متوسط هر فایل: {avg_time:.1f} ثانیه
-        - سرعت: {len(file_data)/total_time*60:.1f} فایل/دقیقه
-        """)
+    st.markdown(f'<div class="success-box-modern">🎉 پردازش در {total_time:.1f} ثانیه تکمیل شد!</div>', unsafe_allow_html=True)
 
 def display_results():
     """نمایش نتایج پردازش"""
     
     results = st.session_state.processing_results
     
-    # آمار کلی
-    st.subheader("📈 آمار کلی")
+    st.markdown("#### آمار کلی")
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.markdown(f"""
-        <div class="metric-card">
-            <h3>{results['stats']['total']}</h3>
+        st.markdown(f'''
+        <div class="metric-modern">
             <p>کل فایل‌ها</p>
+            <h3>{results['stats']['total']}</h3>
         </div>
-        """, unsafe_allow_html=True)
+        ''', unsafe_allow_html=True)
     
     with col2:
-        st.markdown(f"""
-        <div class="metric-card">
-            <h3>{results['stats']['processed']}</h3>
+        st.markdown(f'''
+        <div class="metric-modern">
             <p>پردازش موفق</p>
+            <h3>{results['stats']['processed']}</h3>
         </div>
-        """, unsafe_allow_html=True)
+        ''', unsafe_allow_html=True)
     
     with col3:
-        st.markdown(f"""
-        <div class="metric-card">
-            <h3>{results['stats']['approved']}</h3>
+        st.markdown(f'''
+        <div class="metric-modern">
             <p>تایید شده</p>
+            <h3>{results['stats']['approved']}</h3>
         </div>
-        """, unsafe_allow_html=True)
+        ''', unsafe_allow_html=True)
     
     with col4:
-        st.markdown(f"""
-        <div class="metric-card">
-            <h3>{results['stats']['rejected']}</h3>
+        st.markdown(f'''
+        <div class="metric-modern">
             <p>رد شده</p>
+            <h3>{results['stats']['rejected']}</h3>
         </div>
-        """, unsafe_allow_html=True)
+        ''', unsafe_allow_html=True)
     
-    # نمودار دایره‌ای
     if results['data']:
-        st.subheader("📊 توزیع نتایج")
+        st.markdown("#### توزیع نتایج")
         
-        # آماده‌سازی داده‌ها برای نمودار
         chart_data = pd.DataFrame({
             'وضعیت': ['تایید شده', 'رد شده'],
             'تعداد': [results['stats']['approved'], results['stats']['rejected']]
         })
         
-        # نمودار ستونی
         st.bar_chart(chart_data.set_index('وضعیت'))
     
-    # اطلاعات عملکرد
     if 'total_time' in results:
-        st.subheader("⚡ عملکرد پردازش")
+        st.markdown("#### عملکرد پردازش")
         col1, col2, col3 = st.columns(3)
         
         with col1:
@@ -920,23 +1196,20 @@ def display_results():
         
         with col2:
             avg_time = results['total_time'] / results['stats']['total'] if results['stats']['total'] > 0 else 0
-            st.metric("📊 متوسط هر فایل", f"{avg_time:.1f} ثانیه")
+            st.metric("📊 متوسط", f"{avg_time:.1f} ث/فایل")
         
         with col3:
             speed = results['stats']['total'] / results['total_time'] * 60 if results['total_time'] > 0 else 0
             st.metric("🚀 سرعت", f"{speed:.1f} فایل/دقیقه")
     
-    # نمایش داده‌های پردازش شده
     if results['data']:
-        st.subheader("📋 داده‌های استخراج شده")
+        st.markdown("#### داده‌های استخراج شده")
         
         df = pd.DataFrame(results['data'])
         
-        # اطمینان از وجود ستون شناسه
         if 'شناسه' not in df.columns:
             df['شناسه'] = df['شماره تماس'] if 'شماره تماس' in df.columns else [f"ID_{i+1}" for i in range(len(df))]
         
-        # فیلتر بر اساس وضعیت
         filter_status = st.selectbox(
             "فیلتر بر اساس وضعیت:",
             ["همه", "تایید شده", "رد شده"]
@@ -949,16 +1222,9 @@ def display_results():
         else:
             df_filtered = df
         
-        # نمایش جدول
-        st.dataframe(
-            df_filtered,
-            use_container_width=True,
-            height=400
-        )
+        st.dataframe(df_filtered, use_container_width=True, height=400)
         
-        # دکمه دانلود Excel
-        if st.button("📥 دانلود فایل Excel", type="secondary"):
-            # اطمینان از وجود ستون شناسه قبل از ایجاد فایل Excel
+        if st.button("📥 دانلود فایل Excel"):
             excel_data = results['data'].copy() if isinstance(results['data'], list) else results['data']
             if isinstance(excel_data, list):
                 for item in excel_data:
@@ -970,16 +1236,13 @@ def display_results():
             st.download_button(
                 label="💾 دانلود Excel",
                 data=excel_file,
-                file_name=f"resume_processing_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
+                file_name=f"resume_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
     
-    # فایل‌های ناموفق
     if results['failed_files']:
-        st.subheader("⚠️ فایل‌های پردازش نشده")
-        
-        st.markdown('<div class="error-box">', unsafe_allow_html=True)
-        st.write("فایل‌های زیر به دلیل خطا پردازش نشدند:")
+        st.markdown("#### ⚠️ فایل‌های پردازش نشده")
+        st.markdown('<div class="error-box-modern">', unsafe_allow_html=True)
         for failed_file in results['failed_files']:
             st.write(f"• {failed_file}")
         st.markdown('</div>', unsafe_allow_html=True)
@@ -989,23 +1252,40 @@ def display_api_stats():
     
     stats = st.session_state.api_stats
     
-    st.subheader("🔑 آمار کلیدهای API")
-    
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.metric("🔑 کل کلیدها", stats['total_keys'])
+        st.markdown(f'''
+        <div class="metric-modern">
+            <p>کل کلیدها</p>
+            <h3>{stats['total_keys']}</h3>
+        </div>
+        ''', unsafe_allow_html=True)
     
     with col2:
-        st.metric("✅ کلیدهای فعال", stats['active_keys'])
+        st.markdown(f'''
+        <div class="metric-modern">
+            <p>فعال</p>
+            <h3>{stats['active_keys']}</h3>
+        </div>
+        ''', unsafe_allow_html=True)
     
     with col3:
-        st.metric("❌ کلیدهای غیرفعال", stats['failed_keys'])
+        st.markdown(f'''
+        <div class="metric-modern">
+            <p>غیرفعال</p>
+            <h3>{stats['failed_keys']}</h3>
+        </div>
+        ''', unsafe_allow_html=True)
     
     with col4:
-        st.metric("📊 کل درخواست‌ها", stats['total_usage'])
+        st.markdown(f'''
+        <div class="metric-modern">
+            <p>کل درخواست‌ها</p>
+            <h3>{stats['total_usage']}</h3>
+        </div>
+        ''', unsafe_allow_html=True)
     
-    # نمودار وضعیت کلیدها
     if stats['total_keys'] > 0:
         chart_data = pd.DataFrame({
             'وضعیت': ['فعال', 'غیرفعال'],
@@ -1017,22 +1297,13 @@ def display_api_stats():
 def display_help():
     """نمایش راهنما"""
     
-    st.header("📚 راهنمای استفاده")
-    
-    # بخش‌های مختلف راهنما
     help_sections = {
         "🚀 پردازش موازی": """
         **مزایای پردازش موازی:**
         - استفاده همزمان از چندین کلید API
-        - سرعت پردازش بالاتر (تا 5-10 برابر سریع‌تر)
+        - سرعت پردازش بالاتر (تا 5-10 برابر)
         - مدیریت خودکار کلیدهای ناموفق
         - بهره‌وری بهتر از منابع
-        
-        **نحوه کار:**
-        1. هر فایل به یک Thread جداگانه اختصاص می‌یابد
-        2. هر Thread از یک کلید API مجزا استفاده می‌کند
-        3. در صورت خطا، کلید دیگری انتخاب می‌شود
-        4. نتایج به صورت real-time نمایش داده می‌شوند
         """,
         
         "🔑 مدیریت هوشمند کلیدها": """
@@ -1040,60 +1311,22 @@ def display_help():
         - توزیع یکنواخت بار بین کلیدها
         - تشخیص خودکار کلیدهای ناموفق
         - مدیریت محدودیت‌های موقت و دائم
-        - آمارگیری دقیق از استفاده
-        
-        **انواع خطاها:**
-        - **خطای موقت:** محدودیت نرخ، انتظار کوتاه
-        - **خطای دائم:** کلید نامعتبر، غیرفعال‌سازی کامل
         """,
         
         "⚙️ تنظیمات بهینه": """
-        **حداکثر Thread:**
-        - کمتر از تعداد کلیدهای API
+        **نکات مهم:**
+        - Thread کمتر از تعداد کلیدها
         - برای اتصال سریع: 3-5 Thread
         - برای اتصال آهسته: 1-2 Thread
-        
-        **تعداد تلاش مجدد:**
-        - برای شبکه پایدار: 3-5
-        - برای شبکه ناپایدار: 1-2
-        
-        **نکات مهم:**
-        - بیش از 10 Thread توصیه نمی‌شود
         - کلیدهای بیشتر = سرعت بالاتر
-        """,
-        
-        "📊 نظارت بر عملکرد": """
-        **متریک‌های مهم:**
-        - سرعت پردازش (فایل/دقیقه)
-        - نرخ موفقیت
-        - توزیع استفاده از کلیدها
-        - زمان متوسط هر فایل
-        
-        **بهینه‌سازی:**
-        - مانیتور کردن آمار API
-        - تعدیل تعداد Thread‌ها
-        - جایگزینی کلیدهای ناموفق
         """
     }
     
     for section_title, section_content in help_sections.items():
         with st.expander(section_title, expanded=False):
             st.markdown(section_content)
-    
-    # مقایسه عملکرد
-    st.subheader("📊 مقایسه عملکرد")
-    
-    comparison_data = pd.DataFrame({
-        "روش": ["تک‌رشته‌ای", "موازی (3 Thread)", "موازی (5 Thread)"],
-        "سرعت تقریبی": ["10 فایل/دقیقه", "30 فایل/دقیقه", "50 فایل/دقیقه"],
-        "کاربرد": ["فایل کم", "متوسط", "فایل زیاد"]
-    })
-    
-    st.table(comparison_data)
 
-# اجرای برنامه اصلی
 if __name__ == "__main__":
-    # Initialize session state
     if "processing_results" not in st.session_state:
         st.session_state.processing_results = None
     
@@ -1101,4 +1334,3 @@ if __name__ == "__main__":
         st.session_state.api_stats = None
     
     main()
-
