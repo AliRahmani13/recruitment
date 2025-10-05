@@ -1240,6 +1240,7 @@ def display_results():
     results = st.session_state.processing_results
     
     # آمار کلی
+    st.markdown("#### 📊 آمار کلی")
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
