@@ -1064,9 +1064,8 @@ def main():
             st.markdown('<div class="info-box-modern">🔍 هنوز فایلی پردازش نشده است</div>', unsafe_allow_html=True)
     
     with tab3:
-        st.markdown("### 📈 آمار استفاده از API")
-        
         if "api_stats" in st.session_state and st.session_state.api_stats:
+            st.markdown("### 📈 آمار استفاده از API")
             display_api_stats()
         else:
             st.markdown('<div class="info-box-modern">🔍 آماری موجود نیست</div>', unsafe_allow_html=True)
@@ -1241,7 +1240,7 @@ def display_results():
     
     results = st.session_state.processing_results
     
-    st.markdown("#### آمار کلی")
+    # آمار کلی
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
