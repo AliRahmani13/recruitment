@@ -951,7 +951,8 @@ def main():
         if use_proxy:
             proxy_url = st.text_input(
                 "آدرس پروکسی:",
-                value="http://172.16.217.234:33525"
+                value="",
+                placeholder="http://your-proxy-address:port"
             )
             if proxy_url:
                 os.environ['HTTP_PROXY'] = proxy_url
