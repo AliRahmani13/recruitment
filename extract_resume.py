@@ -307,11 +307,14 @@ body {
 .stFileUploader div {
     color: #667eea !important;
     font-weight: 600 !important;
+    text-align: center !important;
 }
 
 .stFileUploader small {
     color: #8b92d6 !important;
     font-size: 0.9rem !important;
+    text-align: center !important;
+    display: block !important;
 }
 
 .stFileUploader button {
