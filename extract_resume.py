@@ -1030,9 +1030,11 @@ def main():
         ''', unsafe_allow_html=True)
         
         uploaded_files = st.file_uploader(
+            "",
             type=['pdf'],
             accept_multiple_files=True,
-            help="حداکثر تا 100 فایل به صورت همزمان"
+            help="حداکثر تا 100 فایل به صورت همزمان",
+            label_visibility="collapsed"
         )
         
         if uploaded_files:
@@ -1429,4 +1431,3 @@ if __name__ == "__main__":
         st.session_state.api_stats = None
     
     main()
-
