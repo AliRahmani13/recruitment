@@ -1030,7 +1030,6 @@ def main():
         ''', unsafe_allow_html=True)
         
         uploaded_files = st.file_uploader(
-            "فایل‌های PDF را بکشید و رها کنید یا کلیک کنید",
             type=['pdf'],
             accept_multiple_files=True,
             help="حداکثر تا 100 فایل به صورت همزمان"
@@ -1430,3 +1429,4 @@ if __name__ == "__main__":
         st.session_state.api_stats = None
     
     main()
+
