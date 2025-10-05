@@ -144,6 +144,13 @@ body {
     box-shadow: var(--shadow-lg);
 }
 
+.modern-card h1, .modern-card h2, .modern-card h3, 
+.modern-card h4, .modern-card h5, .modern-card h6,
+.modern-card p, .modern-card span, .modern-card div,
+.modern-card label {
+    color: var(--text-primary) !important;
+}
+
 /* ================================
    متریک‌های زیبا
    ================================ */
@@ -286,6 +293,13 @@ body {
     border-color: #764ba2;
 }
 
+.stFileUploader label,
+.stFileUploader p,
+.stFileUploader span,
+.stFileUploader div {
+    color: #2d3436 !important;
+}
+
 /* ================================
    پروگرس بار مدرن
    ================================ */
@@ -389,11 +403,18 @@ body {
     font-weight: 600;
     border: 1px solid var(--border-color);
     transition: all 0.3s ease;
+    color: var(--text-primary) !important;
 }
 
 .streamlit-expanderHeader:hover {
     background: #f8f9ff;
     border-color: #667eea;
+}
+
+.streamlit-expanderHeader p,
+.streamlit-expanderHeader span,
+.streamlit-expanderHeader div {
+    color: var(--text-primary) !important;
 }
 
 /* ================================
@@ -402,6 +423,16 @@ body {
 h1, h2, h3, h4, h5, h6, p, div, span, label {
     direction: rtl !important;
     text-align: right !important;
+}
+
+/* رنگ پیش‌فرض متن‌ها */
+.main p, .main div, .main span, .main label {
+    color: var(--text-primary);
+}
+
+/* متن‌های داخل کانتینرهای سفید */
+.stMarkdown, .element-container {
+    color: var(--text-primary);
 }
 
 /* ================================
