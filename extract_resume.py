@@ -1058,7 +1058,6 @@ def main():
     
     with tab2:
         if "processing_results" in st.session_state and st.session_state.processing_results:
-            st.markdown("### 📊 نتایج پردازش")
             display_results()
         else:
             st.markdown('<div class="info-box-modern">🔍 هنوز فایلی پردازش نشده است</div>', unsafe_allow_html=True)
