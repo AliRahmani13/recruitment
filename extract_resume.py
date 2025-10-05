@@ -285,24 +285,48 @@ body {
 }
 
 .stFileUploader > div {
-    background: white;
+    background: linear-gradient(135deg, #f8f9ff 0%, #e8eeff 100%);
     border: 3px dashed #667eea;
     border-radius: 20px;
     padding: 3rem 2rem;
     text-align: center;
     transition: all 0.3s ease;
+    position: relative;
 }
 
 .stFileUploader > div:hover {
-    background: #f8f9ff;
+    background: linear-gradient(135deg, #e8eeff 0%, #d8e4ff 100%);
     border-color: #764ba2;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
 }
 
 .stFileUploader label,
 .stFileUploader p,
 .stFileUploader span,
 .stFileUploader div {
-    color: #2d3436 !important;
+    color: #667eea !important;
+    font-weight: 600 !important;
+}
+
+.stFileUploader small {
+    color: #8b92d6 !important;
+    font-size: 0.9rem !important;
+}
+
+.stFileUploader button {
+    background: var(--primary-gradient) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 0.7rem 2rem !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+
+.stFileUploader button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
 }
 
 /* ================================
