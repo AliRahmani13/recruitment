@@ -353,6 +353,12 @@ body {
 
 .stDataFrame table {
     border-radius: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif !important;
+}
+
+.stDataFrame th,
+.stDataFrame td {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif !important;
 }
 
 /* ================================
@@ -485,6 +491,19 @@ h1, h2, h3, h4, h5, h6, p, div, span, label {
 /* متن‌های داخل کانتینرهای سفید */
 .stMarkdown, .element-container {
     color: var(--text-primary);
+}
+
+/* عناوین در صفحه اصلی */
+.main h1, .main h2, .main h3, .main h4, .main h5, .main h6 {
+    color: #2d3436 !important;
+    font-weight: 700 !important;
+}
+
+/* متن‌های Markdown */
+.main .stMarkdown p,
+.main .stMarkdown div,
+.main .stMarkdown span {
+    color: #2d3436 !important;
 }
 
 /* ================================
