@@ -337,7 +337,6 @@ def score_text_section(text):
         return 30
 
 def process_batch(batch_df, prompt_text):
-    # ✅ Generate unique row_id for each row (using index)
     payload = {
         "employer requirements": prompt_text,
         "applicant information": [
@@ -482,8 +481,7 @@ def apply_matching_to_batch(batch_df):
         resume_text = " ".join([str(row[col]) for col in batch_df.columns])
         match_df = evaluate_resume_against_all_jobs(resume_text, JOB_PROFILES)
 
-        # ✅ Use row index as identifier instead of شناسه
-        match_df["ردیف رزومه"] = idx + 1  # +1 for human-readable row number
+        match_df["ردیف رزومه"] = idx + 1
         match_df["نام"] = row.get("نام", "")
         match_df["نام خانوادگی"] = row.get("نام خانوادگی", "")
 
@@ -878,7 +876,6 @@ def process_single_resume(args):
     idx, row, api_key, all_skills = args
     
     try:
-        # Create a dedicated LLM instance for this API key
         llm_instance = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=api_key)
         
         resume = " ".join([str(row[col]) for col in row.index]) 
@@ -889,7 +886,6 @@ def process_single_resume(args):
         volunteering_field = row.get("فعالیت داوطلبانه", "") 
         about_me_field = row.get("درباره من", "")
 
-        # Process with the dedicated API key
         results = scoring_chain(
             resume, 
             all_skills, 
@@ -916,12 +912,10 @@ def process_single_resume(args):
         return (idx, None, str(e))
 
 if uploaded_file:
-    df = pd.read_excel(uploaded_file, header=0)  # Explicitly use first row as header
+    df = pd.read_excel(uploaded_file, header=0)
     
-    # Display basic info about the loaded data
     st.info(f"تعداد رزومه‌های بارگذاری شده: {len(df)} | تعداد ستون‌ها: {len(df.columns)}")
     
-    # Show a preview of the data
     with st.expander("نمایش پیش‌نمایش داده‌ها"):
         st.dataframe(df.head())
     
@@ -930,38 +924,31 @@ if uploaded_file:
     if stage == "امتیازدهی": 
         st.markdown("### 🚀 مرحله امتیازدهی رزومه‌ها") 
         
-        # Show max parallel workers based on API keys
         max_workers = min(len(API_KEYS), len(df))
         st.info(f"پردازش موازی با {max_workers} API Key برای {len(df)} رزومه")
         
         if st.button("شروع امتیازدهی"): 
             results_placeholder = st.empty() 
             progress_bar = st.progress(0) 
-            rows = [None] * len(df)  # Pre-allocate list to maintain order
+            rows = [None] * len(df)
             completed = 0
             
-            # Prepare arguments for parallel processing
-            # Assign each row to an API key (cycling through if more rows than keys)
             processing_args = [
                 (idx, row, API_KEYS[idx % len(API_KEYS)], all_skills)
                 for idx, (_, row) in enumerate(df.iterrows())
             ]
             
-            # Process in parallel using ThreadPoolExecutor
             with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-                # Submit all tasks
                 future_to_idx = {
                     executor.submit(process_single_resume, args): args[0] 
                     for args in processing_args
                 }
                 
-                # Collect results as they complete
                 for future in concurrent.futures.as_completed(future_to_idx):
                     idx, row_data, error = future.result()
                     
                     if error:
                         st.warning(f"⚠️ خطا در پردازش رزومه ردیف {idx + 1}: {error}")
-                        # Create minimal row data for failed processing
                         row_data = df.iloc[idx].to_dict()
                         row_data['ردیف'] = idx + 1
                         row_data['تایید و رد اولیه'] = "خطا"
@@ -970,16 +957,13 @@ if uploaded_file:
                     rows[idx] = row_data
                     completed += 1
                     
-                    # Update progress
                     progress_bar.progress(completed / len(df))
                     
-                    # Update live display
                     current_results = [r for r in rows if r is not None]
                     if current_results:
                         temp_df = pd.DataFrame(current_results)
                         results_placeholder.dataframe(temp_df)
                     
-                    # Update sidebar stats
                     live_df = pd.DataFrame(current_results)
                     total = len(df)
                     checked = len(live_df)
@@ -991,7 +975,6 @@ if uploaded_file:
                     status_placeholder.markdown(f"🔴 رد‌شده: {failed}")
                     progress_placeholder.progress(checked / total)
             
-            # Final results
             results_df = pd.DataFrame(rows)
             results_placeholder.dataframe(results_df)
             results_df.to_excel("resume_scoring.xlsx", index=False)
@@ -1012,7 +995,6 @@ if uploaded_file:
         results_placeholder = st.empty()
         progress_bar = st.progress(0)
         
-        # Show max parallel workers
         max_workers = min(len(API_KEYS), len(df))
         st.info(f"پردازش موازی با {max_workers} API Key برای {len(df)} رزومه")
 
@@ -1024,7 +1006,6 @@ if uploaded_file:
                     try:
                         resume_text = " ".join([str(row[col]) for col in row.index])
                         
-                        # Use the specific API key for this resume
                         prompt = f"""شما یک ارزیاب منابع انسانی هستید. با توجه به رزومه زیر، لطفاً برای هر یک از موقعیت‌های شغلی تعریف‌شده، یک درصد تطابق بین ۰ تا ۱۰۰ بدهید و یک دلیل منطقی برای آن ذکر کنید.
 
 رزومه:
@@ -1070,7 +1051,6 @@ if uploaded_file:
                     except Exception as e:
                         return (idx, None, str(e))
                 
-                # Prepare arguments for parallel processing
                 processing_args = [
                     (idx, row, API_KEYS[idx % len(API_KEYS)])
                     for idx, (_, row) in enumerate(df.iterrows())
@@ -1079,7 +1059,6 @@ if uploaded_file:
                 all_results = [None] * len(df)
                 completed = 0
                 
-                # Process in parallel
                 with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
                     future_to_idx = {
                         executor.submit(process_single_matching, args): args[0]
@@ -1097,7 +1076,6 @@ if uploaded_file:
                         completed += 1
                         progress_bar.progress(completed / len(df))
                 
-                # Combine all results
                 match_results = pd.concat([r for r in all_results if r is not None], ignore_index=True)
                 
                 def make_sentence(row):
@@ -1157,4 +1135,3 @@ if RESULT_FILE_PATH.exists():
     style_excel(RESULT_FILE_PATH)
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
-
