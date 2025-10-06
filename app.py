@@ -45,24 +45,89 @@ API_KEYS = [
     "AIzaSyB51i5YnENFBE8aYncinPtwLk1dThl2CuA"
 ]
 
+# Enhanced Persian font and RTL styling
 font_css = """
 <style>
-  @font-face {
-    font-family: 'BNazanin';
-    src: url('fonts/0 Nazanin.TTF') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  @import url('https://cdn.fontcdn.ir/Font/Persian/B_Homa/B_Homa.css');
+  
+  * {
+    font-family: 'B Homa', Tahoma, Arial, sans-serif !important;
   }
-
-  @font-face {
-    font-family: 'BNazanin';
-    src: url('fonts/0 Nazanin Bold.TTF') format('truetype');
-    font-weight: bold;
-    font-style: normal;
+  
+  html, body, [class^="st-"], [class*=" st-"], 
+  .block-container, div, p, span, label, input, textarea, 
+  button, .stButton button, .stSelectbox, .stMultiSelect,
+  .stTextInput, .stTextArea, .stRadio, .stCheckbox,
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'B Homa', Tahoma, Arial, sans-serif !important;
+    direction: rtl !important;
+    text-align: right !important;
   }
-
-  html, body, [class^="st-"], [class*=" st-"], .block-container {
-    font-family: 'BNazanin', sans-serif !important;
+  
+  .stMarkdown, .stMarkdown p, .stMarkdown div {
+    direction: rtl !important;
+    text-align: right !important;
+  }
+  
+  .stButton button {
+    direction: rtl !important;
+    text-align: center !important;
+  }
+  
+  .stDataFrame, .dataframe {
+    direction: rtl !important;
+  }
+  
+  .stDataFrame th, .stDataFrame td {
+    text-align: right !important;
+  }
+  
+  .stSelectbox > div > div {
+    direction: rtl !important;
+    text-align: right !important;
+  }
+  
+  .stMultiSelect > div {
+    direction: rtl !important;
+    text-align: right !important;
+  }
+  
+  .stTextInput > div > div > input,
+  .stTextArea > div > div > textarea {
+    direction: rtl !important;
+    text-align: right !important;
+  }
+  
+  .stProgress > div > div {
+    direction: ltr !important;
+  }
+  
+  .stSidebar {
+    direction: rtl !important;
+    text-align: right !important;
+  }
+  
+  .stSidebar [data-testid="stMarkdownContainer"] {
+    direction: rtl !important;
+    text-align: right !important;
+  }
+  
+  .custom-title {
+    font-size: 50px !important;
+    color: #1a73e8 !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    margin-top: 40px !important;
+    margin-bottom: 30px !important;
+    font-family: 'B Homa', Tahoma, Arial, sans-serif !important;
+  }
+  
+  .stExpander {
+    direction: rtl !important;
+    text-align: right !important;
+  }
+  
+  .stExpander [data-testid="stMarkdownContainer"] {
     direction: rtl !important;
     text-align: right !important;
   }
@@ -70,6 +135,13 @@ font_css = """
 """
 st.markdown(font_css, unsafe_allow_html=True)
 
+# Set page config for RTL
+st.set_page_config(
+    page_title="سامانه ارزیابی رزومه",
+    page_icon="📋",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 def style_excel(path): 
     wb = openpyxl.load_workbook(path) 
@@ -79,8 +151,8 @@ def style_excel(path):
     row_fill_odd = PatternFill(start_color="FFFFFF", end_color="FFFFFF", fill_type="solid")
     row_fill_even = PatternFill(start_color="EAF3FA", end_color="EAF3FA", fill_type="solid")
 
-    header_font = Font(bold=True, name='B Nazanin', size=14)
-    row_font = Font(name='B Nazanin', size=12)
+    header_font = Font(bold=True, name='B Homa', size=14)
+    row_font = Font(name='B Homa', size=12)
     center_align = Alignment(horizontal="center", vertical="center", wrap_text=True)
 
     border = Border(
@@ -107,7 +179,7 @@ def style_excel(path):
     for col in ws.columns:
         if col[0].value == "تحلیل نهایی":
             for cell in col:
-                cell.alignment = Alignment(wrap_text=True, vertical="top", horizontal="center")
+                cell.alignment = Alignment(wrap_text=True, vertical="top", horizontal="right", reading_order=2)
 
     for col in ws.columns: 
         max_length = 0 
@@ -122,6 +194,7 @@ def style_excel(path):
         ws.column_dimensions[column].width = adjusted_width 
 
     ws.freeze_panes = ws["A2"] 
+    ws.sheet_view.rightToLeft = True
 
     wb.save(path)
 
@@ -337,7 +410,6 @@ def score_text_section(text):
         return 30
 
 def process_batch(batch_df, prompt_text):
-    # ✅ Generate unique row_id for each row (using index)
     payload = {
         "employer requirements": prompt_text,
         "applicant information": [
@@ -482,8 +554,7 @@ def apply_matching_to_batch(batch_df):
         resume_text = " ".join([str(row[col]) for col in batch_df.columns])
         match_df = evaluate_resume_against_all_jobs(resume_text, JOB_PROFILES)
 
-        # ✅ Use row index as identifier instead of شناسه
-        match_df["ردیف رزومه"] = idx + 1  # +1 for human-readable row number
+        match_df["ردیف رزومه"] = idx + 1
         match_df["نام"] = row.get("نام", "")
         match_df["نام خانوادگی"] = row.get("نام خانوادگی", "")
 
@@ -768,7 +839,7 @@ def evaluate_resume_against_all_jobs(resume_text, job_profiles):
         parsed = json.loads(json_text)
         return pd.DataFrame(parsed)
     except Exception as e:
-        st.error(f"❌ خطا در تحلیل تطابق: {e}")
+        st.error(f"خطا در تحلیل تطابق: {e}")
         return pd.DataFrame()
 
 def process_resume_row(row, row_index):
@@ -801,20 +872,8 @@ def process_resume_row(row, row_index):
     st.session_state['live_results'].append(new_data)
     return new_data
 
-st.markdown("""
-    <style>
-    .custom-title {
-        font-size: 50px !important;
-        color: #1a73e8 !important;
-        font-weight: bold !important;
-        text-align: center !important;
-        margin-top: 40px !important;
-        margin-bottom: 30px !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
 st.markdown('<div class="custom-title">📋 سامانه هوشمند ارزیابی رزومه</div>', unsafe_allow_html=True)
-st.markdown("<p style='font-size: 16px; color: #555;'>ارزیابی هوشمند رزومه‌ها بر اساس معیارهای منابع انسانی، شناسنامه‌های شغلی و مهارت‌های تخصصی.</p>", unsafe_allow_html=True)
+st.markdown("<p style='font-size: 16px; color: #555; text-align: center;'>ارزیابی هوشمند رزومه‌ها بر اساس معیارهای منابع انسانی، شناسنامه‌های شغلی و مهارت‌های تخصصی.</p>", unsafe_allow_html=True)
 
 uploaded_file = st.file_uploader("📄 فایل اکسل رزومه‌ها را بارگذاری کنید:", type=["xlsx"])
 
@@ -825,10 +884,10 @@ with st.sidebar:
     progress_placeholder = st.empty()
 
 if uploaded_file and ('live_results' not in st.session_state or len(st.session_state['live_results']) == 0):
-    status_placeholder.info("✅ فایل آپلود شده. آماده برای شروع ارزیابی...")
+    status_placeholder.info("فایل آپلود شده. آماده برای شروع ارزیابی...")
     progress_placeholder.progress(0)
 elif not uploaded_file:
-    status_placeholder.info("⏳ منتظر آپلود فایل رزومه باشید.")
+    status_placeholder.info("منتظر آپلود فایل رزومه باشید.")
     progress_placeholder.progress(0)
 
 with st.sidebar:
@@ -838,7 +897,7 @@ with st.sidebar:
                 del st.session_state[key]
         if RESULT_FILE_PATH.exists():
             RESULT_FILE_PATH.unlink()
-        st.success("✅ اطلاعات با موفقیت ریست شد.")
+        st.success("اطلاعات با موفقیت ریست شد.")
 
 job_titles = [job['title'] for job in JOB_PROFILES]
 
@@ -878,7 +937,6 @@ def process_single_resume(args):
     idx, row, api_key, all_skills = args
     
     try:
-        # Create a dedicated LLM instance for this API key
         llm_instance = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=api_key)
         
         resume = " ".join([str(row[col]) for col in row.index]) 
@@ -889,7 +947,6 @@ def process_single_resume(args):
         volunteering_field = row.get("فعالیت داوطلبانه", "") 
         about_me_field = row.get("درباره من", "")
 
-        # Process with the dedicated API key
         results = scoring_chain(
             resume, 
             all_skills, 
@@ -916,12 +973,10 @@ def process_single_resume(args):
         return (idx, None, str(e))
 
 if uploaded_file:
-    df = pd.read_excel(uploaded_file, header=0)  # Explicitly use first row as header
+    df = pd.read_excel(uploaded_file, header=0)
     
-    # Display basic info about the loaded data
     st.info(f"تعداد رزومه‌های بارگذاری شده: {len(df)} | تعداد ستون‌ها: {len(df.columns)}")
     
-    # Show a preview of the data
     with st.expander("نمایش پیش‌نمایش داده‌ها"):
         st.dataframe(df.head())
     
@@ -930,38 +985,31 @@ if uploaded_file:
     if stage == "امتیازدهی": 
         st.markdown("### 🚀 مرحله امتیازدهی رزومه‌ها") 
         
-        # Show max parallel workers based on API keys
         max_workers = min(len(API_KEYS), len(df))
         st.info(f"پردازش موازی با {max_workers} API Key برای {len(df)} رزومه")
         
         if st.button("شروع امتیازدهی"): 
             results_placeholder = st.empty() 
             progress_bar = st.progress(0) 
-            rows = [None] * len(df)  # Pre-allocate list to maintain order
+            rows = [None] * len(df)
             completed = 0
             
-            # Prepare arguments for parallel processing
-            # Assign each row to an API key (cycling through if more rows than keys)
             processing_args = [
                 (idx, row, API_KEYS[idx % len(API_KEYS)], all_skills)
                 for idx, (_, row) in enumerate(df.iterrows())
             ]
             
-            # Process in parallel using ThreadPoolExecutor
             with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-                # Submit all tasks
                 future_to_idx = {
                     executor.submit(process_single_resume, args): args[0] 
                     for args in processing_args
                 }
                 
-                # Collect results as they complete
                 for future in concurrent.futures.as_completed(future_to_idx):
                     idx, row_data, error = future.result()
                     
                     if error:
-                        st.warning(f"⚠️ خطا در پردازش رزومه ردیف {idx + 1}: {error}")
-                        # Create minimal row data for failed processing
+                        st.warning(f"خطا در پردازش رزومه ردیف {idx + 1}: {error}")
                         row_data = df.iloc[idx].to_dict()
                         row_data['ردیف'] = idx + 1
                         row_data['تایید و رد اولیه'] = "خطا"
@@ -970,16 +1018,13 @@ if uploaded_file:
                     rows[idx] = row_data
                     completed += 1
                     
-                    # Update progress
                     progress_bar.progress(completed / len(df))
                     
-                    # Update live display
                     current_results = [r for r in rows if r is not None]
                     if current_results:
                         temp_df = pd.DataFrame(current_results)
                         results_placeholder.dataframe(temp_df)
                     
-                    # Update sidebar stats
                     live_df = pd.DataFrame(current_results)
                     total = len(df)
                     checked = len(live_df)
@@ -991,13 +1036,12 @@ if uploaded_file:
                     status_placeholder.markdown(f"🔴 رد‌شده: {failed}")
                     progress_placeholder.progress(checked / total)
             
-            # Final results
             results_df = pd.DataFrame(rows)
             results_placeholder.dataframe(results_df)
             results_df.to_excel("resume_scoring.xlsx", index=False)
             style_excel("resume_scoring.xlsx")
 
-            st.success("✅ امتیازدهی به پایان رسید.")
+            st.success("امتیازدهی به پایان رسید.")
 
             with open("resume_scoring.xlsx", "rb") as f:
                 st.download_button(
@@ -1012,7 +1056,6 @@ if uploaded_file:
         results_placeholder = st.empty()
         progress_bar = st.progress(0)
         
-        # Show max parallel workers
         max_workers = min(len(API_KEYS), len(df))
         st.info(f"پردازش موازی با {max_workers} API Key برای {len(df)} رزومه")
 
@@ -1024,7 +1067,6 @@ if uploaded_file:
                     try:
                         resume_text = " ".join([str(row[col]) for col in row.index])
                         
-                        # Use the specific API key for this resume
                         prompt = f"""شما یک ارزیاب منابع انسانی هستید. با توجه به رزومه زیر، لطفاً برای هر یک از موقعیت‌های شغلی تعریف‌شده، یک درصد تطابق بین ۰ تا ۱۰۰ بدهید و یک دلیل منطقی برای آن ذکر کنید.
 
 رزومه:
@@ -1070,7 +1112,6 @@ if uploaded_file:
                     except Exception as e:
                         return (idx, None, str(e))
                 
-                # Prepare arguments for parallel processing
                 processing_args = [
                     (idx, row, API_KEYS[idx % len(API_KEYS)])
                     for idx, (_, row) in enumerate(df.iterrows())
@@ -1079,7 +1120,6 @@ if uploaded_file:
                 all_results = [None] * len(df)
                 completed = 0
                 
-                # Process in parallel
                 with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
                     future_to_idx = {
                         executor.submit(process_single_matching, args): args[0]
@@ -1090,14 +1130,13 @@ if uploaded_file:
                         idx, match_df, error = future.result()
                         
                         if error:
-                            st.warning(f"⚠️ خطا در تطبیق رزومه ردیف {idx + 1}: {error}")
+                            st.warning(f"خطا در تطبیق رزومه ردیف {idx + 1}: {error}")
                         else:
                             all_results[idx] = match_df
                         
                         completed += 1
                         progress_bar.progress(completed / len(df))
                 
-                # Combine all results
                 match_results = pd.concat([r for r in all_results if r is not None], ignore_index=True)
                 
                 def make_sentence(row):
@@ -1128,7 +1167,7 @@ if uploaded_file:
                 summary_df.to_excel(summary_path, index=False)
                 style_excel(summary_path)
 
-                st.success("✅ تطبیق با شناسنامه‌های شغلی با موفقیت انجام شد.")
+                st.success("تطبیق با شناسنامه‌های شغلی با موفقیت انجام شد.")
                 st.dataframe(summary_df)
 
                 with open(summary_path, "rb") as f:
@@ -1137,7 +1176,7 @@ if uploaded_file:
                 progress_bar.progress(1.0)
             
             except Exception as e:
-                st.error(f"❌ خطا در انجام تطبیق: {e}")
+                st.error(f"خطا در انجام تطبیق: {e}")
 
 if RESULT_FILE_PATH.exists():
     final_df = pd.read_excel(RESULT_FILE_PATH)
