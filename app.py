@@ -45,30 +45,60 @@ API_KEYS = [
     "AIzaSyB51i5YnENFBE8aYncinPtwLk1dThl2CuA"
 ]
 
-font_css = """
-<style>
-  @font-face {
-    font-family: 'BHoma';
-    src: url('fonts/B Homa.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
+def load_font(font_path):
+    """Load font file and convert to base64"""
+    with open(font_path, "rb") as f:
+        font_data = f.read()
+    return base64.b64encode(font_data).decode()
 
-  @font-face {
-    font-family: 'BHoma';
-    src: url('fonts/B Homa Bold.ttf') format('truetype');
-    font-weight: bold;
-    font-style: normal;
-  }
+# Load fonts
+try:
+    font_regular = load_font("fonts/B Homa.ttf")
+    font_bold = load_font("fonts/B Homa Bold.ttf")
+    
+    font_css = f"""
+    <style>
+      @font-face {{
+        font-family: 'BHoma';
+        src: url(data:font/truetype;charset=utf-8;base64,{font_regular}) format('truetype');
+        font-weight: normal;
+        font-style: normal;
+      }}
 
-  html, body, [class^="st-"], [class*=" st-"], .block-container {
-    font-family: 'BHoma', sans-serif !important;
-    direction: rtl !important;
-    text-align: right !important;
-  }
-</style>
-"""
-st.markdown(font_css, unsafe_allow_html=True)
+      @font-face {{
+        font-family: 'BHoma';
+        src: url(data:font/truetype;charset=utf-8;base64,{font_bold}) format('truetype');
+        font-weight: bold;
+        font-style: normal;
+      }}
+
+      html, body, [class^="st-"], [class*=" st-"], .stApp, .block-container {{
+        font-family: 'BHoma', Tahoma, sans-serif !important;
+        direction: rtl !important;
+        text-align: right !important;
+      }}
+      
+      /* Target all Streamlit elements */
+      .stButton > button {{
+        font-family: 'BHoma', Tahoma, sans-serif !important;
+      }}
+      
+      .stSelectbox label, .stMultiSelect label, .stTextInput label {{
+        font-family: 'BHoma', Tahoma, sans-serif !important;
+      }}
+      
+      div[data-testid="stDataFrame"] * {{
+        font-family: 'BHoma', Tahoma, sans-serif !important;
+      }}
+      
+      .stMarkdown, .stText {{
+        font-family: 'BHoma', Tahoma, sans-serif !important;
+      }}
+    </style>
+    """
+    st.markdown(font_css, unsafe_allow_html=True)
+except FileNotFoundError:
+    st.error("فایل‌های فونت B Homa یافت نشد. لطفاً فایل‌های فونت را در پوشه fonts قرار دهید.")
 
 
 def style_excel(path): 
@@ -1135,3 +1165,4 @@ if RESULT_FILE_PATH.exists():
     style_excel(RESULT_FILE_PATH)
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
