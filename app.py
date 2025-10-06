@@ -48,21 +48,21 @@ API_KEYS = [
 font_css = """
 <style>
   @font-face {
-    font-family: 'BNazanin';
-    src: url('fonts/0 Nazanin.TTF') format('truetype');
+    font-family: 'BHoma';
+    src: url('fonts/B Homa.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
   }
 
   @font-face {
-    font-family: 'BNazanin';
-    src: url('fonts/0 Nazanin Bold.TTF') format('truetype');
+    font-family: 'BHoma';
+    src: url('fonts/B Homa Bold.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
   }
 
   html, body, [class^="st-"], [class*=" st-"], .block-container {
-    font-family: 'BNazanin', sans-serif !important;
+    font-family: 'BHoma', sans-serif !important;
     direction: rtl !important;
     text-align: right !important;
   }
@@ -79,8 +79,8 @@ def style_excel(path):
     row_fill_odd = PatternFill(start_color="FFFFFF", end_color="FFFFFF", fill_type="solid")
     row_fill_even = PatternFill(start_color="EAF3FA", end_color="EAF3FA", fill_type="solid")
 
-    header_font = Font(bold=True, name='B Nazanin', size=14)
-    row_font = Font(name='B Nazanin', size=12)
+    header_font = Font(bold=True, name='B Homa', size=14)
+    row_font = Font(name='B Homa', size=12)
     center_align = Alignment(horizontal="center", vertical="center", wrap_text=True)
 
     border = Border(
@@ -1157,3 +1157,4 @@ if RESULT_FILE_PATH.exists():
     style_excel(RESULT_FILE_PATH)
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
