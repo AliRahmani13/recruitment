@@ -940,7 +940,7 @@ def process_single_resume(args):
         return (idx, None, str(e))
 
 if uploaded_file:
-    df = pd.read_excel(uploaded_file, header=0)
+    df = pd.read_excel(uploaded_file, skiprows=2)
     
     st.info(f"تعداد رزومه‌های بارگذاری شده: {len(df)} | تعداد ستون‌ها: {len(df.columns)}")
     
@@ -1163,5 +1163,6 @@ if RESULT_FILE_PATH.exists():
     style_excel(RESULT_FILE_PATH)
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
 
 
