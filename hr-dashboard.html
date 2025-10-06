@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سامانه یکپارچه جذب نیروی انسانی</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      min-height: 100vh;
+      font-family: "Vazirmatn", sans-serif;
+      color: #fff;
+      direction: rtl;
+      padding: 40px 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    body::before {
+      content: "";
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(155, 93, 229, 0.3), transparent);
+      border-radius: 50%;
+      top: -150px;
+      right: -150px;
+      animation: float 8s ease-in-out infinite;
+    }
+    
+    body::after {
+      content: "";
+      position: fixed;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(0, 245, 212, 0.2), transparent);
+      border-radius: 50%;
+      bottom: -100px;
+      left: -100px;
+      animation: float 10s ease-in-out infinite reverse;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(30px, 30px); }
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    
+    h1 {
+      font-size: 2.8em;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #9b5de5, #00bbf9, #00f5d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInDown 1s ease;
+      text-shadow: 0 0 30px rgba(155, 93, 229, 0.5);
+    }
+    
+    .subtitle {
+      text-align: center;
+      font-size: 1.1em;
+      color: #b8b8d1;
+      margin-bottom: 60px;
+      animation: fadeInUp 1s ease 0.2s both;
+    }
+    
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      padding: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px 30px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.6s ease both;
+    }
+    
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+    .card:nth-child(4) { animation-delay: 0.4s; }
+    
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.1));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    
+    .card:hover::before {
+      opacity: 1;
+    }
+    
+    .card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .card:nth-child(1) {
+      background: linear-gradient(135deg, rgba(106, 17, 203, 0.2), rgba(37, 117, 252, 0.2));
+    }
+    
+    .card:nth-child(2) {
+      background: linear-gradient(135deg, rgba(67, 233, 123, 0.2), rgba(56, 249, 215, 0.2));
+    }
+    
+    .card:nth-child(3) {
+      background: linear-gradient(135deg, rgba(250, 112, 154, 0.2), rgba(254, 225, 64, 0.2));
+    }
+    
+    .card:nth-child(4) {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+    }
+    
+    .card-icon {
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-align: center;
+      filter: drop-shadow(0 0 10px currentColor);
+    }
+    
+    .card:nth-child(1) .card-icon { color: #2575fc; }
+    .card:nth-child(2) .card-icon { color: #38f9d7; }
+    .card:nth-child(3) .card-icon { color: #fee140; }
+    .card:nth-child(4) .card-icon { color: #764ba2; }
+    
+    .card a {
+      text-decoration: none;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .card-title {
+      font-size: 1.4em;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.5;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2em;
+      }
+      
+      .cards {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .card {
+        padding: 35px 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>سامانه یکپارچه جذب نیروی انسانی</h1>
+    <p class="subtitle">دسترسی آسان به ابزارهای ارزیابی و مدیریت منابع انسانی</p>
+    
+    <div class="cards">
+      <div class="card">
+        <a href="https://01996c94-f5a4-c3e6-123c-22ce3d2a6180.share.connect.posit.cloud/" target="_blank">
+          <div class="card-icon">🤖</div>
+          <div class="card-title">پردازشگر هوشمند رزومه</div>
+        </a>
+      </div>
+      
+      <div class="card">
+        <a href="https://0199284c-8df8-a8e8-5b25-51c119b80843.share.connect.posit.cloud/" target="_blank">
+          <div class="card-icon">✅</div>
+          <div class="card-title">سامانه ارزیابی رزومه</div>
+        </a>
+      </div>
+      
+      <div class="card">
+        <a href="https://0199a0ee-f1df-72e7-054f-1b37bf81a573.share.connect.posit.cloud/" target="_blank">
+          <div class="card-icon">🧠</div>
+          <div class="card-title">آزمون تفکر انتقادی</div>
+        </a>
+      </div>
+      
+      <div class="card">
+        <a href="https://0199a0cd-f3ab-b0f0-361c-78747415e001.share.connect.posit.cloud/" target="_blank">
+          <div class="card-icon">📊</div>
+          <div class="card-title">آزمون دیسک</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
