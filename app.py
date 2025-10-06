@@ -18,6 +18,14 @@ import openpyxl
 from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
 import base64
 
+# MUST BE FIRST: Set page config before any other Streamlit commands
+st.set_page_config(
+    page_title="سامانه ارزیابی رزومه",
+    page_icon="📋",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 API_KEYS = [
     "AIzaSyD09_gws5tBYZmD0YHF1etSZ7K-7wePIh0",
     "AIzaSyBJ2N1RHTTTQMXUod7jPymZwbgnPsdgLsY",
