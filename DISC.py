@@ -549,13 +549,14 @@ if st.session_state.current_q < TOTAL_QUESTIONS:
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # وقتی دکمه "سؤال بعد" زده شود، پاسخ‌ها ذخیره شوند
-    if st.button("⬅️ سؤال بعد"):
+    # دکمه با کلید یکتا بر اساس شماره سؤال
+    if st.button("⬅️ سؤال بعد", key=f"next_btn_{st.session_state.current_q}"):
         if most is None or least is None:
             st.error("⚠️ لطفاً گزینه‌های هر دو بخش را انتخاب کنید.")
         elif most == least:
             st.error("⚠️ گزینه‌های بیشترین و کمترین نباید یکسان باشند.")
         else:
+            # ذخیره فقط هنگام کلیک
             st.session_state[f'most_choice_{st.session_state.current_q}'] = most
             st.session_state[f'least_choice_{st.session_state.current_q}'] = least
 
@@ -825,4 +826,5 @@ with st.sidebar:
         st.session_state.responses = simulated
         st.session_state.current_q = TOTAL_QUESTIONS
         st.rerun()
+
 
