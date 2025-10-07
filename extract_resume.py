@@ -1024,40 +1024,47 @@ def main():
     ])
     
     with tab1:
-    st.markdown('<div class="modern-card">', unsafe_allow_html=True)
-    
-    # عنوان ساده‌تر
-    st.markdown("""
-    <div style="text-align: center; margin-bottom: 2rem;">
-        <h2 style="color: #667eea; margin-bottom: 0.5rem;">📤 آپلود فایل‌های رزومه</h2>
-        <p style="color: #636e72; font-size: 1rem;">فایل‌های PDF را بکشید و رها کنید یا کلیک کنید</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # آپلودر فایل
-    uploaded_files = st.file_uploader(
-        "",
-        type=['pdf'],
-        accept_multiple_files=True,
-        help="حداکثر تا 100 فایل به صورت همزمان",
-        label_visibility="collapsed"
-    )
-    
-    if uploaded_files:
-        st.markdown(f'<div class="success-box-modern">✅ {len(uploaded_files)} فایل آپلود شد</div>', unsafe_allow_html=True)
+        st.markdown('<div class="modern-card">', unsafe_allow_html=True)
+        st.markdown('''
+        <div style="text-align: center; padding: 1rem 0;">
+            <h3 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                       -webkit-background-clip: text;
+                       -webkit-text-fill-color: transparent;
+                       background-clip: text;
+                       font-size: 2rem;
+                       font-weight: 700;
+                       margin-bottom: 0.5rem;">
+                📤 آپلود فایل‌های رزومه
+            </h3>
+            <p style="color: #8b92d6; font-size: 1.1rem; margin: 0;">
+                فایل‌های PDF را بکشید و رها کنید یا کلیک کنید
+            </p>
+        </div>
+        ''', unsafe_allow_html=True)
         
-        with st.expander("📋 فایل‌های آپلود شده", expanded=False):
-            for i, file in enumerate(uploaded_files, 1):
-                st.write(f"**{i}.** {file.name} ({file.size:,} بایت)")
+        uploaded_files = st.file_uploader(
+            "",
+            type=['pdf'],
+            accept_multiple_files=True,
+            help="حداکثر تا 100 فایل به صورت همزمان",
+            label_visibility="collapsed"
+        )
         
-        st.markdown(f'<div class="info-box-modern">🚀 پردازش با {max_workers} Thread و {len(api_keys)} کلید API</div>', unsafe_allow_html=True)
+        if uploaded_files:
+            st.markdown(f'<div class="success-box-modern">✅ {len(uploaded_files)} فایل آپلود شد</div>', unsafe_allow_html=True)
+            
+            with st.expander("📋 فایل‌های آپلود شده", expanded=False):
+                for i, file in enumerate(uploaded_files, 1):
+                    st.write(f"**{i}.** {file.name} ({file.size:,} بایت)")
+            
+            st.markdown(f'<div class="info-box-modern">🚀 پردازش با {max_workers} Thread و {len(api_keys)} کلید API</div>', unsafe_allow_html=True)
+            
+            col1, col2, col3 = st.columns([1, 2, 1])
+            with col2:
+                if st.button("🚀 شروع پردازش", type="primary", use_container_width=True):
+                    process_files_parallel(uploaded_files, api_keys, max_workers, max_retries)
         
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            if st.button("🚀 شروع پردازش", type="primary", use_container_width=True):
-                process_files_parallel(uploaded_files, api_keys, max_workers, max_retries)
-    
-    st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
     
     with tab2:
         if "processing_results" in st.session_state and st.session_state.processing_results:
@@ -1435,6 +1442,3 @@ if __name__ == "__main__":
         st.session_state.api_stats = None
     
     main()
-
-
-
