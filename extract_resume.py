@@ -1042,22 +1042,22 @@ def main():
         help="حداکثر تا 100 فایل به صورت همزمان",
         label_visibility="collapsed"
     )
+    
+    if uploaded_files:
+        st.markdown(f'<div class="success-box-modern">✅ {len(uploaded_files)} فایل آپلود شد</div>', unsafe_allow_html=True)
         
-        if uploaded_files:
-            st.markdown(f'<div class="success-box-modern">✅ {len(uploaded_files)} فایل آپلود شد</div>', unsafe_allow_html=True)
-            
-            with st.expander("📋 فایل‌های آپلود شده", expanded=False):
-                for i, file in enumerate(uploaded_files, 1):
-                    st.write(f"**{i}.** {file.name} ({file.size:,} بایت)")
-            
-            st.markdown(f'<div class="info-box-modern">🚀 پردازش با {max_workers} Thread و {len(api_keys)} کلید API</div>', unsafe_allow_html=True)
-            
-            col1, col2, col3 = st.columns([1, 2, 1])
-            with col2:
-                if st.button("🚀 شروع پردازش", type="primary", use_container_width=True):
-                    process_files_parallel(uploaded_files, api_keys, max_workers, max_retries)
+        with st.expander("📋 فایل‌های آپلود شده", expanded=False):
+            for i, file in enumerate(uploaded_files, 1):
+                st.write(f"**{i}.** {file.name} ({file.size:,} بایت)")
         
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="info-box-modern">🚀 پردازش با {max_workers} Thread و {len(api_keys)} کلید API</div>', unsafe_allow_html=True)
+        
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            if st.button("🚀 شروع پردازش", type="primary", use_container_width=True):
+                process_files_parallel(uploaded_files, api_keys, max_workers, max_retries)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
     
     with tab2:
         if "processing_results" in st.session_state and st.session_state.processing_results:
@@ -1435,5 +1435,6 @@ if __name__ == "__main__":
         st.session_state.api_stats = None
     
     main()
+
 
 
