@@ -516,46 +516,54 @@ st.markdown('</div>', unsafe_allow_html=True)
 if st.session_state.current_q < TOTAL_QUESTIONS:
     q = questions[st.session_state.current_q]
     
+    # ذخیره انتخاب‌ها در session_state
+    if f'most_choice_{st.session_state.current_q}' not in st.session_state:
+        st.session_state[f'most_choice_{st.session_state.current_q}'] = None
+    if f'least_choice_{st.session_state.current_q}' not in st.session_state:
+        st.session_state[f'least_choice_{st.session_state.current_q}'] = None
+    
     st.markdown('<div class="question-card animated">', unsafe_allow_html=True)
     st.markdown(f'<p class="question-text">❓ {q["text"]}</p>', unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
     
-    # تبدیل options به format قابل استفاده
-    options_for_most = [f"most_{i}" for i in range(len(q['options']))]
-    options_for_least = [f"least_{i}" for i in range(len(q['options']))]
-    
     with col1:
         st.markdown("### 💚 بیشترین شباهت")
-        most_idx = st.radio(
-            "بیشترین شباهت:",
-            options=options_for_most,
-            format_func=lambda x: q['options'][int(x.split('_')[1])]['label'],
-            key=f"most_{st.session_state.current_q}",
+        most = st.radio(
+            "بیشترین:",
+            q['options'],
+            key=f"most_radio_{st.session_state.current_q}",
+            format_func=lambda x: x['label'],
             index=None
         )
-        most = q['options'][int(most_idx.split('_')[1])] if most_idx else None
+        if most is not None:
+            st.session_state[f'most_choice_{st.session_state.current_q}'] = most
     
     with col2:
         st.markdown("### 💔 کمترین شباهت")
-        least_idx = st.radio(
-            "کمترین شباهت:",
-            options=options_for_least,
-            format_func=lambda x: q['options'][int(x.split('_')[1])]['label'],
-            key=f"least_{st.session_state.current_q}",
+        least = st.radio(
+            "کمترین:",
+            q['options'],
+            key=f"least_radio_{st.session_state.current_q}",
+            format_func=lambda x: x['label'],
             index=None
         )
-        least = q['options'][int(least_idx.split('_')[1])] if least_idx else None
+        if least is not None:
+            st.session_state[f'least_choice_{st.session_state.current_q}'] = least
     
     st.markdown('</div>', unsafe_allow_html=True)
     
+    # دریافت انتخاب‌های ذخیره شده
+    saved_most = st.session_state[f'most_choice_{st.session_state.current_q}']
+    saved_least = st.session_state[f'least_choice_{st.session_state.current_q}']
+    
     if st.button("⬅️ سؤال بعد"):
-        if most is None or least is None:
+        if saved_most is None or saved_least is None:
             st.error("⚠️ لطفاً گزینه‌های هر دو بخش را انتخاب کنید.")
-        elif most == least:
+        elif saved_most == saved_least:
             st.error("⚠️ گزینه‌های بیشترین و کمترین نباید یکسان باشند.")
         else:
-            st.session_state.responses.append({"most": most['dimension'], "least": least['dimension']})
+            st.session_state.responses.append({"most": saved_most['dimension'], "least": saved_least['dimension']})
             st.session_state.current_q += 1
             st.rerun()
 
