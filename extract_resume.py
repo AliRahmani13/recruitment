@@ -251,30 +251,21 @@ body {
 /* ================================
    تب‌های مدرن
    ================================ */
-.stTabs [data-baseweb="tab-list"] {
-    gap: 8px;
-    background: white;
-    border-radius: 16px;
-    padding: 8px;
-    box-shadow: var(--shadow-sm);
-    direction: rtl;
-}
-
 .stTabs [data-baseweb="tab"] {
     border-radius: 12px !important;
     padding: 12px 24px !important;
     font-weight: 600 !important;
     transition: all 0.3s ease !important;
-    color: #dc2626 !important;
+    color: #667eea !important;  /* ✅ بنفش روشن */
 }
 
 .stTabs [aria-selected="true"] {
     background: var(--primary-gradient) !important;
-    color: #dc2626 !important;
+    color: #ffffff !important;  /* ✅ سفید */
 }
 
 .stTabs button div {
-    color: #dc2626 !important;
+    color: inherit !important;
 }
 
 /* ================================
@@ -1451,3 +1442,4 @@ if __name__ == "__main__":
         st.session_state.api_stats = None
     
     main()
+
