@@ -126,6 +126,27 @@ def apply_modern_style():
         box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     }
     
+    .stSelectbox > div > div {
+        background: white !important;
+        border: 2px solid #e0e0e0 !important;
+        border-radius: 10px !important;
+        padding: 10px !important;
+        font-size: 1.1em !important;
+        color: #1a1a1a !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .stSelectbox > div > div:hover {
+        border-color: #667eea !important;
+        box-shadow: 0 0 10px rgba(102, 126, 234, 0.3) !important;
+    }
+    
+    .stSelectbox label {
+        font-size: 1.3em !important;
+        font-weight: 600 !important;
+        color: #1a1a1a !important;
+    }
+    
     .stRadio > label {
         font-size: 1.3em;
         font-weight: 600;
@@ -510,22 +531,22 @@ if st.session_state.current_q < TOTAL_QUESTIONS:
     
     with col1:
         st.markdown("### 💚 بیشترین شباهت")
-        most = st.radio(
+        most = st.selectbox(
             "این گزینه بیشترین شباهت به من دارد:",
-            q['options'],
+            options=[None] + q['options'],
+            format_func=lambda x: "-- انتخاب کنید --" if x is None else x['label'],
             key=f"most_{st.session_state.current_q}",
-            format_func=lambda x: x['label'],
-            index=None
+            label_visibility="collapsed"
         )
     
     with col2:
         st.markdown("### 💔 کمترین شباهت")
-        least = st.radio(
+        least = st.selectbox(
             "این گزینه کمترین شباهت به من دارد:",
-            q['options'],
+            options=[None] + q['options'],
+            format_func=lambda x: "-- انتخاب کنید --" if x is None else x['label'],
             key=f"least_{st.session_state.current_q}",
-            format_func=lambda x: x['label'],
-            index=None
+            label_visibility="collapsed"
         )
     
     st.markdown('</div>', unsafe_allow_html=True)
