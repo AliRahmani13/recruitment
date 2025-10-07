@@ -516,17 +516,17 @@ st.markdown('</div>', unsafe_allow_html=True)
 if st.session_state.current_q < TOTAL_QUESTIONS:
     q = questions[st.session_state.current_q]
     
-    # ذخیره انتخاب‌ها در session_state
+    # اگر پاسخ قبلی برای این سؤال وجود ندارد
     if f'most_choice_{st.session_state.current_q}' not in st.session_state:
         st.session_state[f'most_choice_{st.session_state.current_q}'] = None
     if f'least_choice_{st.session_state.current_q}' not in st.session_state:
         st.session_state[f'least_choice_{st.session_state.current_q}'] = None
-    
+
     st.markdown('<div class="question-card animated">', unsafe_allow_html=True)
     st.markdown(f'<p class="question-text">❓ {q["text"]}</p>', unsafe_allow_html=True)
-    
+
     col1, col2 = st.columns(2)
-    
+
     with col1:
         st.markdown("### 💚 بیشترین شباهت")
         most = st.radio(
@@ -536,9 +536,7 @@ if st.session_state.current_q < TOTAL_QUESTIONS:
             format_func=lambda x: x['label'],
             index=None
         )
-        if most is not None:
-            st.session_state[f'most_choice_{st.session_state.current_q}'] = most
-    
+
     with col2:
         st.markdown("### 💔 کمترین شباهت")
         least = st.radio(
@@ -548,10 +546,26 @@ if st.session_state.current_q < TOTAL_QUESTIONS:
             format_func=lambda x: x['label'],
             index=None
         )
-        if least is not None:
-            st.session_state[f'least_choice_{st.session_state.current_q}'] = least
-    
+
     st.markdown('</div>', unsafe_allow_html=True)
+
+    # وقتی دکمه "سؤال بعد" زده شود، پاسخ‌ها ذخیره شوند
+    if st.button("⬅️ سؤال بعد"):
+        if most is None or least is None:
+            st.error("⚠️ لطفاً گزینه‌های هر دو بخش را انتخاب کنید.")
+        elif most == least:
+            st.error("⚠️ گزینه‌های بیشترین و کمترین نباید یکسان باشند.")
+        else:
+            st.session_state[f'most_choice_{st.session_state.current_q}'] = most
+            st.session_state[f'least_choice_{st.session_state.current_q}'] = least
+
+            st.session_state.responses.append({
+                "most": most['dimension'],
+                "least": least['dimension']
+            })
+            st.session_state.current_q += 1
+            st.rerun()
+
     
     # دریافت انتخاب‌های ذخیره شده
     saved_most = st.session_state[f'most_choice_{st.session_state.current_q}']
@@ -811,3 +825,4 @@ with st.sidebar:
         st.session_state.responses = simulated
         st.session_state.current_q = TOTAL_QUESTIONS
         st.rerun()
+
