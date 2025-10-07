@@ -126,29 +126,8 @@ def apply_modern_style():
         box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     }
     
-    .stSelectbox > div > div {
-        background: white !important;
-        border: 2px solid #e0e0e0 !important;
-        border-radius: 10px !important;
-        padding: 10px !important;
-        font-size: 1.1em !important;
-        color: #1a1a1a !important;
-        transition: all 0.3s ease !important;
-    }
-    
-    .stSelectbox > div > div:hover {
-        border-color: #667eea !important;
-        box-shadow: 0 0 10px rgba(102, 126, 234, 0.3) !important;
-    }
-    
-    .stSelectbox label {
-        font-size: 1.3em !important;
-        font-weight: 600 !important;
-        color: #1a1a1a !important;
-    }
-    
     .stRadio > label {
-        font-size: 1.3em;
+        font-size: 1.2em;
         font-weight: 600;
         color: #1a1a1a;
         margin-bottom: 15px;
@@ -163,23 +142,36 @@ def apply_modern_style():
     }
     
     .stRadio > div > label {
-        color: #2c3e50 !important;
+        color: #1a1a1a !important;
         font-size: 1.1em !important;
-        padding: 12px !important;
+        padding: 15px !important;
         margin: 8px 0 !important;
         background: #f8f9fa !important;
         border-radius: 10px !important;
         transition: all 0.3s ease !important;
+        cursor: pointer !important;
+        border: 2px solid transparent !important;
     }
     
     .stRadio > div > label:hover {
-        background: #e9ecef !important;
+        background: #e3f2fd !important;
+        border-color: #667eea !important;
         transform: translateX(-5px) !important;
     }
     
     .stRadio > div > label > div {
         color: #1a1a1a !important;
         font-weight: 500 !important;
+    }
+    
+    .stRadio > div > label[data-checked="true"] {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: white !important;
+        border-color: #667eea !important;
+    }
+    
+    .stRadio > div > label[data-checked="true"] > div {
+        color: white !important;
     }
     
     .result-card {
@@ -529,25 +521,31 @@ if st.session_state.current_q < TOTAL_QUESTIONS:
     
     col1, col2 = st.columns(2)
     
+    # تبدیل options به format قابل استفاده
+    options_for_most = [f"most_{i}" for i in range(len(q['options']))]
+    options_for_least = [f"least_{i}" for i in range(len(q['options']))]
+    
     with col1:
         st.markdown("### 💚 بیشترین شباهت")
-        most = st.selectbox(
-            "این گزینه بیشترین شباهت به من دارد:",
-            options=[None] + q['options'],
-            format_func=lambda x: "-- انتخاب کنید --" if x is None else x['label'],
+        most_idx = st.radio(
+            "بیشترین شباهت:",
+            options=options_for_most,
+            format_func=lambda x: q['options'][int(x.split('_')[1])]['label'],
             key=f"most_{st.session_state.current_q}",
-            label_visibility="collapsed"
+            index=None
         )
+        most = q['options'][int(most_idx.split('_')[1])] if most_idx else None
     
     with col2:
         st.markdown("### 💔 کمترین شباهت")
-        least = st.selectbox(
-            "این گزینه کمترین شباهت به من دارد:",
-            options=[None] + q['options'],
-            format_func=lambda x: "-- انتخاب کنید --" if x is None else x['label'],
+        least_idx = st.radio(
+            "کمترین شباهت:",
+            options=options_for_least,
+            format_func=lambda x: q['options'][int(x.split('_')[1])]['label'],
             key=f"least_{st.session_state.current_q}",
-            label_visibility="collapsed"
+            index=None
         )
+        least = q['options'][int(least_idx.split('_')[1])] if least_idx else None
     
     st.markdown('</div>', unsafe_allow_html=True)
     
