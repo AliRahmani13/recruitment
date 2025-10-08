@@ -334,7 +334,7 @@ if st.session_state.current_q < TOTAL_QUESTIONS:
         else:
             st.session_state.responses.append({"most": most['dimension'], "least": least['dimension']})
             st.session_state.current_q += 1
-            st.experimental_rerun()
+            st.rerun()
 # --- 🎯 تست سریع با انتخاب تیپ DISC از سایدبار ---
 st.sidebar.markdown("## 🧪 تست سریع تیپ‌های DISC")
 
@@ -691,3 +691,4 @@ if st.session_state.current_q >= TOTAL_QUESTIONS and not st.session_state.submit
     """
 
     st.markdown(html_result, unsafe_allow_html=True)
+
