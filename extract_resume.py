@@ -953,6 +953,27 @@ def main():
     # Sidebar
     with st.sidebar:
         st.markdown("### ⚙️ تنظیمات")
+
+        st.markdown("---")
+        st.markdown("#### 🏠 منوی اصلی")
+        st.markdown("""
+        <a href="https://0199ba83-50df-1a06-c7cd-13893ecd791b.share.connect.posit.cloud/" 
+           target="_self" 
+           style="display: inline-block; 
+                  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                  color: white;
+                  padding: 12px 24px;
+                  border-radius: 12px;
+                  text-decoration: none;
+                  font-weight: 600;
+                  text-align: center;
+                  width: 100%;
+                  box-sizing: border-box;
+                  transition: all 0.3s ease;
+                  box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            🏠 بازگشت به صفحه اصلی
+        </a>
+        """, unsafe_allow_html=True)
         
         st.markdown("---")
         st.markdown("#### 🔑 کلیدهای API")
@@ -1442,3 +1463,4 @@ if __name__ == "__main__":
         st.session_state.api_stats = None
     
     main()
+
