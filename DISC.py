@@ -1,4 +1,4 @@
-# DISC Test App - Modern Purple Cinematic Design
+# DISC Test App (کامل شده با خروجی ۴ رقمی، تحلیل، تایمر و رابط راست‌چین)
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
@@ -20,179 +20,57 @@ def local_font_css(font_path, font_name):
         font-style: normal;  
     }}  
   
-    /* Modern Purple Theme */
-    .stApp {{
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    }}
-    
+    /* تمام اجزای صفحه، به جز بخش footer */  
     html, body, * {{  
         font-family: '{font_name}' !important;  
+        font-size: 22px !important;  
         direction: rtl !important;  
-        text-align: right !important;
-        color: #e0e0e0 !important;
+        text-align: right !important;  
     }}  
 
-    /* Cinematic Card Styles */
-    .cinematic-card {{
-        background: linear-gradient(145deg, rgba(88, 70, 192, 0.15), rgba(139, 92, 246, 0.1));
-        border: 1px solid rgba(167, 139, 250, 0.3);
-        border-radius: 20px;
-        padding: 30px;
-        margin: 20px 0;
-        box-shadow: 0 8px 32px rgba(139, 92, 246, 0.2);
-        backdrop-filter: blur(10px);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }}
-    
-    .cinematic-card:hover {{
-        transform: translateY(-5px);
-        box-shadow: 0 12px 48px rgba(167, 139, 250, 0.4);
-        border-color: rgba(167, 139, 250, 0.6);
-    }}
-
-    /* Header Styles */
+    /* تنظیم فونت برای تیترها */  
     h1, h2, h3, h4, h5, h6 {{  
         font-family: '{font_name}' !important;  
-        color: #a78bfa !important;
-        text-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
+        font-size: 20px !important;  
+        line-height: 2.2 !important;  
     }}  
   
     h1.main-title {{  
         font-family: '{font_name}' !important;  
-        font-size: 56px !important;  
-        color: #c4b5fd !important;  
+        font-size: 52px !important;  
+        color: #1a73e8 !important;  
         text-align: center !important;  
         font-weight: bold !important;  
         margin-top: 40px !important;  
-        margin-bottom: 30px !important;
-        text-shadow: 0 0 30px rgba(196, 181, 253, 0.6);
-        animation: glow 2s ease-in-out infinite alternate;
-    }}
-    
-    @keyframes glow {{
-        from {{ text-shadow: 0 0 20px rgba(167, 139, 250, 0.5); }}
-        to {{ text-shadow: 0 0 30px rgba(196, 181, 253, 0.8), 0 0 40px rgba(167, 139, 250, 0.4); }}
-    }}
+        margin-bottom: 30px !important;  
+    }}  
   
-    /* Button Styles */
-    .stButton > button {{
-        background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 15px !important;
-        padding: 15px 40px !important;
-        font-size: 18px !important;
-        font-weight: bold !important;
-        box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4) !important;
-        transition: all 0.3s ease !important;
-        cursor: pointer !important;
-    }}
-    
-    .stButton > button:hover {{
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 30px rgba(167, 139, 250, 0.6) !important;
-        background: linear-gradient(135deg, #8b5cf6 0%, #c4b5fd 100%) !important;
-    }}
-
-    /* Radio Button Styles */
-    .stRadio > div {{
-        background: rgba(88, 70, 192, 0.1);
-        border-radius: 15px;
-        padding: 20px;
-        border: 1px solid rgba(167, 139, 250, 0.2);
-    }}
-    
-    .stRadio > div:hover {{
-        background: rgba(88, 70, 192, 0.2);
-        border-color: rgba(167, 139, 250, 0.4);
-    }}
-
-    /* Progress Bar */
-    .stProgress > div > div > div {{
-        background: linear-gradient(90deg, #7c3aed 0%, #a78bfa 100%) !important;
-        box-shadow: 0 0 15px rgba(124, 58, 237, 0.6);
-    }}
-
-    /* Info/Warning/Success Boxes */
-    .stAlert {{
-        background: rgba(88, 70, 192, 0.2) !important;
-        border: 1px solid rgba(167, 139, 250, 0.4) !important;
-        border-radius: 15px !important;
-        backdrop-filter: blur(10px) !important;
-    }}
-
-    /* Sidebar Styles */
-    [data-testid="stSidebar"] {{
-        background: linear-gradient(180deg, #1a1a2e 0%, #0f3460 100%);
-        border-right: 1px solid rgba(167, 139, 250, 0.3);
-    }}
-    
-    [data-testid="stSidebar"] * {{
-        color: #e0e0e0 !important;
-    }}
-
-    /* Input Fields */
-    .stTextInput input, .stSelectbox div {{
-        background: rgba(88, 70, 192, 0.2) !important;
-        border: 1px solid rgba(167, 139, 250, 0.3) !important;
-        border-radius: 10px !important;
-        color: #e0e0e0 !important;
-        padding: 12px !important;
-    }}
-    
-    .stTextInput input:focus, .stSelectbox div:focus {{
-        border-color: rgba(167, 139, 250, 0.6) !important;
-        box-shadow: 0 0 15px rgba(124, 58, 237, 0.3) !important;
-    }}
-
-    /* Timer Box */
-    .timer-box {{
-        background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(167, 139, 250, 0.2));
-        border: 2px solid rgba(167, 139, 250, 0.5);
-        border-radius: 20px;
-        padding: 20px;
-        text-align: center;
-        font-size: 24px;
-        font-weight: bold;
-        color: #c4b5fd;
-        box-shadow: 0 4px 30px rgba(124, 58, 237, 0.4);
-        margin: 20px 0;
-    }}
-
-    /* Result Card */
-    .result-card {{
-        background: linear-gradient(145deg, rgba(88, 70, 192, 0.25), rgba(139, 92, 246, 0.15));
-        border: 2px solid rgba(167, 139, 250, 0.5);
-        border-radius: 25px;
-        padding: 40px;
-        margin: 30px 0;
-        box-shadow: 0 12px 48px rgba(139, 92, 246, 0.3);
-        backdrop-filter: blur(15px);
-    }}
-
-    /* Hide Streamlit Branding */
-    footer {{
-        visibility: hidden;
-    }}
-    
-    #MainMenu {{
-        visibility: hidden;
-    }}
-    
-    header {{
-        visibility: hidden;
-    }}
+    /* تنظیم فونت برای دکمه‌ها و ورودی‌ها */  
+    .stButton > button,  
+    .stDownloadButton > button,  
+    .stTextInput input,  
+    .stSelectbox div,  
+    .stFileUploader,  
+    .stFileUploader label,  
+    input, select, textarea, button {{  
+        font-family: '{font_name}' !important;  
+        font-size: 16px !important;  
+    }}  
+  
+    footer {{  
+        visibility: hidden;  
+    }}  
     </style>  
     """
 
 
 # تنظیمات صفحه و درج CSS فونت
-st.set_page_config(page_title="آزمون شخصیت شناسی DISC", layout="centered", initial_sidebar_state="expanded")
+st.set_page_config(page_title="آزمون شخصیت شناسی DISC", layout="centered")
 font_css = local_font_css("0 Nazanin.TTF", "Nazanin")
 st.markdown(font_css, unsafe_allow_html=True)
 
 # متغیرهای سراسری
-TOTAL_TIME = 20 * 60
+TOTAL_TIME = 20 * 60  # 20 دقیقه بر حسب ثانیه
 TOTAL_QUESTIONS = 24
 
 if 'start_time' not in st.session_state:
@@ -203,7 +81,10 @@ if 'responses' not in st.session_state:
 if 'submitted' not in st.session_state:
     st.session_state.submitted = False
 
+# سوالات DISC (پیش‌فرض: از قبل در متغیر questions موجود است)
 from random import shuffle
+questions = [...]  # این قسمت شامل لیست 24 سؤال فارسی از قبل است
+shuffle(questions)
 
 questions = [
     {
@@ -424,8 +305,83 @@ questions = [
     }
 ]
 
-shuffle(questions)
+# تایمر
+elapsed = int(time.time() - st.session_state.start_time)
+remaining = TOTAL_TIME - elapsed
+minutes = remaining // 60
+seconds = remaining % 60
+if remaining <= 0:
+    st.warning("زمان شما به پایان رسید. آزمون به طور خودکار ثبت شد.")
+    st.session_state.current_q = TOTAL_QUESTIONS
+else:
+    st.info(f"⏳ زمان باقی‌مانده: {minutes} دقیقه و {seconds} ثانیه")
 
+# نوار پیشرفت
+progress = int((st.session_state.current_q / TOTAL_QUESTIONS) * 100)
+st.progress(progress)
+
+# آزمون
+if st.session_state.current_q < TOTAL_QUESTIONS:
+    q = questions[st.session_state.current_q]
+    st.markdown(f"### سؤال {st.session_state.current_q + 1}: {q['text']}")
+    most = st.radio("بیشترین شباهت به من دارد:", q['options'], key=f"most_{st.session_state.current_q}", format_func=lambda x: x['label'], index=None)
+    least = st.radio("کمترین شباهت به من دارد:", q['options'], key=f"least_{st.session_state.current_q}", format_func=lambda x: x['label'], index=None)
+    if st.button("سؤال بعد"):
+        if most is None or least is None:
+            st.warning("لطفاً گزینه‌های هر دو بخش را انتخاب کنید.")
+        elif most == least:
+            st.warning("گزینه‌های بیشترین و کمترین نباید یکسان باشند.")
+        else:
+            st.session_state.responses.append({"most": most['dimension'], "least": least['dimension']})
+            st.session_state.current_q += 1
+            st.rerun()
+# --- 🎯 تست سریع با انتخاب تیپ DISC از سایدبار ---
+st.sidebar.markdown("## 🧪 تست سریع تیپ‌های DISC")
+
+test_type = st.sidebar.selectbox("انتخاب تیپ برای تست:", [
+    "High D", "High DI", "DI", "DC",
+    "High I", "ID", "IS", "IC",
+    "High S", "SD", "SCD", "SI",
+    "High C", "CS", "CIS"
+])
+
+if st.sidebar.button("🔁 اجرای تست ساختگی"):
+    simulated = []
+
+    if test_type == "High D":
+        simulated = [{"most": "D", "least": "S"}] * 20
+    elif test_type == "High DI":
+        simulated = [{"most": "D", "least": "S"}] * 12 + [{"most": "I", "least": "C"}] * 12
+    elif test_type == "DI":
+        simulated = [{"most": "D", "least": "C"}] * 12 + [{"most": "I", "least": "S"}] * 12
+    elif test_type == "DC":
+        simulated = [{"most": "D", "least": "I"}] * 12 + [{"most": "C", "least": "S"}] * 12
+    elif test_type == "High I":
+        simulated = [{"most": "I", "least": "C"}] * 20
+    elif test_type == "ID":
+        simulated = [{"most": "I", "least": "S"}] * 12 + [{"most": "D", "least": "C"}] * 12
+    elif test_type == "IS":
+        simulated = [{"most": "I", "least": "D"}] * 12 + [{"most": "S", "least": "C"}] * 12
+    elif test_type == "IC":
+        simulated = [{"most": "I", "least": "S"}] * 12 + [{"most": "C", "least": "D"}] * 12
+    elif test_type == "High S":
+        simulated = [{"most": "S", "least": "D"}] * 20
+    elif test_type == "SD":
+        simulated = [{"most": "S", "least": "I"}] * 12 + [{"most": "D", "least": "C"}] * 12
+    elif test_type == "SCD":
+        simulated = [{"most": "S", "least": "I"}] * 8 + [{"most": "C", "least": "I"}] * 8 + [{"most": "D", "least": "I"}] * 8
+    elif test_type == "SI":
+        simulated = [{"most": "S", "least": "C"}] * 12 + [{"most": "I", "least": "D"}] * 12
+    elif test_type == "High C":
+        simulated = [{"most": "C", "least": "I"}] * 20
+    elif test_type == "CS":
+        simulated = [{"most": "C", "least": "I"}] * 12 + [{"most": "S", "least": "D"}] * 12
+    elif test_type == "CIS":
+        simulated = [{"most": "C", "least": "D"}] * 8 + [{"most": "I", "least": "D"}] * 8 + [{"most": "S", "least": "D"}] * 8
+
+    st.session_state.responses = simulated
+    st.session_state.current_q = TOTAL_QUESTIONS
+    st.rerun()
 disc_data = {
   "disc_report": {
     "introduction": "این گزارش بر اساس مدل DISC و ترکیبات آن تهیه شده است تا 15 تیپ شخصیتی را پوشش دهد. مدل استاندارد DISC شامل 4 تیپ اصلی (D, I, S, C) است و سایر تیپ‌ها ترکیبی از این 4 سبک اصلی هستند که ویژگی‌های منحصر به فردی را ایجاد می‌کنند. این گزارش برای استفاده در تحلیل‌های شغلی و تیمی طراحی شده است.",
@@ -627,109 +583,13 @@ disc_data = {
     }
   }
 }
-
-# عنوان اصلی
-st.markdown('<h1 class="main-title">✨ آزمون شخصیت‌شناسی DISC ✨</h1>', unsafe_allow_html=True)
-
-# تایمر با استایل سینمایی
-elapsed = int(time.time() - st.session_state.start_time)
-remaining = TOTAL_TIME - elapsed
-minutes = remaining // 60
-seconds = remaining % 60
-
-if remaining <= 0:
-    st.markdown('<div class="timer-box">⏰ زمان به پایان رسید</div>', unsafe_allow_html=True)
-    st.session_state.current_q = TOTAL_QUESTIONS
-else:
-    st.markdown(f'<div class="timer-box">⏳ زمان باقی‌مانده: {minutes:02d}:{seconds:02d}</div>', unsafe_allow_html=True)
-
-# نوار پیشرفت
-progress = int((st.session_state.current_q / TOTAL_QUESTIONS) * 100)
-st.progress(progress)
-st.markdown(f'<p style="text-align: center; color: #a78bfa; font-size: 18px;">پیشرفت: {progress}% ({st.session_state.current_q}/{TOTAL_QUESTIONS})</p>', unsafe_allow_html=True)
-
-# سایدبار تست سریع
-st.sidebar.markdown("## 🧪 تست سریع تیپ‌های DISC")
-test_type = st.sidebar.selectbox("انتخاب تیپ برای تست:", [
-    "High D", "High DI", "DI", "DC",
-    "High I", "ID", "IS", "IC",
-    "High S", "SD", "SCD", "SI",
-    "High C", "CS", "CIS"
-])
-
-if st.sidebar.button("🔁 اجرای تست ساختگی"):
-    simulated = []
-    if test_type == "High D":
-        simulated = [{"most": "D", "least": "S"}] * 20
-    elif test_type == "High DI":
-        simulated = [{"most": "D", "least": "S"}] * 12 + [{"most": "I", "least": "C"}] * 12
-    elif test_type == "DI":
-        simulated = [{"most": "D", "least": "C"}] * 12 + [{"most": "I", "least": "S"}] * 12
-    elif test_type == "DC":
-        simulated = [{"most": "D", "least": "I"}] * 12 + [{"most": "C", "least": "S"}] * 12
-    elif test_type == "High I":
-        simulated = [{"most": "I", "least": "C"}] * 20
-    elif test_type == "ID":
-        simulated = [{"most": "I", "least": "S"}] * 12 + [{"most": "D", "least": "C"}] * 12
-    elif test_type == "IS":
-        simulated = [{"most": "I", "least": "D"}] * 12 + [{"most": "S", "least": "C"}] * 12
-    elif test_type == "IC":
-        simulated = [{"most": "I", "least": "S"}] * 12 + [{"most": "C", "least": "D"}] * 12
-    elif test_type == "High S":
-        simulated = [{"most": "S", "least": "D"}] * 20
-    elif test_type == "SD":
-        simulated = [{"most": "S", "least": "I"}] * 12 + [{"most": "D", "least": "C"}] * 12
-    elif test_type == "SCD":
-        simulated = [{"most": "S", "least": "I"}] * 8 + [{"most": "C", "least": "I"}] * 8 + [{"most": "D", "least": "I"}] * 8
-    elif test_type == "SI":
-        simulated = [{"most": "S", "least": "C"}] * 12 + [{"most": "I", "least": "D"}] * 12
-    elif test_type == "High C":
-        simulated = [{"most": "C", "least": "I"}] * 20
-    elif test_type == "CS":
-        simulated = [{"most": "C", "least": "I"}] * 12 + [{"most": "S", "least": "D"}] * 12
-    elif test_type == "CIS":
-        simulated = [{"most": "C", "least": "D"}] * 8 + [{"most": "I", "least": "D"}] * 8 + [{"most": "S", "least": "D"}] * 8
-    st.session_state.responses = simulated
-    st.session_state.current_q = TOTAL_QUESTIONS
-    st.rerun()
-
-# آزمون
-if st.session_state.current_q < TOTAL_QUESTIONS:
-    q = questions[st.session_state.current_q]
-    
-    st.markdown('<div class="cinematic-card">', unsafe_allow_html=True)
-    st.markdown(f'<h3 style="color: #c4b5fd; font-size: 24px;">سؤال {st.session_state.current_q + 1}: {q["text"]}</h3>', unsafe_allow_html=True)
-    
-    st.markdown('<p style="color: #a78bfa; font-size: 18px; margin-top: 20px;">🔵 بیشترین شباهت به من:</p>', unsafe_allow_html=True)
-    most = st.radio("", q['options'], key=f"most_{st.session_state.current_q}", format_func=lambda x: x['label'], index=None, label_visibility="collapsed")
-    
-    st.markdown('<p style="color: #a78bfa; font-size: 18px; margin-top: 20px;">🔴 کمترین شباهت به من:</p>', unsafe_allow_html=True)
-    least = st.radio("", q['options'], key=f"least_{st.session_state.current_q}", format_func=lambda x: x['label'], index=None, label_visibility="collapsed")
-    
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("⬅️ سؤال بعد", use_container_width=True):
-            if most is None or least is None:
-                st.warning("⚠️ لطفاً هر دو گزینه را انتخاب کنید.")
-            elif most == least:
-                st.warning("⚠️ گزینه‌ها نباید یکسان باشند.")
-            else:
-                st.session_state.responses.append({"most": most['dimension'], "least": least['dimension']})
-                st.session_state.current_q += 1
-                st.rerun()
-
 # تحلیل نهایی
 if st.session_state.current_q >= TOTAL_QUESTIONS and not st.session_state.submitted:
     st.session_state.submitted = True
-    
-    # محاسبه امتیازها
     scores = {'D': 0, 'I': 0, 'S': 0, 'C': 0}
     for resp in st.session_state.responses:
         scores[resp['most']] += 1
         scores[resp['least']] -= 1
-    
     # نرمال‌سازی 1 تا 7
     raw = scores.copy()
     max_raw = max(raw.values())
@@ -738,10 +598,12 @@ if st.session_state.current_q >= TOTAL_QUESTIONS and not st.session_state.submit
     four_digit = f"{norm['D']}{norm['I']}{norm['S']}{norm['C']}"
 
     # تشخیص تیپ
+    # الگوریتم تعیین تیپ ۱۵گانه DISC
     sorted_dims = sorted(norm.items(), key=lambda x: x[1], reverse=True)
     dominant, dom_score = sorted_dims[0]
     second, sec_score = sorted_dims[1]
 
+    # تیپ نهایی بر اساس قواعد تعیین‌شده:
     if dom_score >= 7:
         disc_type = f"High {dominant}"
     elif dom_score >= 6 and sec_score >= 5:
@@ -749,15 +611,14 @@ if st.session_state.current_q >= TOTAL_QUESTIONS and not st.session_state.submit
     elif dom_score >= 5 and sec_score >= 5:
         disc_type = f"{dominant}{second}"
     else:
-        disc_type = dominant
-
-    # پیدا کردن داده مربوط به تیپ
+        disc_type = dominant  # حالت fallback ساده
+    # پیدا کردن داده مربوط به تیپ در disc_data
     selected_type_info = next(
         (item for item in disc_data["disc_report"]["personality_types"]
         if disc_type in item["type_name"]), None
     )
 
-    # دیکشنری تفسیر
+    # دیکشنری تفسیر ۱۵ تیپ DISC
     disc_descriptions = {
         "High D": "🔴 High D: فردی بسیار قاطع، جاه‌طلب، ریسک‌پذیر و نتیجه‌محور. تصمیم‌گیری سریع و گرایش به کنترل.",
         "High DI": "🔥 High DI: رهبر کاریزماتیک، همزمان قاطع و اجتماعی. هم انگیزه‌بخش است هم اهل اجرا.",
@@ -776,45 +637,29 @@ if st.session_state.current_q >= TOTAL_QUESTIONS and not st.session_state.submit
         "CIS": "🧠 CIS: فردی متفکر، ساختاریافته و وفادار. تحلیل‌گر با روحیه آرام و رفتار مؤدب."
     }
 
-    # نمایش نتایج در کارت سینمایی
-    st.markdown('<div class="result-card">', unsafe_allow_html=True)
-    st.markdown(f'<h2 style="text-align: center; color: #c4b5fd; font-size: 36px;">🎉 نتایج آزمون شما 🎉</h2>', unsafe_allow_html=True)
-    st.markdown(f'<p style="text-align: center; font-size: 28px; color: #a78bfa; margin: 20px 0;"><strong>کد DISC:</strong> <span style="color: #c4b5fd; font-size: 32px; font-weight: bold;">{four_digit}</span></p>', unsafe_allow_html=True)
-    st.markdown(f'<p style="text-align: center; font-size: 28px; color: #a78bfa;"><strong>تیپ شخصیتی:</strong> <span style="color: #c4b5fd; font-size: 32px; font-weight: bold;">{disc_type}</span></p>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
-    # تفسیر کوتاه
-    st.markdown('<div class="cinematic-card">', unsafe_allow_html=True)
-    st.markdown(f'<h3 style="color: #c4b5fd;">📝 تفسیر کوتاه</h3>', unsafe_allow_html=True)
-    st.markdown(f'<p style="font-size: 18px; line-height: 1.8; color: #e0e0e0;">{disc_descriptions.get(disc_type, "تفسیر این تیپ در سامانه موجود نیست.")}</p>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown(f"**🔢 کد DISC شما:** `{four_digit}`  \n**🎯 تیپ شخصیتی نهایی:** `{disc_type}`")
 
-    # تحلیل دقیق
+    st.success("✅ تحلیل شخصیت شما با موفقیت انجام شد:")
+
     if selected_type_info:
-        st.markdown('<div class="cinematic-card">', unsafe_allow_html=True)
-        st.markdown('<h3 style="color: #c4b5fd;">🧠 تحلیل دقیق شخصیت</h3>', unsafe_allow_html=True)
+        st.markdown("### 🧠 تحلیل دقیق تیپ شخصیتی شما:")
         
-        st.markdown(f'<h4 style="color: #a78bfa; margin-top: 20px;">🏷 {selected_type_info["type_name"]}</h4>', unsafe_allow_html=True)
+        st.markdown(f"**🏷 عنوان تیپ:** {selected_type_info['type_name']}")
         
-        st.markdown('<h4 style="color: #a78bfa; margin-top: 25px;">🌟 ویژگی‌های کلی:</h4>', unsafe_allow_html=True)
-        for trait in selected_type_info["general_characteristics"]:
-            st.markdown(f'<p style="font-size: 16px; color: #e0e0e0; margin: 8px 0;">• {trait}</p>', unsafe_allow_html=True)
+        st.markdown("**🌟 ویژگی‌های کلی:**")
+        st.markdown("<ul>" + "".join([f"<li>{trait}</li>" for trait in selected_type_info["general_characteristics"]]) + "</ul>", unsafe_allow_html=True)
         
-        st.markdown(f'<h4 style="color: #a78bfa; margin-top: 25px;">👑 سبک رهبری:</h4><p style="font-size: 16px; line-height: 1.8; color: #e0e0e0;">{selected_type_info["leadership_style"]}</p>', unsafe_allow_html=True)
-        
-        st.markdown(f'<h4 style="color: #a78bfa; margin-top: 25px;">🚧 چالش‌ها:</h4><p style="font-size: 16px; line-height: 1.8; color: #e0e0e0;">{selected_type_info["challenges"]}</p>', unsafe_allow_html=True)
-        
-        st.markdown(f'<h4 style="color: #a78bfa; margin-top: 25px;">💼 سبک کاری:</h4><p style="font-size: 16px; line-height: 1.8; color: #e0e0e0;">{selected_type_info["work_style"]}</p>', unsafe_allow_html=True)
-        
-        st.markdown(f'<h4 style="color: #a78bfa; margin-top: 25px;">✅ نقاط قوت:</h4><p style="font-size: 16px; line-height: 1.8; color: #e0e0e0;">{selected_type_info["strengths"]}</p>', unsafe_allow_html=True)
-        
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown(f"**👑 سبک رهبری:** {selected_type_info['leadership_style']}")
+        st.markdown(f"**🚧 چالش‌ها:** {selected_type_info['challenges']}")
+        st.markdown(f"**💼 سبک کاری:** {selected_type_info['work_style']}")
+        st.markdown(f"**✅ نقاط قوت:** {selected_type_info['strengths']}")
 
-        # مشاغل مناسب
-        st.markdown('<div class="cinematic-card">', unsafe_allow_html=True)
-        st.markdown('<h3 style="color: #c4b5fd;">💼 مشاغل مناسب</h3>', unsafe_allow_html=True)
+        # نمایش مشاغل مناسب
+        st.markdown("### 🧩 مشاغل مناسب برای تیپ شما:")
 
         job_map = disc_data["disc_report"]["job_suitability"]
+
         matching_jobs = [
             job.replace("_", " ")
             for job, types in job_map.items()
@@ -822,40 +667,27 @@ if st.session_state.current_q >= TOTAL_QUESTIONS and not st.session_state.submit
         ]
 
         if matching_jobs:
-            for job in matching_jobs:
-                st.markdown(f'<p style="font-size: 16px; color: #e0e0e0; margin: 8px 0;">🔹 {job}</p>', unsafe_allow_html=True)
+            st.markdown("<ul>" + "".join([f"<li>{job}</li>" for job in matching_jobs]) + "</ul>", unsafe_allow_html=True)
         else:
-            st.markdown('<p style="font-size: 16px; color: #a78bfa;">🔎 شغلی به‌طور خاص برای این تیپ تعریف نشده است.</p>', unsafe_allow_html=True)
-        
-        st.markdown('</div>', unsafe_allow_html=True)
+            st.info("🔎 شغلی به‌طور خاص برای این تیپ تعریف نشده است.")
     else:
-        st.markdown('<div class="cinematic-card">', unsafe_allow_html=True)
-        st.markdown('<p style="font-size: 18px; color: #a78bfa;">❗ تفسیر کامل این تیپ فعلاً در سامانه موجود نیست.</p>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.warning("❗ تفسیر کامل این تیپ فعلاً در سامانه موجود نیست.")
 
-    # نمودار
-    st.markdown('<div class="cinematic-card">', unsafe_allow_html=True)
-    st.markdown('<h3 style="color: #c4b5fd; text-align: center;">📊 نمودار پروفایل DISC شما</h3>', unsafe_allow_html=True)
-    
+
+    # نمودار خطی
     fig = go.Figure()
-    fig.add_trace(go.Scatter(
-        x=['D', 'I', 'S', 'C'], 
-        y=[norm['D'], norm['I'], norm['S'], norm['C']], 
-        mode='lines+markers',
-        name='DISC Profile',
-        line=dict(color='#a78bfa', width=4),
-        marker=dict(size=15, color='#c4b5fd', line=dict(color='#7c3aed', width=3))
-    ))
-    
-    fig.update_layout(
-        title='نمودار شخصیت DISC (مقیاس 1-7)',
-        yaxis=dict(range=[0, 8], gridcolor='rgba(167, 139, 250, 0.2)'),
-        xaxis=dict(gridcolor='rgba(167, 139, 250, 0.2)'),
-        plot_bgcolor='rgba(26, 26, 46, 0.5)',
-        paper_bgcolor='rgba(0, 0, 0, 0)',
-        font=dict(color='#e0e0e0', size=14),
-        title_font=dict(size=20, color='#c4b5fd')
-    )
-    
+    fig.add_trace(go.Scatter(x=['D', 'I', 'S', 'C'], y=[norm['D'], norm['I'], norm['S'], norm['C']], mode='lines+markers', name='DISC'))
+    fig.update_layout(title='DISC Profile (1-7 Scale)', yaxis=dict(range=[1, 7]))
     st.plotly_chart(fig, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+
+    # --- 🎨 خروجی HTML زیبا ---
+    html_result = f"""
+    <div style="border: 2px solid #ddd; padding: 20px; border-radius: 15px; direction: RTL; font-family: IranSans, sans-serif; background-color: #f9f9f9;">
+        <h3 style="color: #2c3e50;">🔢 کد DISC شما: <span style="color:#2980b9">{four_digit}</span></h3>
+        <h3 style="color: #2c3e50;">🎯 تیپ شخصیتی نهایی: <span style="color:#16a085">{disc_type}</span></h3>
+        <h4 style="color: #8e44ad; margin-top: 20px;">📘 تفسیر تیپ شخصیتی شما:</h4>
+        <p style="font-size: 16px; line-height: 2;">{disc_descriptions.get(disc_type, 'تفسیر این تیپ در سامانه موجود نیست.')}</p>
+    </div>
+    """
+
+    st.markdown(html_result, unsafe_allow_html=True)
