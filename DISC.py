@@ -7,6 +7,26 @@ import base64
 import time
 from pathlib import Path
 
+/* استایل کارت سوالات */
+    .question-card {{
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        margin: 20px 0;
+        color: white;
+    }}
+    
+    .question-card h3 {{
+        color: white !important;
+        font-size: 24px !important;
+        margin-bottom: 20px;
+    }}
+    
+    .stRadio > label {{
+        color: white !important;
+        font-size: 18px !important;
+    }}
 # تابع تبدیل فونت محلی به CSS
 def local_font_css(font_path, font_name):  
     with open(font_path, "rb") as f:  
@@ -321,11 +341,34 @@ progress = int((st.session_state.current_q / TOTAL_QUESTIONS) * 100)
 st.progress(progress)
 
 # آزمون
+# آزمون
 if st.session_state.current_q < TOTAL_QUESTIONS:
     q = questions[st.session_state.current_q]
+    
+    # شروع کارت بنفش
+    st.markdown('<div class="question-card">', unsafe_allow_html=True)
+    
     st.markdown(f"### سؤال {st.session_state.current_q + 1}: {q['text']}")
-    most = st.radio("بیشترین شباهت به من دارد:", q['options'], key=f"most_{st.session_state.current_q}", format_func=lambda x: x['label'], index=None)
-    least = st.radio("کمترین شباهت به من دارد:", q['options'], key=f"least_{st.session_state.current_q}", format_func=lambda x: x['label'], index=None)
+    
+    most = st.radio(
+        "بیشترین شباهت به من دارد:", 
+        q['options'], 
+        key=f"most_{st.session_state.current_q}", 
+        format_func=lambda x: x['label'], 
+        index=None
+    )
+    
+    least = st.radio(
+        "کمترین شباهت به من دارد:", 
+        q['options'], 
+        key=f"least_{st.session_state.current_q}", 
+        format_func=lambda x: x['label'], 
+        index=None
+    )
+    
+    # پایان کارت
+    st.markdown('</div>', unsafe_allow_html=True)
+    
     if st.button("سؤال بعد"):
         if most is None or least is None:
             st.warning("لطفاً گزینه‌های هر دو بخش را انتخاب کنید.")
@@ -691,3 +734,4 @@ if st.session_state.current_q >= TOTAL_QUESTIONS and not st.session_state.submit
     """
 
     st.markdown(html_result, unsafe_allow_html=True)
+
