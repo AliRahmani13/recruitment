@@ -7,27 +7,6 @@ import base64
 import time
 from pathlib import Path
 
-/* استایل کارت سوالات */
-    .question-card {{
-        background: linear-gradient(135deg, 667eea 0%, 764ba2 100%);
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
-        margin: 20px 0;
-        color: white;
-    }}
-    
-    .question-card h3 {{
-        color: white !important;
-        font-size: 24px !important;
-        margin-bottom: 20px;
-    }}
-    
-    .stRadio > label {{
-        color: white !important;
-        font-size: 18px !important;
-    }}
-# تابع تبدیل فونت محلی به CSS
 def local_font_css(font_path, font_name):  
     with open(font_path, "rb") as f:  
         encoded_font = base64.b64encode(f.read()).decode('utf-8')  
@@ -76,6 +55,27 @@ def local_font_css(font_path, font_name):
         font-family: '{font_name}' !important;  
         font-size: 16px !important;  
     }}  
+  
+    /* استایل کارت سوالات */
+    .question-card {{
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        margin: 20px 0;
+        color: white;
+    }}
+    
+    .question-card h3 {{
+        color: white !important;
+        font-size: 24px !important;
+        margin-bottom: 20px;
+    }}
+    
+    .stRadio > label {{
+        color: white !important;
+        font-size: 18px !important;
+    }}
   
     footer {{  
         visibility: hidden;  
@@ -734,5 +734,6 @@ if st.session_state.current_q >= TOTAL_QUESTIONS and not st.session_state.submit
     """
 
     st.markdown(html_result, unsafe_allow_html=True)
+
 
 
