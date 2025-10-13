@@ -68,8 +68,24 @@ def local_font_css(font_path, font_name):
     
     .question-card h3 {{
         color: white !important;
-        font-size: 24px !important;
-        margin-bottom: 20px;
+        font-size: 26px !important;
+        margin-bottom: 25px;
+        text-align: center;
+        font-weight: bold;
+    }}
+    
+    .question-card .stRadio > label,
+    .question-card p,
+    .question-card strong {{
+        color: white !important;
+        font-size: 18px !important;
+    }}
+    
+    .question-card .stRadio > div {{
+        background: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        margin: 10px 0;
     }}
     
     .stRadio > label {{
@@ -342,28 +358,33 @@ st.progress(progress)
 
 # آزمون
 # آزمون
+# آزمون
 if st.session_state.current_q < TOTAL_QUESTIONS:
     q = questions[st.session_state.current_q]
     
-    # شروع کارت بنفش
+    # شروع کارت بنفش - قبل از نمایش سوال
     st.markdown('<div class="question-card">', unsafe_allow_html=True)
     
-    st.markdown(f"### سؤال {st.session_state.current_q + 1}: {q['text']}")
+    st.markdown(f"<h3>سؤال {st.session_state.current_q + 1}: {q['text']}</h3>", unsafe_allow_html=True)
     
+    st.markdown("**بیشترین شباهت به من دارد:**")
     most = st.radio(
-        "بیشترین شباهت به من دارد:", 
+        "", 
         q['options'], 
         key=f"most_{st.session_state.current_q}", 
         format_func=lambda x: x['label'], 
-        index=None
+        index=None,
+        label_visibility="collapsed"
     )
     
+    st.markdown("**کمترین شباهت به من دارد:**")
     least = st.radio(
-        "کمترین شباهت به من دارد:", 
+        "", 
         q['options'], 
         key=f"least_{st.session_state.current_q}", 
         format_func=lambda x: x['label'], 
-        index=None
+        index=None,
+        label_visibility="collapsed"
     )
     
     # پایان کارت
@@ -734,6 +755,7 @@ if st.session_state.current_q >= TOTAL_QUESTIONS and not st.session_state.submit
     """
 
     st.markdown(html_result, unsafe_allow_html=True)
+
 
 
 
