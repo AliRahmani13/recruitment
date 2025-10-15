@@ -464,7 +464,7 @@ def match_resume_to_job_parallel(resume_text, job_profiles, threshold=7):
 
 """
         try:
-            response = safe_generate_content_for_key(
+            response = safe_generate_content_single_key(
                 api_key=api_key,
                 model="gemini-2.5-flash",
                 contents=prompt,
@@ -1213,7 +1213,7 @@ if RESULT_FILE_PATH.exists():
     st.markdown("### ✅ جدول نهایی رزومه‌های بررسی‌شده")
     
     if 'score' in display_df.columns:
-        styled_df = display_df.style.applymap(color_score_column, subset=['score'])
+        styled_df = display_df.style.map(color_score_column, subset=['score'])
         st.dataframe(styled_df)
     else:
         st.dataframe(display_df)
@@ -1221,6 +1221,7 @@ if RESULT_FILE_PATH.exists():
     style_excel(RESULT_FILE_PATH)
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
 
 
 
