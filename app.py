@@ -20,30 +20,15 @@ import base64
 from datetime import datetime
 
 API_KEYS = [
-    "AIzaSyD09_gws5tBYZmD0YHF1etSZ7K-7wePIh0",
-    "AIzaSyBJ2N1RHTTTQMXUod7jPymZwbgnPsdgLsY",
-    "AIzaSyBwvI4kSZWOnWG3Km6kpUbqD87wIUVcoHs",
-    "AIzaSyDKvI5lwfrihbcXXaXxaQWhGULE77afyrg",
-    "AIzaSyCxpTPYFq91HfeUVqe8JD3RjiU4nV63WH8",
-    "AIzaSyCWZVz-ciOp91vKr2u7J87IktK2skygOro",
-    "AIzaSyB11u1-TTuvIRNhSAp44PgWWpoK9kq1mAo",
-    "AIzaSyBxusefsMEbKv6HAoYxECpOIqbKO-pCs2g",
-    "AIzaSyDIAYd4QdTBQO4MVOnAvoA5tNEozVYdflE",
-    "AIzaSyBw6zUcIsp5t4QZxI_BRiPphYJzf7mq8p4",
-    "AIzaSyC3EpZaqKLQwxCGUxKLzuwzvtKT2EjYTEA",
-    "AIzaSyAkXdS9nAA35pdOX4kZQaFOgOznjU9MlDs",
-    "AIzaSyBZqnpTMHL8Zap2CIrqifqXVA5YB30Apuw",
-    "AIzaSyBqTtltNANsAhbodnxfFJOFq8vaGszJPqQ",
-    "AIzaSyCC2RTsg8ArBgXj8t82-w-agFE82s0CUHw",
-    "AIzaSyDvtLtNuVVlgNBvzwPRl42RyWZJqRsCI4Q",
-    "AIzaSyATYlQN6L7SJz7mY7wScnyB8G_DqRsJQT4",
-    "AIzaSyBW8Q1amjzs0_XLHaKaecyZuQJe0U5qhZU",
-    "AIzaSyA7YtWUSsljlQuWOuy3fSBajot2rI5D3e8",
-    "AIzaSyAsFagF5Z-A_o2pvUiAwpzqXpDpRNjhwfM",
-    "AIzaSyDG8LTKH4NGqQcaGAz76z4hKAQ95jVjz4c",
-    "AIzaSyDwB9W3SJjG5qkTd58L8ToX0xmi57Kh8d4",
-    "AIzaSyBNAb6TSR4mhq82WtW2wHSCOUDK73IDbfs",
-    "AIzaSyB51i5YnENFBE8aYncinPtwLk1dThl2CuA"
+    "AIzaSyAC6jLwz_UfOipXPHRBDbYvL09LPwtbWIE", #Houshi1
+    "AIzaSyC8s3kLCRvg_Y1mKRoIOSfOvkOjMruSWuM", #Houshi2
+    "AIzaSyD6gZisPI1WDLHIj4IwSMYVFTBHkWUIuWc", #Houshi3
+    "AIzaSyDhIY1BnSMAK3jHzsX01kd1bWAtgNrL6SE", #Jake1
+    "AIzaSyDWDkltpy5vKgeYm0f__Ir9tINMQ5qt6Bo", #Jake2
+    "AIzaSyDF02GWPdXHXzrc7bGL5Ux1mL3EuWRZrns", #Jake3
+    "AIzaSyBYTghbpRPB113G7tzgpkx9m_3dqHZw2ac", #Jake4
+    "AIzaSyCdk-2ImqdYMoOymgKjmC9Dib17gR2UANI", #Joe1
+    "AIzaSyCqNUffcVlmAN136zYI6Q7xcRiKVefm61c" #Joe2
 ]
 
 def load_font(font_path):
