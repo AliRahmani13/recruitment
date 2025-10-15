@@ -179,24 +179,22 @@ class RotatingGeminiLLM:
 
 rotating_llm = RotatingGeminiLLM(API_KEYS)
 
-def safe_generate_content(*, model, contents, config, max_retries=3):
-    for api_key in API_KEYS:
-        for retry in range(max_retries):
-            try:
-                client = genai.Client(api_key=api_key)
-                response = client.models.generate_content(
-                    model=model,
-                    contents=contents,
-                    config=config
-                )
-                return response
-            except Exception as e:
-                if retry < max_retries - 1:
-                    time.sleep(2)  # Wait 2 seconds before retry
-                    continue
-                print(f"⚠️ خطا با API {api_key[:10]}... بعد از {max_retries} تلاش: {str(e)}")
+def safe_generate_content_single_key(*, api_key, model, contents, config, max_retries=3):
+    """Generate content with a specific API key"""
+    for retry in range(max_retries):
+        try:
+            client = genai.Client(api_key=api_key)
+            response = client.models.generate_content(
+                model=model,
+                contents=contents,
+                config=config
+            )
+            return response
+        except Exception as e:
+            if retry < max_retries - 1:
+                time.sleep(2)
                 continue
-    raise RuntimeError("❌ تمام API Keyها با خطا مواجه شدند.")
+            raise e
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key="AIzaSyC8tN4kY2QU5ACRacPazzRQeJPtAC08Vm8")
 
@@ -1067,29 +1065,31 @@ if uploaded_file:
                         resume_text = " ".join([str(row[col]) for col in row.index])
                         
                         prompt = f"""شما یک ارزیاب منابع انسانی هستید. با توجه به رزومه زیر، لطفاً برای هر یک از موقعیت‌های شغلی تعریف‌شده، یک درصد تطابق بین ۰ تا ۱۰۰ بدهید و یک دلیل منطقی برای آن ذکر کنید.
-
-رزومه:
-{resume_text}
-
-ساختار پاسخ دقیقا به صورت JSON زیر باشد:
-[
-  {{
-    "title": "عنوان شغل اول",
-    "match_percent": 85,
-    "reason": "توضیح دلیل تطابق یا عدم تطابق"
-  }},
-  {{
-    "title": "عنوان شغل دوم",
-    "match_percent": 45,
-    "reason": "..."
-  }}
-  ...
-]
-موقعیت‌های شغلی:
-{json.dumps(JOB_PROFILES, ensure_ascii=False)}
-"""
+                
+                رزومه:
+                {resume_text}
+                
+                ساختار پاسخ دقیقا به صورت JSON زیر باشد:
+                [
+                  {{
+                    "title": "عنوان شغل اول",
+                    "match_percent": 85,
+                    "reason": "توضیح دلیل تطابق یا عدم تطابق"
+                  }},
+                  {{
+                    "title": "عنوان شغل دوم",
+                    "match_percent": 45,
+                    "reason": "..."
+                  }}
+                  ...
+                ]
+                موقعیت‌های شغلی:
+                {json.dumps(JOB_PROFILES, ensure_ascii=False)}
+                """
                         
-                        response = safe_generate_content(
+                        # Use the specific API key for this thread
+                        response = safe_generate_content_single_key(
+                            api_key=api_key,
                             model="gemini-2.5-flash",
                             contents=prompt,
                             config={
@@ -1202,6 +1202,7 @@ if RESULT_FILE_PATH.exists():
     style_excel(RESULT_FILE_PATH)
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
 
 
 
