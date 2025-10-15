@@ -195,7 +195,26 @@ def safe_generate_content_single_key(*, api_key, model, contents, config, max_re
                 time.sleep(2)
                 continue
             raise e
-
+def safe_generate_content(*, model, contents, config, max_retries=3):
+    """Generate content by trying all API keys"""
+    for api_key in API_KEYS:
+        for retry in range(max_retries):
+            try:
+                client = genai.Client(api_key=api_key)
+                response = client.models.generate_content(
+                    model=model,
+                    contents=contents,
+                    config=config
+                )
+                return response
+            except Exception as e:
+                if retry < max_retries - 1:
+                    time.sleep(2)
+                    continue
+                print(f"⚠️ خطا با API {api_key[:10]}... بعد از {max_retries} تلاش: {str(e)}")
+                continue
+    raise RuntimeError("❌ تمام API Keyها با خطا مواجه شدند.")
+    
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key="AIzaSyC8tN4kY2QU5ACRacPazzRQeJPtAC08Vm8")
 
 RESULT_FILE_PATH = Path("resume_results.xlsx")
@@ -1202,6 +1221,7 @@ if RESULT_FILE_PATH.exists():
     style_excel(RESULT_FILE_PATH)
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
 
 
 
