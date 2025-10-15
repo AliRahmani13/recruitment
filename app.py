@@ -17,6 +17,7 @@ from langchain_core.messages import HumanMessage
 import openpyxl
 from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
 import base64
+from datetime import datetime
 
 API_KEYS = [
     "AIzaSyD09_gws5tBYZmD0YHF1etSZ7K-7wePIh0",
@@ -902,6 +903,7 @@ if custom_skill.strip() and custom_skill.strip() not in all_skills:
 def process_single_resume(args):
     """Process a single resume with a specific API key"""
     idx, row, api_key, all_skills = args
+    start_time = time.time()
     
     try:
         llm_instance = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=api_key)
@@ -933,10 +935,14 @@ def process_single_resume(args):
                 row_data[f"{agent}_reason"] = detail['reason']
         row_data['final_score'] = results['FinalScore']
         row_data['تایید و رد اولیه'] = "تایید" if row_data['final_score'] >= 70 else "رد"
+
+        processing_time = round(time.time() - start_time, 2)
+        row_data['زمان پردازش (ثانیه)'] = processing_time 
         
         return (idx, row_data, None)
     
     except Exception as e:
+        processing_time = round(time.time() - start_time, 2)
         return (idx, None, str(e))
 
 if uploaded_file:
@@ -956,6 +962,7 @@ if uploaded_file:
         st.info(f"پردازش موازی با {max_workers} API Key برای {len(df)} رزومه")
         
         if st.button("شروع امتیازدهی"): 
+            total_start_time = time.time()
             results_placeholder = st.empty() 
             progress_bar = st.progress(0) 
             rows = [None] * len(df)
@@ -998,9 +1005,20 @@ if uploaded_file:
                     accepted = (live_df['تایید و رد اولیه'] == 'تایید').sum() if 'تایید و رد اولیه' in live_df.columns else 0
                     failed = (live_df['تایید و رد اولیه'] != 'تایید').sum() if 'تایید و رد اولیه' in live_df.columns else 0
                     
-                    status_placeholder.success(f"بررسی شده: {checked} / {total}")
-                    status_placeholder.markdown(f"🟢 قبول‌شده: {accepted}")
-                    status_placeholder.markdown(f"🔴 رد‌شده: {failed}")
+                     if 'زمان پردازش (ثانیه)' in live_df.columns:
+                        avg_time = live_df['زمان پردازش (ثانیه)'].mean()
+                        estimated_remaining = avg_time * (total - checked)
+                        status_placeholder.markdown(f"""
+                        **بررسی شده: {checked} / {total}**  
+                        🟢 قبول‌شده: {accepted}  
+                        🔴 رد‌شده: {failed}  
+                        ⏱️ میانگین زمان هر رزومه: {avg_time:.2f}s  
+                        ⏳ تخمین زمان باقیمانده: {estimated_remaining:.1f}s ({estimated_remaining/60:.1f} دقیقه)
+                        """)
+                    else:
+                        status_placeholder.success(f"بررسی شده: {checked} / {total}")
+                        status_placeholder.markdown(f"🟢 قبول‌شده: {accepted}")
+                        status_placeholder.markdown(f"🔴 رد‌شده: {failed}")
                     progress_placeholder.progress(checked / total)
             
             results_df = pd.DataFrame(rows)
@@ -1008,7 +1026,8 @@ if uploaded_file:
             results_df.to_excel("resume_scoring.xlsx", index=False)
             style_excel("resume_scoring.xlsx")
 
-            st.success("✅ امتیازدهی به پایان رسید.")
+            total_time = round(time.time() - total_start_time, 2)  
+            st.success(f"✅ امتیازدهی به پایان رسید. زمان کل: {total_time} ثانیه ({total_time/60:.2f} دقیقه)")
 
             with open("resume_scoring.xlsx", "rb") as f:
                 st.download_button(
@@ -1027,10 +1046,12 @@ if uploaded_file:
         st.info(f"پردازش موازی با {max_workers} API Key برای {len(df)} رزومه")
 
         if st.button("🚀 شروع تطبیق با شناسنامه‌های شغلی"):
+            total_start_time = time.time() 
             try:
                 def process_single_matching(args):
                     """Process job matching for a single resume"""
                     idx, row, api_key = args
+                    start_time = time.time()
                     try:
                         resume_text = " ".join([str(row[col]) for col in row.index])
                         
@@ -1074,7 +1095,9 @@ if uploaded_file:
                         match_df["ردیف رزومه"] = idx + 1
                         match_df["نام"] = row.get("نام", "")
                         match_df["نام خانوادگی"] = row.get("نام خانوادگی", "")
-                        
+                        processing_time = round(time.time() - start_time, 2)  # ADD THIS LINE
+                        match_df["زمان پردازش (ثانیه)"] = processing_time
+
                         return (idx, match_df, None)
                     except Exception as e:
                         return (idx, None, str(e))
@@ -1133,8 +1156,8 @@ if uploaded_file:
                 summary_path = "job_matching_summary.xlsx"
                 summary_df.to_excel(summary_path, index=False)
                 style_excel(summary_path)
-
-                st.success("✅ تطبیق با شناسنامه‌های شغلی با موفقیت انجام شد.")
+                total_time = round(time.time() - total_start_time, 2)  # ADD THIS LINE
+                st.success(f"✅ تطبیق با شناسنامه‌های شغلی با موفقیت انجام شد. زمان کل: {total_time} ثانیه ({total_time/60:.2f} دقیقه)")
                 st.dataframe(summary_df)
 
                 with open(summary_path, "rb") as f:
@@ -1163,5 +1186,6 @@ if RESULT_FILE_PATH.exists():
     style_excel(RESULT_FILE_PATH)
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
 
 
