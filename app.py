@@ -179,19 +179,23 @@ class RotatingGeminiLLM:
 
 rotating_llm = RotatingGeminiLLM(API_KEYS)
 
-def safe_generate_content(*, model, contents, config):
+def safe_generate_content(*, model, contents, config, max_retries=3):
     for api_key in API_KEYS:
-        try:
-            client = genai.Client(api_key=api_key)
-            response = client.models.generate_content(
-                model=model,
-                contents=contents,
-                config=config
-            )
-            return response
-        except Exception as e:
-            print(f"⚠️ خطا با API {api_key[:10]}...: {str(e)}")
-            continue
+        for retry in range(max_retries):
+            try:
+                client = genai.Client(api_key=api_key)
+                response = client.models.generate_content(
+                    model=model,
+                    contents=contents,
+                    config=config
+                )
+                return response
+            except Exception as e:
+                if retry < max_retries - 1:
+                    time.sleep(2)  # Wait 2 seconds before retry
+                    continue
+                print(f"⚠️ خطا با API {api_key[:10]}... بعد از {max_retries} تلاش: {str(e)}")
+                continue
     raise RuntimeError("❌ تمام API Keyها با خطا مواجه شدند.")
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key="AIzaSyC8tN4kY2QU5ACRacPazzRQeJPtAC08Vm8")
@@ -959,7 +963,7 @@ if uploaded_file:
         st.markdown("### 🚀 مرحله امتیازدهی رزومه‌ها") 
         
         max_workers = min(len(API_KEYS), len(df))
-        st.info(f"پردازش موازی با {max_workers} API Key برای {len(df)} رزومه")
+        st.info(f"پردازش با {max_workers} API Key برای {len(df)} رزومه")
         
         if st.button("شروع امتیازدهی"): 
             total_start_time = time.time()
@@ -1043,7 +1047,7 @@ if uploaded_file:
         progress_bar = st.progress(0)
         
         max_workers = min(len(API_KEYS), len(df))
-        st.info(f"پردازش موازی با {max_workers} API Key برای {len(df)} رزومه")
+        st.info(f"پردازش با {max_workers} API Key برای {len(df)} رزومه")
 
         if st.button("🚀 شروع تطبیق با شناسنامه‌های شغلی"):
             total_start_time = time.time() 
@@ -1078,8 +1082,7 @@ if uploaded_file:
 {json.dumps(JOB_PROFILES, ensure_ascii=False)}
 """
                         
-                        client = genai.Client(api_key=api_key)
-                        response = client.models.generate_content(
+                        response = safe_generate_content(
                             model="gemini-2.5-flash",
                             contents=prompt,
                             config={
@@ -1095,11 +1098,12 @@ if uploaded_file:
                         match_df["ردیف رزومه"] = idx + 1
                         match_df["نام"] = row.get("نام", "")
                         match_df["نام خانوادگی"] = row.get("نام خانوادگی", "")
-                        processing_time = round(time.time() - start_time, 2)  # ADD THIS LINE
+                        processing_time = round(time.time() - start_time, 2)
                         match_df["زمان پردازش (ثانیه)"] = processing_time
-
+                        
                         return (idx, match_df, None)
                     except Exception as e:
+                        processing_time = round(time.time() - start_time, 2)
                         return (idx, None, str(e))
                 
                 processing_args = [
@@ -1127,7 +1131,12 @@ if uploaded_file:
                         completed += 1
                         progress_bar.progress(completed / len(df))
                 
-                match_results = pd.concat([r for r in all_results if r is not None], ignore_index=True)
+                valid_results = [r for r in all_results if r is not None]
+                if not valid_results:
+                    st.error("❌ هیچ رزومه‌ای با موفقیت پردازش نشد. لطفاً اتصال اینترنت و تنظیمات پراکسی را بررسی کنید.")
+                    raise Exception("No successful processing")
+                
+                match_results = pd.concat(valid_results, ignore_index=True)
                 
                 def make_sentence(row):
                     return f"میزان انطباق با موقعیت شغلی {row['title']} {int(row['match_percent'])}٪ است، زیرا: {row['reason']}"
@@ -1186,6 +1195,7 @@ if RESULT_FILE_PATH.exists():
     style_excel(RESULT_FILE_PATH)
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
 
 
 
