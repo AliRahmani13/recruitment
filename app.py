@@ -954,7 +954,7 @@ if uploaded_file:
     
     st.info(f"تعداد رزومه‌های بارگذاری شده: {len(df)} | تعداد ستون‌ها: {len(df.columns)}")
     
-    with st.expander("نمایش پیش‌نمایش داده‌ها"):
+    with st.expander(" پیش‌نمایش داده‌ها"):
         st.dataframe(df.head())
     
     stage = st.radio("🧩 مرحله موردنظر را انتخاب کنید:", ["امتیازدهی", "تطبیق با شناسنامه‌های شغلی"])
@@ -1050,7 +1050,14 @@ if uploaded_file:
         st.info(f"پردازش با {max_workers} API Key برای {len(df)} رزومه")
 
         if st.button("🚀 شروع تطبیق با شناسنامه‌های شغلی"):
-            total_start_time = time.time() 
+            total_start_time = time.time()
+
+            matching_status = st.empty()
+            matching_progress = st.progress(0)
+            matching_results_display = st.empty()
+            
+            matching_status.info("⏳ در حال شروع پردازش...")
+    
             try:
                 def process_single_matching(args):
                     """Process job matching for a single resume"""
@@ -1195,6 +1202,7 @@ if RESULT_FILE_PATH.exists():
     style_excel(RESULT_FILE_PATH)
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
 
 
 
