@@ -1005,7 +1005,7 @@ if uploaded_file:
                     accepted = (live_df['تایید و رد اولیه'] == 'تایید').sum() if 'تایید و رد اولیه' in live_df.columns else 0
                     failed = (live_df['تایید و رد اولیه'] != 'تایید').sum() if 'تایید و رد اولیه' in live_df.columns else 0
                     
-                     if 'زمان پردازش (ثانیه)' in live_df.columns:
+                    if 'زمان پردازش (ثانیه)' in live_df.columns:
                         avg_time = live_df['زمان پردازش (ثانیه)'].mean()
                         estimated_remaining = avg_time * (total - checked)
                         status_placeholder.markdown(f"""
@@ -1186,6 +1186,7 @@ if RESULT_FILE_PATH.exists():
     style_excel(RESULT_FILE_PATH)
     with open(RESULT_FILE_PATH, "rb") as f:
         st.download_button("📥 دانلود فایل نهایی", f, file_name="resume_results.xlsx")
+
 
 
 
